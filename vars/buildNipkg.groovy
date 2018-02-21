@@ -7,6 +7,7 @@ def call(payloadDir, releaseVersion, stagingPath, lvVersion) {
    def controlFileText = readFile "control" // Read nipkg control file 
 
    def xmlFiles = new FileNameFinder().getFileNames('.', '**/*.xml')
+   echo xmlFiles
    
 
    // Replace {version} with current lvVersion.
