@@ -6,9 +6,8 @@ def call(payloadDir, releaseVersion, stagingPath, lvVersion) {
    def nipmAppPath = "C:\\Program Files\\National Instruments\\NI Package Manager\\nipkg.exe"
    def controlFileText = readFile "control" // Read nipkg control file 
 
-   def xmlFiles = bat( returnStdout: true, script: '@echo off & dir /b *.xml').trim()
+   def xmlFiles = bat( returnStdout: true, script: '@echo off & dir /s /b *.xml').trim()
    echo xmlFiles
-   
 
    // Replace {version} with current lvVersion.
    def newControlFileText = controlFileText.replaceAll("\\{version\\}", "${lvVersion}")
