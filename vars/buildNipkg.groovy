@@ -6,7 +6,7 @@ def call(payloadDir, releaseVersion, stagingPath, lvVersion) {
    def nipmAppPath = "C:\\Program Files\\National Instruments\\NI Package Manager\\nipkg.exe"
    def controlFileText = readFile "control" // Read nipkg control file 
 
-   def xmlFiles = new FileNameFinder().getFileNames('.', '**/*.xml')
+   def xmlFiles = new FileNameFinder().getFileNames('Source', '**/*.xml')
    echo xmlFiles
    
 
