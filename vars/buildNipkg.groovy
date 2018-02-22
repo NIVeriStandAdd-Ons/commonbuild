@@ -7,8 +7,11 @@ def call(payloadDir, releaseVersion, stagingPath, lvVersion) {
    def controlFileText = readFile "control" // Read nipkg control file 
 
    def xmlFiles = bat( returnStdout: true, script: '@echo off & dir /s /b *.xml').trim()
+   xmlFiles.each { xmlFile, index ->
+       xmlFiles[index] = new File(xmlFile).getName()
+   }
    echo xmlFiles
-
+      
    // Replace {version} with current lvVersion.
    def newControlFileText = controlFileText.replaceAll("\\{version\\}", "${lvVersion}")
 
