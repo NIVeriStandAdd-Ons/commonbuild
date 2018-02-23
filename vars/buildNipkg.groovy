@@ -8,7 +8,8 @@ def call(payloadDir, releaseVersion, stagingPath, devXmlPath, lvVersion) {
 
    echo devXmlPath
    def devXmlText = readFile devXmlPath
-   echo devXmlText
+   def devXml = new XmlSlurper().parseText(devXmlText)
+   echo devXml.version
       
    // Replace {version} with current lvVersion.
    def newControlFileText = controlFileText.replaceAll("\\{version\\}", "${lvVersion}")
