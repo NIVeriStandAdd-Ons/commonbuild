@@ -11,7 +11,8 @@ def call(payloadDir, releaseVersion, stagingPath, lvVersion) {
    xmlFilePaths.each { xmlFilePath, index ->
       echo xmlFilePaths[index]
       File xmlFile = new File(xmlFilePath)
-      println xmlFile.name.lastIndexOf('.').with {it != -1 ? file.name[0..<it] : file.name}  
+      def xmlFileName = xmlFile.name.lastIndexOf('.').with {it != -1 ? file.name[0..<it] : file.name} 
+      echo xmlFileName 
    }
       
    // Replace {version} with current lvVersion.
