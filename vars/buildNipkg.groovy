@@ -1,4 +1,4 @@
-def call(payloadDir, releaseVersion, stagingPath, lvVersion) {
+def call(payloadDir, releaseVersion, stagingPath, devXmlPath, lvVersion) {
    
    def controlFields = readProperties file: "control"
    def basePackageName = "${controlFields.get('Package')}"
@@ -6,14 +6,7 @@ def call(payloadDir, releaseVersion, stagingPath, lvVersion) {
    def nipmAppPath = "C:\\Program Files\\National Instruments\\NI Package Manager\\nipkg.exe"
    def controlFileText = readFile "control" // Read nipkg control file 
 
-   def xmlFilePaths = bat( returnStdout: true, script: '@echo off & dir /s /b *.xml').trim()
-   echo xmlFilePaths
-   xmlFilePaths.each { xmlFilePath, index ->
-      echo xmlFilePaths[index]
-      File xmlFile = new File(xmlFilePath)
-      def xmlFileName = xmlFile.name.lastIndexOf('.').with {it != -1 ? file.name[0..<it] : file.name} 
-      echo xmlFileName 
-   }
+   echo devXmlPath
       
    // Replace {version} with current lvVersion.
    def newControlFileText = controlFileText.replaceAll("\\{version\\}", "${lvVersion}")
