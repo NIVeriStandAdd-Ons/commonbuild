@@ -24,7 +24,7 @@ def call(payloadDir, releaseVersion, stagingPath, devXmlPath, lvVersion) {
    writeFile file: "nipkg\\${packageName}\\control\\control", text: newControlFileText
 
    // Build nipkg using NI Package Manager CLI pack command. 
-   bat "\"${nipmAppPath}\" pack nipkg\\${packageName} ${payloadDir}" 
+   bat "\"${nipmAppPath}\" pack \"nipkg\\${packageName}\" \"${payloadDir}\"" 
 
 }
 
