@@ -23,6 +23,7 @@ class Nipkg extends AbstractPackage {
          """.stripIndent()
       
       script.cloneCommonbuildConfiguration()
+      script.configSetup()
       script.buildNipkg(payloadDir, releaseVersion, stagingPath, devXmlPath, lvVersion)
       script.echo packageInfo
    }
