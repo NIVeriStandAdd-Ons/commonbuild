@@ -115,7 +115,6 @@ class Pipeline implements Serializable {
       }
       script.stage("Setup_$lvVersion") {
          script.cloneCommonbuild()
-         script.cloneCommonbuildConfiguration()
          script.buildSetup()
       }
    }
