@@ -1,5 +1,7 @@
 package ni.vsbuild.packages
 
+import groovy.json.JsonSlurperClassic
+
 class Nipkg extends AbstractPackage {
 
    def releaseVersion
@@ -22,6 +24,13 @@ class Nipkg extends AbstractPackage {
          Custom Device XML Path: $devXmlPath
          """.stripIndent()
       
+      
+      def globalBuildConfigJsonFile = script.readJSON file: 'configuration.json'
+
+      def globalConfigJson = new JsonSlurperClassic().parseText(globalBuildConfigJsonFile.toString())
+
+      script.echo globalConfigJson
+
       script.cloneCommonbuildConfiguration()
       script.configSetup()
       script.buildNipkg(payloadDir, releaseVersion, stagingPath, devXmlPath, lvVersion)
