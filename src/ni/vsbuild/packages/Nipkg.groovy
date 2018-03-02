@@ -24,15 +24,15 @@ class Nipkg extends AbstractPackage {
          Custom Device XML Path: $devXmlPath
          """.stripIndent()
       
-      
+      script.cloneCommonbuildConfiguration()
+      script.configSetup()
+
       def globalBuildConfigJsonFile = script.readJSON file: 'configuration.json'
 
       def globalConfigJson = new JsonSlurperClassic().parseText(globalBuildConfigJsonFile.toString())
 
       script.echo globalConfigJson
 
-      script.cloneCommonbuildConfiguration()
-      script.configSetup()
       script.buildNipkg(payloadDir, releaseVersion, stagingPath, devXmlPath, lvVersion)
       script.echo packageInfo
    }
