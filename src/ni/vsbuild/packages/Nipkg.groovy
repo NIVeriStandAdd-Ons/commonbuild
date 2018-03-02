@@ -29,9 +29,10 @@ class Nipkg extends AbstractPackage {
 
       def globalBuildConfigJsonFile = script.readJSON file: 'configuration.json'
 
-      def globalConfigJson = new JsonSlurperClassic().parseText(globalBuildConfigJsonFile.toString())
+      def globalConfig = new JsonSlurperClassic().parseText(globalBuildConfigJsonFile.toString())
+      def projectConfig = globalConfig.repositories.get('scan_engine_cd')
 
-      script.echo globalConfigJson.get('scan_engine_cd.master.major')
+      script.echo projectConfig
 
       script.buildNipkg(payloadDir, releaseVersion, stagingPath, devXmlPath, lvVersion)
       script.echo packageInfo
