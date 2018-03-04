@@ -30,8 +30,8 @@ class Nipkg extends AbstractPackage {
       def versionConfigJsonFile = script.readJSON file: 'configuration.json'
       def convertedVersionConfigJson = new JsonSlurperClassic().parseText(versionConfigJsonFile.toString())
       
-      def repo = getComponentParts()['repo']
-      def branch = getComponentParts()['branch']
+      def repo = script.getComponentParts()['repo']
+      def branch = script.getComponentParts()['branch']
 
       script.echo "$repo $branch"
       
