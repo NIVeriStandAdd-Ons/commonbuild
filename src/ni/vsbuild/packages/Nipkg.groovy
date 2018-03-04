@@ -35,7 +35,7 @@ class Nipkg extends AbstractPackage {
 
       script.echo "$repo $branch"
       
-      def versionConfig = convertedConfigJson.repositories.get('${repo}-${branch}')
+      def versionConfig = convertedVersionConfigJson.repositories.get('${repo}-${branch}')
       def buildNumber = versionConfig.get('build')
       script.echo "$buildNumber"
 
