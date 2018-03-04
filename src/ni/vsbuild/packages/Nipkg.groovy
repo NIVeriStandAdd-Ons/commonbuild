@@ -44,14 +44,9 @@ class Nipkg extends AbstractPackage {
 
       componentConfig << [build:5]
       script.echo "$componentConfig"
-
-      componentConfigStringMap.repositories << [componentID:componentConfig]
       script.echo "$componentConfigStringMap"
-
       script.configUpdate(componentConfigStringMap)
-
       script.buildNipkg(payloadDir, releaseVersion, stagingPath, devXmlPath, lvVersion)
       script.echo packageInfo
    }
 }
-
