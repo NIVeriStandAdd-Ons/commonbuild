@@ -42,8 +42,11 @@ class Nipkg extends AbstractPackage {
       def buildNumber = componentConfig.get('build')
       script.echo "$buildNumber"
 
-      componentConfig << [build: 5]
+      componentConfig << [build:5]
       script.echo "$componentConfig"
+
+      componentConfigStringMap.repositories << [componentID:componentConfig]
+      script.echo "$componentConfigStringMap"
 
       script.buildNipkg(payloadDir, releaseVersion, stagingPath, devXmlPath, lvVersion)
       script.echo packageInfo
