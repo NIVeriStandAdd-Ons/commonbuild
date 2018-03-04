@@ -36,7 +36,7 @@ class Nipkg extends AbstractPackage {
       def componentID = "$repo-$branch"
       script.echo "Getting build version number for ${componentID}."
       
-      def versionConfig = convertedVersionConfigJson.repositories.get('CAN-Frame-Protection-Custom-Device-develop')
+      def versionConfig = convertedVersionConfigJson.repositories.get(componentID)
       script.echo "$versionConfig"
       //def buildNumber = versionConfig.get('build')
       //script.echo "$buildNumber"
