@@ -27,8 +27,8 @@ class Nipkg extends AbstractPackage {
       script.cloneCommonbuildConfiguration()
       script.configSetup()
 
-      def versionConfigJsonFile = script.readJSON file: 'configuration.json'
-      def convertedVersionConfigJson = new JsonSlurperClassic().parseText(versionConfigJsonFile.toString())
+      def componentConfigJsonFile = script.readJSON file: 'configuration.json'
+      def componentConfigStringMap = new JsonSlurperClassic().parseText(componentConfigJsonFile.toString())
       
       def repo = script.getComponentParts()['repo']
       def branch = script.getComponentParts()['branch']
@@ -36,12 +36,14 @@ class Nipkg extends AbstractPackage {
       def componentID = repo+'-'+branch
       script.echo "Getting build version number for ${componentID}."
       
-      def componentConfig = convertedVersionConfigJson.repositories.get(componentID)
+      def componentConfig = componentConfigStringMap.repositories.get(componentID)
       script.echo "$componentConfig"
 
-      def buildNumber = versionConfig.get('build')
+      def buildNumber = componentConfig.get('build')
       script.echo "$buildNumber"
 
+      componentConfig << [build: 5]
+      script.echo "$componentConfig"
 
       script.buildNipkg(payloadDir, releaseVersion, stagingPath, devXmlPath, lvVersion)
       script.echo packageInfo
