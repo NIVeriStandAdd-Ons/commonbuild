@@ -37,8 +37,8 @@ class Nipkg extends AbstractPackage {
       script.echo "Getting build version number for ${componentID}."
       
       def versionConfig = convertedVersionConfigJson.repositories.get('$componentID')
-      def buildNumber = versionConfig.get('build')
-      script.echo "$buildNumber"
+      //def buildNumber = versionConfig.get('build')
+      //script.echo "$buildNumber"
 
 
       script.buildNipkg(payloadDir, releaseVersion, stagingPath, devXmlPath, lvVersion)
