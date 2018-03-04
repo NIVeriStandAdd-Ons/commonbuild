@@ -48,8 +48,7 @@ class Nipkg extends AbstractPackage {
       componentConfigStringMap.repositories << [componentID:componentConfig]
       script.echo "$componentConfigStringMap"
 
-      def newComponentConfigFile = new File('configuration.txt')
-      newComponentConfigFile.write '$componentConfigStringMap'
+      script.configUpdate(componentConfigStringMap)
 
       script.buildNipkg(payloadDir, releaseVersion, stagingPath, devXmlPath, lvVersion)
       script.echo packageInfo
