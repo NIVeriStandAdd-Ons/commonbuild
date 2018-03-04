@@ -33,10 +33,10 @@ class Nipkg extends AbstractPackage {
       def repo = script.getComponentParts()['repo']
       def branch = script.getComponentParts()['branch']
 
-      def componentID = "$repo-$branch"
+      def componentID = '$repo-$branch'
       script.echo "Getting build version number for ${componentID}."
       
-      def versionConfig = convertedVersionConfigJson.repositories.get('$repo-$branch')
+      def versionConfig = convertedVersionConfigJson.repositories.get(componentID)
       script.echo "$versionConfig"
       //def buildNumber = versionConfig.get('build')
       //script.echo "$buildNumber"
