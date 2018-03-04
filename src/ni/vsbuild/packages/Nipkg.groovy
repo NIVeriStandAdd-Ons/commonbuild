@@ -27,13 +27,18 @@ class Nipkg extends AbstractPackage {
       script.cloneCommonbuildConfiguration()
       script.configSetup()
 
-      def globalBuildConfigJsonFile = script.readJSON file: 'configuration.json'
+      def versionConfigJsonFile = script.readJSON file: 'configuration.json'
+      def convertedVersionConfigJson = new JsonSlurperClassic().parseText(versionConfigJsonFile.toString())
+      
+      def repo = getComponentParts()['repo']
+      def branch = getComponentParts()['branch']
 
-      def convertedConfigJson = new JsonSlurperClassic().parseText(globalBuildConfigJsonFile.toString())
-      def projectConfig = convertedConfigJson.repositories.get('scan_engine_cd-master')
+      script.echo "$repo $branch"
+      
+      def versionConfig = convertedConfigJson.repositories.get('${repo}-${branch}')
+      def buildNumber = versionConfig.get('build')
+      script.echo "$buildNumber"
 
-      def major = projectConfig.get('major')
-      script.echo "$major"
 
       script.buildNipkg(payloadDir, releaseVersion, stagingPath, devXmlPath, lvVersion)
       script.echo packageInfo
