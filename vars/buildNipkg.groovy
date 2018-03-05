@@ -10,10 +10,10 @@ def call(payloadDir, buildNumber, stagingPath, devXmlPath, lvVersion) {
    def devXmlText = readFile devXmlPath
    def devXml = new XmlSlurper().parseText(devXmlText)
    def baseVersion = devXml.version
-   echo "$baseVersion"
+   echo "Base version: $baseVersion"
       
    // Replace {version} with current lvVersion.
-   def newControlFileText = controlFileText.replaceAll("\\{version\\}", "${lvVersion}")
+/* def newControlFileText = controlFileText.replaceAll("\\{version\\}", "${lvVersion}")
 
    echo "Building ${packageName} with control file attributes:"
    echo controlFileText
@@ -29,6 +29,6 @@ def call(payloadDir, buildNumber, stagingPath, devXmlPath, lvVersion) {
 
    // Build nipkg using NI Package Manager CLI pack command. 
    bat "\"${nipmAppPath}\" pack \"nipkg\\${packageName}\" \"${payloadDir}\"" 
-
+*/
 }
 
