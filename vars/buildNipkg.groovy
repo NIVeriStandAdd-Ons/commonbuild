@@ -10,16 +10,15 @@ def call(payloadDir, buildNumber, stagingPath, devXmlPath, lvVersion) {
    def devXmlText = readFile devXmlPath
    def devXml = new XmlSlurper().parseText(devXmlText)
    def baseVersion = devXml.Version.text()
-   echo "Base version: $baseVersion"
-      
-   // Replace {version} with current lvVersion.
-/* def newControlFileText = controlFileText.replaceAll("\\{version\\}", "${lvVersion}")
+   def nipkgVersion = "${baseVersion}.${buildNumber}"
+
+   // Replace {version} with current VeriStand version being built.
+   def newControlFileText = controlFileText.replaceAll("\\{veristand_version\\}", "${lvVersion}")
+   newControlFileText.replaceAll("\\{nipkg_version}\\}", "${nipkgVersion}")
+   def newStagingPath = stagingPath.replaceAll("\\{veristand_version\\}", "${lvVersion}")
 
    echo "Building ${packageName} with control file attributes:"
    echo controlFileText
-
-   def newStagingPath = stagingPath.replaceAll("\\{version\\}", "${lvVersion}")
-   echo "Staging path: $newStagingPath"
 
    // Copy package payload to nipkg staging directory. 
    bat "(robocopy \"${payloadDir}\" \"nipkg\\${packageName}\\data\\${newStagingPath}\" /MIR /NFL /NDL /NJH /NJS /nc /ns /np) ^& exit 0"
@@ -29,6 +28,6 @@ def call(payloadDir, buildNumber, stagingPath, devXmlPath, lvVersion) {
 
    // Build nipkg using NI Package Manager CLI pack command. 
    bat "\"${nipmAppPath}\" pack \"nipkg\\${packageName}\" \"${payloadDir}\"" 
-*/
+
 }
 
