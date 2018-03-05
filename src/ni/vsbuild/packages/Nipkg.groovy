@@ -4,7 +4,6 @@ import groovy.json.JsonSlurperClassic
 
 class Nipkg extends AbstractPackage {
 
-   def releaseVersion
    def stagingPath
    def devXmlPath
    
@@ -32,8 +31,8 @@ class Nipkg extends AbstractPackage {
       
       def repo = script.getComponentParts()['repo']
       def branch = script.getComponentParts()['branch']
-
       def componentID = repo+'-'+branch
+
       script.echo "Getting build version number for ${componentID}."
       
       def componentConfig = componentConfigStringMap.repositories.get(componentID)
@@ -42,11 +41,10 @@ class Nipkg extends AbstractPackage {
       def commitMessage = "updating ${componentID} to build number ${buildNumber}."
 
       componentConfig << [build:buildNumber]
-      script.echo "$componentConfig"
-      script.echo "$componentConfigStringMap"
+
       script.configUpdate(componentID, componentConfigStringMap)
       script.configPush(commitMessage)
-      script.buildNipkg(payloadDir, releaseVersion, stagingPath, devXmlPath, lvVersion)
+      script.buildNipkg(payloadDir, buildNumber, stagingPath, devXmlPath, lvVersion)
       script.echo packageInfo
    }
 }

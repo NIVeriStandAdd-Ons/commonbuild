@@ -1,4 +1,4 @@
-def call(payloadDir, releaseVersion, stagingPath, devXmlPath, lvVersion) {
+def call(payloadDir, buildNumber, stagingPath, devXmlPath, lvVersion) {
    
    def controlFields = readProperties file: "control"
    def basePackageName = "${controlFields.get('Package')}"
@@ -7,9 +7,9 @@ def call(payloadDir, releaseVersion, stagingPath, devXmlPath, lvVersion) {
    def controlFileText = readFile "control" // Read nipkg control file 
 
    echo devXmlPath
-  // def devXmlText = readFile devXmlPath
-   //def devXml = new XmlSlurper().parseText(devXmlText)
-   //echo devXml.version
+   def devXmlText = readFile devXmlPath
+   def devXml = new XmlSlurper().parseText(devXmlText)
+   echo devXml.version
       
    // Replace {version} with current lvVersion.
    def newControlFileText = controlFileText.replaceAll("\\{version\\}", "${lvVersion}")
