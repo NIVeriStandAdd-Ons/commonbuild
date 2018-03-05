@@ -9,7 +9,7 @@ def call(payloadDir, buildNumber, stagingPath, devXmlPath, lvVersion) {
    echo devXmlPath
    def devXmlText = readFile devXmlPath
    def devXml = new XmlSlurper().parseText(devXmlText)
-   def baseVersion = devXml.version
+   def baseVersion = devXml.version.text()
    echo "Base version: $baseVersion"
       
    // Replace {version} with current lvVersion.

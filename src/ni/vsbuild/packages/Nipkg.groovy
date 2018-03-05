@@ -20,6 +20,7 @@ class Nipkg extends AbstractPackage {
          LabVIEW/VeriStand version: $lvVersion
          Custom Device XML Path: $devXmlPath
          """.stripIndent()
+      script.echo packageInfo
       
       script.cloneCommonbuildConfiguration()
       script.configSetup()
@@ -40,8 +41,8 @@ class Nipkg extends AbstractPackage {
       componentConfig << [build:buildNumber]
 
       script.configUpdate(componentID, componentConfigStringMap)
-      script.configPush(commitMessage)
+    //script.configPush(commitMessage)
       script.buildNipkg(payloadDir, buildNumber, stagingPath, devXmlPath, lvVersion)
-      script.echo packageInfo
+      
    }
 }
