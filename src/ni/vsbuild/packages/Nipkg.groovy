@@ -9,7 +9,6 @@ class Nipkg extends AbstractPackage {
    
    Nipkg(script, packageInfo, payloadDir) {
       super(script, packageInfo, payloadDir)
-      this.releaseVersion = packageInfo.get('release_version')
       this.stagingPath = packageInfo.get('install_destination')
       this.devXmlPath = packageInfo.get('dev_xml_path')
    }
@@ -17,7 +16,6 @@ class Nipkg extends AbstractPackage {
    void buildPackage(lvVersion) {
       def packageInfo = """
          Building package $name from $payloadDir
-         Package version: $releaseVersion
          Staging path: $stagingPath
          LabVIEW/VeriStand version: $lvVersion
          Custom Device XML Path: $devXmlPath
@@ -28,7 +26,6 @@ class Nipkg extends AbstractPackage {
 
       def componentConfigJsonFile = script.readJSON file: 'configuration.json'
       def componentConfigStringMap = new JsonSlurperClassic().parseText(componentConfigJsonFile.toString())
-      
       def repo = script.getComponentParts()['repo']
       def branch = script.getComponentParts()['branch']
       def componentID = repo+'-'+branch
