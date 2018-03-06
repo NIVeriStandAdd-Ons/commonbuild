@@ -37,12 +37,13 @@ class Nipkg extends AbstractPackage {
       def buildNumber = componentConfig.get('build') as Integer
       buildNumber = buildNumber + 1
       def commitMessage = "updating ${componentID} to build number ${buildNumber}."
-
       componentConfig << [build:buildNumber]
 
       script.configUpdate(componentID, componentConfigStringMap)
+      baseVersion = script.getDeviceVersion(devXmlPath)
     //script.configPush(commitMessage)
-      script.buildNipkg(payloadDir, buildNumber, stagingPath, devXmlPath, lvVersion)
+      script.buildNipkg(payloadDir, baseVersion, buildNumber, stagingPath, lvVersion)
       
    }
 }
+
