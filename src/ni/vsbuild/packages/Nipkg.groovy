@@ -36,8 +36,7 @@ class Nipkg extends AbstractPackage {
       def componentConfig = componentConfigStringMap.repositories.get(componentID)
       def buildNumber = componentConfig.get('build')
       buildNumber = ++buildNumber
-      def buildNumberInt = buildNumber as Integer
-      script.echo "$buildNumberInt"
+      script.echo "$buildNumber"
       def commitMessage = "updating ${componentID} to build number ${buildNumber}."
 
       componentConfig << [build:buildNumber]
