@@ -2,7 +2,6 @@ def call(payloadDir, buildNumber, stagingPath, devXmlPath, lvVersion) {
    
    def controlFields = readProperties file: "control"
    def basePackageName = "${controlFields.get('Package')}"
-   def packageName = basePackageName.replaceAll("\\{version\\}", "${lvVersion}")
    def nipmAppPath = "C:\\Program Files\\National Instruments\\NI Package Manager\\nipkg.exe"
    def controlFileText = readFile "control" // Read nipkg control file 
    def devXmlText = readFile devXmlPath
@@ -15,6 +14,7 @@ def call(payloadDir, buildNumber, stagingPath, devXmlPath, lvVersion) {
    def newControlFileText = controlFileText.replaceAll("\\{veristand_version\\}", "${lvVersion}")
    finalControlFileText = newControlFileText.replaceAll("\\{nipkg_version\\}", "${nipkgVersion}")
    def newStagingPath = stagingPath.replaceAll("\\{veristand_version\\}", "${lvVersion}")
+   def packageName = basePackageName.replaceAll("\\{veristand_version\\}", "${lvVersion}")
    echo newStagingPath
 
    echo "Building ${packageName} with control file attributes:"
