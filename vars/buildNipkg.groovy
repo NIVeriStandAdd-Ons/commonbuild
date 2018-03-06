@@ -4,6 +4,7 @@ def call(payloadDir, buildNumber, stagingPath, devXmlPath, lvVersion) {
    def basePackageName = "${controlFields.get('Package')}"
    def nipmAppPath = "C:\\Program Files\\National Instruments\\NI Package Manager\\nipkg.exe"
    def controlFileText = readFile "control" // Read nipkg control file 
+
    def devXmlText = readFile devXmlPath
    def devXml = new XmlSlurper().parseText(devXmlText)
    def baseVersion = devXml.Version.text()
@@ -23,7 +24,7 @@ def call(payloadDir, buildNumber, stagingPath, devXmlPath, lvVersion) {
    // Copy package payload to nipkg staging directory. 
 //   bat "(robocopy \"${payloadDir}\" \"nipkg\\${packageName}\\data\\${newStagingPath}\" /MIR /NFL /NDL /NJH /NJS /nc /ns /np) ^& exit 0"
 
-   writeFile file: "nipkg\\${packageName}\\debian-binary", text: "2.0"      
+//   writeFile file: "nipkg\\${packageName}\\debian-binary", text: "2.0"      
 //   writeFile file: "nipkg\\${packageName}\\control\\control", text: finalControlFileText
 
    // Build nipkg using NI Package Manager CLI pack command. 
