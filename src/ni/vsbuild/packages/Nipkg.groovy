@@ -21,10 +21,6 @@ class Nipkg extends AbstractPackage {
          Custom Device XML Path: $devXmlPath
          """.stripIndent()
       script.echo packageInfo
-      
-      script.cloneCommonbuildConfiguration()
-      script.configSetup()
-
 
       def repo = script.getComponentParts()['repo']
       def branch = script.getComponentParts()['branch']

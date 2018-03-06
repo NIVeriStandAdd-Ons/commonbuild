@@ -9,6 +9,7 @@ call %venv_path%\\Scripts\\activate.bat
 
 pip install toml
 python commonbuild\\resources\\toml2json.py build.toml
+python commonbuild\\resources\\toml2json.py commonbuild-configuration\\configuration.toml
 
 call %venv_path%\\Scripts\\deactivate.bat
 
