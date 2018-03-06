@@ -42,7 +42,7 @@ class Nipkg extends AbstractPackage {
       script.configUpdate(componentID, componentConfigStringMap)
       def baseVersion = script.getDeviceVersion(devXmlPath)
       script.buildNipkg(payloadDir, baseVersion, buildNumber, stagingPath, lvVersion)
-      script.configPush(commitMessage) \\Push updated build number to commonbuild-configuration repository.
+      script.configPush(commitMessage) //Push updated build number to commonbuild-configuration repository.
       
    }
 }
