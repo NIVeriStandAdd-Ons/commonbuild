@@ -13,7 +13,7 @@ def call(payloadDir, buildNumber, stagingPath, devXmlPath, lvVersion) {
 
    // Replace {version} with current VeriStand version being built.
    def newControlFileText = controlFileText.replaceAll("\\{veristand_version\\}", "${lvVersion}")
-   finalControlFileText = newControlFileText.replaceAll("\\{nipkg_version}\\}", "${nipkgVersion}")
+   finalControlFileText = newControlFileText.replaceAll("\\{nipkg_version\\}", "${nipkgVersion}")
    def newStagingPath = stagingPath.replaceAll("\\{veristand_version\\}", "${lvVersion}")
 
    echo "Building ${packageName} with control file attributes:"
