@@ -5,8 +5,6 @@ def call(payloadDir, buildNumber, stagingPath, devXmlPath, lvVersion) {
    def packageName = basePackageName.replaceAll("\\{version\\}", "${lvVersion}")
    def nipmAppPath = "C:\\Program Files\\National Instruments\\NI Package Manager\\nipkg.exe"
    def controlFileText = readFile "control" // Read nipkg control file 
-
-   echo devXmlPath
    def devXmlText = readFile devXmlPath
    def devXml = new XmlSlurper().parseText(devXmlText)
    def baseVersion = devXml.Version.text()
@@ -15,7 +13,7 @@ def call(payloadDir, buildNumber, stagingPath, devXmlPath, lvVersion) {
 
    // Replace {version} with current VeriStand version being built.
    def newControlFileText = controlFileText.replaceAll("\\{veristand_version\\}", "${lvVersion}")
-   newControlFileText.replaceAll("\\{nipkg_version}\\}", "${nipkgVersion}")
+   newControlFileText = newControlFileText.replaceAll("\\{nipkg_version}\\}", "${nipkgVersion}")
    def newStagingPath = stagingPath.replaceAll("\\{veristand_version\\}", "${lvVersion}")
 
    echo "Building ${packageName} with control file attributes:"
