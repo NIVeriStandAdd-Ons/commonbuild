@@ -21,13 +21,13 @@ def call(payloadDir, buildNumber, stagingPath, devXmlPath, lvVersion) {
    echo finalControlFileText
 
    // Copy package payload to nipkg staging directory. 
-   bat "(robocopy \"${payloadDir}\" \"nipkg\\${packageName}\\data\\${newStagingPath}\" /MIR /NFL /NDL /NJH /NJS /nc /ns /np) ^& exit 0"
+//   bat "(robocopy \"${payloadDir}\" \"nipkg\\${packageName}\\data\\${newStagingPath}\" /MIR /NFL /NDL /NJH /NJS /nc /ns /np) ^& exit 0"
 
    writeFile file: "nipkg\\${packageName}\\debian-binary", text: "2.0"      
-   writeFile file: "nipkg\\${packageName}\\control\\control", text: finalControlFileText
+//   writeFile file: "nipkg\\${packageName}\\control\\control", text: finalControlFileText
 
    // Build nipkg using NI Package Manager CLI pack command. 
-   bat "\"${nipmAppPath}\" pack \"nipkg\\${packageName}\" \"${payloadDir}\"" 
+//   bat "\"${nipmAppPath}\" pack \"nipkg\\${packageName}\" \"${payloadDir}\"" 
 
 }
 
