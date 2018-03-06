@@ -13,17 +13,17 @@ def call(payloadDir, buildNumber, stagingPath, devXmlPath, lvVersion) {
 
    // Replace {version} with current VeriStand version being built.
    def newControlFileText = controlFileText.replaceAll("\\{veristand_version\\}", "${lvVersion}")
-   newControlFileText = newControlFileText.replaceAll("\\{nipkg_version}\\}", "${nipkgVersion}")
+   finalControlFileText = newControlFileText.replaceAll("\\{nipkg_version}\\}", "${nipkgVersion}")
    def newStagingPath = stagingPath.replaceAll("\\{veristand_version\\}", "${lvVersion}")
 
    echo "Building ${packageName} with control file attributes:"
-   echo newControlFileText
+   echo finalControlFileText
 
    // Copy package payload to nipkg staging directory. 
    bat "(robocopy \"${payloadDir}\" \"nipkg\\${packageName}\\data\\${newStagingPath}\" /MIR /NFL /NDL /NJH /NJS /nc /ns /np) ^& exit 0"
 
    writeFile file: "nipkg\\${packageName}\\debian-binary", text: "2.0"      
-   writeFile file: "nipkg\\${packageName}\\control\\control", text: newControlFileText
+   writeFile file: "nipkg\\${packageName}\\control\\control", text: finalControlFileText
 
    // Build nipkg using NI Package Manager CLI pack command. 
    bat "\"${nipmAppPath}\" pack \"nipkg\\${packageName}\" \"${payloadDir}\"" 
