@@ -1,4 +1,4 @@
-def call(componentID, configurationMap) {
+def call(buildID, componentID, configurationMap) {
 
    def buildNumber = 0
 

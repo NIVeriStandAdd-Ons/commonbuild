@@ -27,12 +27,13 @@ class Nipkg extends AbstractPackage {
       // Lookup strings for the build number within configuration.toml. 
       componentID = script.getComponentParts()['repo']
       buildID = lvVersion+'_build_number'
+
+      // Read and parse configuration.json file to get next build number. 
       script.echo "Getting ${buildID} for ${componentID}."
       configurationJsonFile = script.readJSON file: 'configuration.json'
       configurationMap = new JsonSlurperClassic().parseText(configurationJsonFile.toString())
-      buildNumber = script.getBuildNumber(componentID, configurationMap)
+      buildNumber = script.getBuildNumber(buildID, componentID, configurationMap)
 
-      // Build the nipkg. 
       def packageInfo = """
          Building package $name from $payloadDir
          Staging path: $stagingPath
@@ -41,13 +42,13 @@ class Nipkg extends AbstractPackage {
          Build number: $buildNumber
          """.stripIndent()
 
+      // Build the nipkg. 
       script.echo packageInfo
       script.buildNipkg(payloadDir, baseVersion, buildNumber, stagingPath, lvVersion)
 
       // Update the configuration map, save it to disk, and push to github.com\{your_org}\commonbuild-configuration. 
-      def commitMessage = "Updating ${componentID} for VeriStand ${lvVersion} to build number ${buildNumber}."
       script.configUpdate(configurationMap)
-      script.configPush(commitMessage) 
+      script.configPush(buildNumber, componentID, lvVersion) 
       
    }
 }
