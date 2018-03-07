@@ -23,7 +23,7 @@ class Nipkg extends AbstractPackage {
       script.echo packageInfo
 
       def componentID = script.getComponentParts()['repo']
-      def buildID = '$lvVersion_build_version'
+      def buildID = lvVersion+'_build_version'
       script.echo "BuildID: $buildID"
 
       script.echo "Getting build version number for ${componentID}."
