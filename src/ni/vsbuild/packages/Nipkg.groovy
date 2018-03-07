@@ -22,20 +22,19 @@ class Nipkg extends AbstractPackage {
          """.stripIndent()
       script.echo packageInfo
 
-      def repo = script.getComponentParts()['repo']
-      def branch = script.getComponentParts()['branch']
-      def componentID = repo+'-'+branch
+      def componentID = script.getComponentParts()['repo']
+      def buildID = '${lvVersion}_build_version'
 
       script.echo "Getting build version number for ${componentID}."
-      def componentConfigJsonFile = script.readJSON file: 'configuration.json'
-      def componentConfigStringMap = new JsonSlurperClassic().parseText(componentConfigJsonFile.toString())
-      def componentConfig = componentConfigStringMap.repositories.get(componentID)
-      def buildNumber = componentConfig.get('build') as Integer
+      def configurationJsonFile = script.readJSON file: 'configuration.json'
+      def configurationMap = new JsonSlurperClassic().parseText(configurationJsonFile.toString())
+      def componentConfig = configurationMap.repositories.get(componentID)
+      def buildNumber = componentConfig.get(buildID) as Integer
       buildNumber = buildNumber + 1
-      def commitMessage = "updating ${componentID} to build number ${buildNumber}."
+      def commitMessage = "Updating ${componentID} for VeriStand ${lvVersion} to build number ${buildNumber}."
       componentConfig << [build:buildNumber]
 
-      script.configUpdate(componentID, componentConfigStringMap)
+      script.configUpdate(configurationMap)
       def baseVersion = script.getDeviceVersion(devXmlPath)
       script.buildNipkg(payloadDir, baseVersion, buildNumber, stagingPath, lvVersion)
       script.configPush(commitMessage) //Push updated build number to commonbuild-configuration repository.

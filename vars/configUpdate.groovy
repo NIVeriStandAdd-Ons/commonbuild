@@ -1,7 +1,4 @@
-def call(updatedComponent, configuration) {
-
-   def commitMessage = "updating $updatedComponent."
-   echo commitMessage
+def call(configuration) {
 
    def configurationTOMLFile = new File("${WORKSPACE}\\commonbuild-configuration\\configuration.toml")
    def configurationTOML = configurationTOMLFile.newWriter()
