@@ -22,7 +22,7 @@ class Nipkg extends AbstractPackage {
 
       // Lookup strings for the build number within configuration.toml. 
       def componentID = script.getComponentParts()['repo']
-      def buildID = lvVersion+'_build_version'
+      def buildID = lvVersion+'_build_number'
 
       script.echo "Getting ${buildID} for ${componentID}."
 
