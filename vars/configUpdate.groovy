@@ -4,11 +4,11 @@ def call(configuration) {
    def configurationTOML = ''
    
    configuration.repositories.each { repository, properties ->
-      configurationTOML + "[repositories.$repository]\n"
+      configurationTOML = configurationTOML + "[repositories.$repository]\n"
       properties.each { property, value ->
-         configurationTOML + "${property} = '${value}'\n"
+         configurationTOML = configurationTOML + "${property} = '${value}'\n"
       }
-      configurationTOML + "\n"
+      configurationTOML = configurationTOML + "\n"
    }
    
    writeFile file: "commonbuild-configuration\\configuration.toml", text: configurationTOML
