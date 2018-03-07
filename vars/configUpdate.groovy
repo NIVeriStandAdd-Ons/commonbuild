@@ -4,7 +4,6 @@ def call(configuration) {
    def configurationTOML = configurationTOMLFile.newWriter()
    
    configuration.repositories.each { repository, properties ->
-      echo "Repository: $repository Properties: $properties"
       configurationTOML << "[repositories.$repository]\n"
       properties.each { property, value ->
          configurationTOML << "${property} = '${value}'\n"
