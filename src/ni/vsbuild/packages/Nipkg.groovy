@@ -32,7 +32,7 @@ class Nipkg extends AbstractPackage {
       def componentConfig = configurationMap.repositories.get(componentID)
       buildNumber = componentConfig.get(buildID) as Integer
       buildNumber = buildNumber + 1
-      componentConfig << ['${buildID}':buildNumber]
+      componentConfig[buildID] = buildNumber
 
       // Build the nipkg. 
       def packageInfo = """
