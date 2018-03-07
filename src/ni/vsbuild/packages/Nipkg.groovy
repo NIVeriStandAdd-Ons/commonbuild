@@ -29,7 +29,7 @@ class Nipkg extends AbstractPackage {
       def configurationJsonFile = script.readJSON file: 'configuration.json'
       def configurationMap = new JsonSlurperClassic().parseText(configurationJsonFile.toString())
       def componentConfig = configurationMap.repositories.get(componentID)
-      def buildNumber = componentConfig.get(buildID) as Integer
+      def buildNumber = componentConfig.get('${lvVersion}_build_version') as Integer
       buildNumber = buildNumber + 1
       def commitMessage = "Updating ${componentID} for VeriStand ${lvVersion} to build number ${buildNumber}."
       componentConfig << [build:buildNumber]
