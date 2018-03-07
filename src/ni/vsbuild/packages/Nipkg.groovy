@@ -47,7 +47,7 @@ class Nipkg extends AbstractPackage {
       script.buildNipkg(payloadDir, baseVersion, buildNumber, stagingPath, lvVersion)
 
       // Update the configuration map, save it to disk, and push to github.com\{your_org}\commonbuild-configuration. 
-      script.configUpdate(configurationMap)
+      script.configUpdate(buildNumber, buildID, componentID, configurationMap)
       script.configPush(buildNumber, componentID, lvVersion) 
       
    }

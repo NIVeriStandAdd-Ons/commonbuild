@@ -1,9 +1,13 @@
-def call(configuration) {
+def call(buildNumber, buildID, componentID, configurationMap) {
    
+   // Update build number for component being built.
+   def componentConfiguration = configurationMap.repositories.get(componentID)
+   componentConfiguration[buildID] = buildNumber
+
    // Create updated configuration string and write it back to configuration.toml file. 
    def configurationTOML = ''
    
-   configuration.repositories.each { repository, properties ->
+   configurationMap.repositories.each { repository, properties ->
       configurationTOML = configurationTOML + "[repositories.$repository]\n"
       properties.each { property, value ->
          configurationTOML = configurationTOML + "${property} = '${value}'\n"
@@ -13,3 +17,4 @@ def call(configuration) {
    
    writeFile file: "commonbuild-configuration\\configuration.toml", text: configurationTOML
 }
+
