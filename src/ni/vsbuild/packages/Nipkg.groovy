@@ -33,7 +33,7 @@ class Nipkg extends AbstractPackage {
       def buildNumber = componentConfig.get(buildID) as Integer
       buildNumber = buildNumber + 1
       def commitMessage = "Updating ${componentID} for VeriStand ${lvVersion} to build number ${buildNumber}."
-      componentConfig << [build:buildNumber]
+      componentConfig << [$buildID:buildNumber]
 
       script.configUpdate(configurationMap)
       def baseVersion = script.getDeviceVersion(devXmlPath)
