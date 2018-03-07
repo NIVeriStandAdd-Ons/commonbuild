@@ -1,16 +1,15 @@
 def call(configuration) {
-
-   def configurationTOMLFile = new File("${WORKSPACE}\\commonbuild-configuration\\configuration.toml")
-   def configurationTOML = configurationTOMLFile.newWriter()
+   
+   // Create updated configuration string and write it back to configuration.toml file. 
+   def configurationTOML
    
    configuration.repositories.each { repository, properties ->
-      configurationTOML << "[repositories.$repository]\n"
+      configurationTOML.append("[repositories.$repository]\n")
       properties.each { property, value ->
-         configurationTOML << "${property} = '${value}'\n"
+         configurationTOML.append("${property} = '${value}'\n")
       }
-      configurationTOML << "\n"
+      configurationTOML.append("\n")
    }
    
-   configurationTOML.flush()
-   configurationTOML.close()
+   writeFile file: "commonbuild-configuration\\configuration.toml", text: configurationTOML
 }
