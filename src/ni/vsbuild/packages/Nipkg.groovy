@@ -23,13 +23,14 @@ class Nipkg extends AbstractPackage {
       script.echo packageInfo
 
       def componentID = script.getComponentParts()['repo']
-      def buildID = '${lvVersion}_build_version'
+      def buildID = '$lvVersion_build_version'
+      script.echo "BuildID: $buildID"
 
       script.echo "Getting build version number for ${componentID}."
       def configurationJsonFile = script.readJSON file: 'configuration.json'
       def configurationMap = new JsonSlurperClassic().parseText(configurationJsonFile.toString())
       def componentConfig = configurationMap.repositories.get(componentID)
-      def buildNumber = componentConfig.get('$lvVersion_build_version') as Integer
+      def buildNumber = componentConfig.get(buildID) as Integer
       buildNumber = buildNumber + 1
       def commitMessage = "Updating ${componentID} for VeriStand ${lvVersion} to build number ${buildNumber}."
       componentConfig << [build:buildNumber]
