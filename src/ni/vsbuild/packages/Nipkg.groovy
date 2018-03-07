@@ -12,7 +12,7 @@ class Nipkg extends AbstractPackage {
       super(script, packageInfo, payloadDir)
       this.stagingPath = packageInfo.get('install_destination')
       this.devXmlPath = packageInfo.get('dev_xml_path')
-      this.buildNumber = 0 // Temporary until this is available with the rest of the config.
+      this.buildNumber = 0
    }
 
    void buildPackage(lvVersion) {
@@ -30,8 +30,10 @@ class Nipkg extends AbstractPackage {
       def configurationJsonFile = script.readJSON file: 'configuration.json'
       def configurationMap = new JsonSlurperClassic().parseText(configurationJsonFile.toString())
       def componentConfig = configurationMap.repositories.get(componentID)
-      buildNumber = componentConfig.get(buildID) as Integer
-      buildNumber = buildNumber + 1
+      lastBuild = componentConfig.get(buildID) as Integer
+      if(lastBuild) {
+         buildNumber = lastBuild + 1
+      }
       componentConfig[buildID] = buildNumber
 
       // Build the nipkg. 
