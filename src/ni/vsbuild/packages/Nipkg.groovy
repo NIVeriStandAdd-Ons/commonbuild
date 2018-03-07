@@ -16,13 +16,6 @@ class Nipkg extends AbstractPackage {
    }
 
    void buildPackage(lvVersion) {
-      def packageInfo = """
-         Building package $name from $payloadDir
-         Staging path: $stagingPath
-         LabVIEW/VeriStand version: $lvVersion
-         Custom Device XML Path: $devXmlPath
-         Build number: $buildNumber
-         """.stripIndent()
 
       // Get MAJOR.MINOR.PATCH versions from custom device XML file.
       def baseVersion = script.getDeviceVersion(devXmlPath)
@@ -42,6 +35,13 @@ class Nipkg extends AbstractPackage {
       componentConfig << ['${buildID}':buildNumber]
 
       // Build the nipkg. 
+      def packageInfo = """
+         Building package $name from $payloadDir
+         Staging path: $stagingPath
+         LabVIEW/VeriStand version: $lvVersion
+         Custom Device XML Path: $devXmlPath
+         Build number: $buildNumber
+         """.stripIndent()
       script.echo packageInfo
       script.buildNipkg(payloadDir, baseVersion, buildNumber, stagingPath, lvVersion)
 
