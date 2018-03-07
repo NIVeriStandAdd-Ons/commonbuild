@@ -6,35 +6,30 @@ class Nipkg extends AbstractPackage {
 
    def stagingPath
    def devXmlPath
+   def baseVersion
+   def configurationMap
    def buildNumber
+   def componentID
+   def buildID
    
    Nipkg(script, packageInfo, payloadDir) {
       super(script, packageInfo, payloadDir)
       this.stagingPath = packageInfo.get('install_destination')
       this.devXmlPath = packageInfo.get('dev_xml_path')
-      this.buildNumber = 0
    }
 
    void buildPackage(lvVersion) {
 
       // Get MAJOR.MINOR.PATCH versions from custom device XML file.
-      def baseVersion = script.getDeviceVersion(devXmlPath)
+      baseVersion = script.getDeviceVersion(devXmlPath)
 
       // Lookup strings for the build number within configuration.toml. 
-      def componentID = script.getComponentParts()['repo']
-      def buildID = lvVersion+'_build_number'
+      componentID = script.getComponentParts()['repo']
+      buildID = lvVersion+'_build_number'
 
       script.echo "Getting ${buildID} for ${componentID}."
-
-      // Get build number from configuration.json, increment it, and update the configuration map. 
-      def configurationJsonFile = script.readJSON file: 'configuration.json'
-      def configurationMap = new JsonSlurperClassic().parseText(configurationJsonFile.toString())
-      def componentConfig = configurationMap.repositories.get(componentID)
-      lastBuild = componentConfig.get(buildID) as Integer
-      if(lastBuild) {
-         buildNumber = lastBuild + 1
-      }
-      componentConfig[buildID] = buildNumber
+      configurationMap = script.getConfigMap()
+      buildNumber = script.getBuildNumber(componentID, configurationMap)
 
       // Build the nipkg. 
       def packageInfo = """
@@ -44,6 +39,7 @@ class Nipkg extends AbstractPackage {
          Custom Device XML Path: $devXmlPath
          Build number: $buildNumber
          """.stripIndent()
+
       script.echo packageInfo
       script.buildNipkg(payloadDir, baseVersion, buildNumber, stagingPath, lvVersion)
 
