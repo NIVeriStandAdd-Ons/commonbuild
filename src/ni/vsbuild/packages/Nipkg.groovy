@@ -11,6 +11,7 @@ class Nipkg extends AbstractPackage {
    def buildNumber
    def componentID
    def buildID
+   def configurationJsonFile
    
    Nipkg(script, packageInfo, payloadDir) {
       super(script, packageInfo, payloadDir)
@@ -26,9 +27,9 @@ class Nipkg extends AbstractPackage {
       // Lookup strings for the build number within configuration.toml. 
       componentID = script.getComponentParts()['repo']
       buildID = lvVersion+'_build_number'
-
       script.echo "Getting ${buildID} for ${componentID}."
-      configurationMap = script.getConfigMap()
+      configurationJsonFile = script.readJSON file: 'configuration.json'
+      configurationMap = new JsonSlurperClassic().parseText(configurationJsonFile.toString())
       buildNumber = script.getBuildNumber(componentID, configurationMap)
 
       // Build the nipkg. 
