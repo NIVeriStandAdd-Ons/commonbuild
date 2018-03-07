@@ -39,13 +39,13 @@ class Nipkg extends AbstractPackage {
       def componentConfig = configurationMap.repositories.get(componentID)
       buildNumber = componentConfig.get(buildID) as Integer
       buildNumber = buildNumber + 1
-      componentConfig << [$buildID:buildNumber]
+      componentConfig << ['${buildID}':buildNumber]
 
       // Build the nipkg. 
       script.echo packageInfo
       script.buildNipkg(payloadDir, baseVersion, buildNumber, stagingPath, lvVersion)
 
-      // Update the configuration map, save it to disk, and push to git. 
+      // Update the configuration map, save it to disk, and push to github.com\{your_org}\commonbuild-configuration. 
       def commitMessage = "Updating ${componentID} for VeriStand ${lvVersion} to build number ${buildNumber}."
       script.configUpdate(configurationMap)
       script.configPush(commitMessage) 
