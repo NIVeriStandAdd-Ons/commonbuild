@@ -46,11 +46,11 @@ class Nipkg extends AbstractPackage {
       // Build the nipkg. 
       script.echo packageInfo
       nipkgName = script.buildNipkg(payloadDir, baseVersion, buildNumber, stagingPath, lvVersion)
-      echo nipkgName
+
       // Update the configuration map, save it to disk, and push to github.com\{your_org}\commonbuild-configuration. 
       script.configUpdate(buildNumber, buildID, componentID, configurationMap)
       script.configPush(buildNumber, componentID, lvVersion) 
-      
+      script.pushRelease(nipkgName, baseVersion, buildNumber, payloadDir)
    }
 }
 
