@@ -12,6 +12,7 @@ class Nipkg extends AbstractPackage {
    def componentID
    def buildID
    def configurationJsonFile
+   def nipkgName
    
    Nipkg(script, packageInfo, payloadDir) {
       super(script, packageInfo, payloadDir)
@@ -44,8 +45,8 @@ class Nipkg extends AbstractPackage {
 
       // Build the nipkg. 
       script.echo packageInfo
-      script.buildNipkg(payloadDir, baseVersion, buildNumber, stagingPath, lvVersion)
-
+      nipkgName = script.buildNipkg(payloadDir, baseVersion, buildNumber, stagingPath, lvVersion)
+      echo nipkgName
       // Update the configuration map, save it to disk, and push to github.com\{your_org}\commonbuild-configuration. 
       script.configUpdate(buildNumber, buildID, componentID, configurationMap)
       script.configPush(buildNumber, componentID, lvVersion) 
