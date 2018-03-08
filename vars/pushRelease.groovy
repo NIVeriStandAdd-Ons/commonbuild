@@ -11,11 +11,11 @@ def call(packageName, baseVersion, buildNumber, payloadDir) {
    def nipkgPath = "${payloadDir}\\${releaseName}.nipkg"
 
    if(branch == 'master') {
-      bat "github-release release --user $org --repo $repo --name $releaseName --tag $versionTag --description \"${description}\""
+      bat "github-release release --user $org --repo $repo --name $releaseName --tag $nipkgVersion --description \"${description}\""
    }
    if(branch == 'develop') {
-      bat "github-release release --user $org --repo $repo --name $releaseName --tag $versionTag --description \"${description}\" --pre-release"
+      bat "github-release release --user $org --repo $repo --name $releaseName --tag $nipkgVersion --description \"${description}\" --pre-release"
    }
    
-   bat "github-release upload --user $org --repo $repo --name $packageName --tag $versionTag --file \"${nipkgPath}\""
+   bat "github-release upload --user $org --repo $repo --name $packageName --tag $nipkgVersion --file \"${nipkgPath}\""
 }
