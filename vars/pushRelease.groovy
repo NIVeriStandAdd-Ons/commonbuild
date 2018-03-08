@@ -17,5 +17,5 @@ def call(packageName, baseVersion, buildNumber, payloadDir) {
       bat "github-release release --user $org --repo $repo --name $releaseName --tag $nipkgVersion --description \"${description}\" --pre-release"
    }
    
-   bat "github-release upload --user $org --repo $repo --name $packageName --tag $nipkgVersion --file \"${nipkgPath}\""
+   bat "github-release upload --user $org --repo $repo --name \"${releaseName}_windows_x64.nipkg\" --tag $nipkgVersion --file \"${nipkgPath}\""
 }
