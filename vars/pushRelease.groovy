@@ -8,6 +8,7 @@ def call(packageName, baseVersion, buildNumber, payloadDir) {
    def versionTag = "${baseVersion}.${buildNumber}"
    def releaseName = "${packageName}-${versionTag}"
    def description = "$releaseName built from branch $branch."
+   def nipkgPath = "${payloadDir}\\${releaseName}.nipkg"
 
    if(branch == 'master') {
       bat "github-release release --user $org --repo $repo --name $releaseName --tag $versionTag --description \"${description}\""
@@ -15,4 +16,6 @@ def call(packageName, baseVersion, buildNumber, payloadDir) {
    if(branch == 'develop') {
       bat "github-release release --user $org --repo $repo --name $releaseName --tag $versionTag --description \"${description}\" --pre-release"
    }
+   
+   bat "github-release upload --user $org --repo $repo --name $packageName --tag $versionTag --file \"${nipkgPath}\""
 }
