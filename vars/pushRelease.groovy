@@ -5,8 +5,8 @@ def call(packageName, baseVersion, buildNumber, payloadDir) {
    def branch = getComponentParts()['branch']
    def org = getComponentParts()['organization']
    def repo = getComponentParts()['repo']
-   def versionTag = "${baseVersion}.${buildNumber}"
-   def releaseName = "${packageName}-${versionTag}"
+   def nipkgVersion = "${baseVersion}.${buildNumber}"
+   def releaseName = "${packageName}_${nipkgVersion}"
    def description = "$releaseName built from branch $branch."
    def nipkgPath = "${payloadDir}\\${releaseName}.nipkg"
 
