@@ -12,4 +12,7 @@ def call(packageName, baseVersion, buildNumber, payloadDir) {
    if(branch == 'master') {
       bat "github-release release --user $org --repo $repo --name $releaseName --tag $versionTag --description \"${description}\""
    }
+   if(branch == 'develop') {
+      bat "github-release release --user $org --repo $repo --name $releaseName --tag $versionTag --description \"${description}\" --pre-release"
+   }
 }
