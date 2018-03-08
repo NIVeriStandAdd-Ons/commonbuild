@@ -4,10 +4,15 @@ def call(buildID, componentID, configurationMap) {
 
    // Read last stored build number from configurationMap. If a value exists, increment it. 
    def componentConfig = configurationMap.repositories.get(componentID)
-   def lastBuild = componentConfig.get(buildID) as Integer
-   if(lastBuild) {
-      buildNumber = lastBuild + 1
+   if(componentConfig) {
+	   def lastBuild = componentConfig.get(buildID) as Integer
+	   if(lastBuild) {
+		  buildNumber = lastBuild + 1
+	   }
+	   return buildNumber
+   } else {
+      configurationMap.repositories[componentID] = [buildID: buildNumber]
+      return buildNumber
    }
-   return buildNumber
-
 }
+
