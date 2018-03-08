@@ -10,6 +10,6 @@ def call(packageName, baseVersion, buildNumber, payloadDir) {
    def description = "$releaseName built from branch $branch."
 
    if(branch == 'master') {
-      bat "github-release release --user $org --repo $repo --name $releaseName --tag $versionTag --description $description"
+      bat "github-release release --user $org --repo $repo --name $releaseName --tag $versionTag --description \"${description}\""
    }
 }
