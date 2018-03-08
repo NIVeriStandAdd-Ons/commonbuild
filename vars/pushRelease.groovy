@@ -6,7 +6,7 @@ def call(packageName, baseVersion, buildNumber, payloadDir) {
    def org = getComponentParts()['organization']
    def repo = getComponentParts()['repo']
 
-   if(branch == master) {
+   if(branch == 'master') {
       bat "github-release release --user $org --repo $repo --name $packageName --tag $baseVersion --description test"
    }
 }
