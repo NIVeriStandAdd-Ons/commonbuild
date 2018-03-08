@@ -8,7 +8,7 @@ def call(packageName, baseVersion, buildNumber, payloadDir) {
    def nipkgVersion = "${baseVersion}.${buildNumber}"
    def releaseName = "${packageName}_${nipkgVersion}"
    def description = "$releaseName built from branch $branch."
-   def nipkgPath = "${payloadDir}\\${releaseName}.nipkg"
+   def nipkgPath = "${payloadDir}\\${releaseName}_windows_x64.nipkg"
 
    if(branch == 'master') {
       bat "github-release release --user $org --repo $repo --name $releaseName --tag $nipkgVersion --description \"${description}\""
