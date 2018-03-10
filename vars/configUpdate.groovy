@@ -1,5 +1,5 @@
 def call(configurationJson) {
 
-   writeFile file: configuration.json, text: configurationJson
+   writeFile file: 'configuration.json', text: configurationJson
 }
 
