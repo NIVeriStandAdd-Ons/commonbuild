@@ -19,13 +19,13 @@ class Nipkg extends AbstractPackage {
       super(script, packageInfo, payloadDir)
       this.stagingPath = packageInfo.get('install_destination')
       this.devXmlPath = packageInfo.get('dev_xml_path')
-      buildNumberID = lvVersion+'_build_number'
    }
 
    void buildPackage(lvVersion) {
 
       componentName = script.getComponentParts()['repo']
       componentBranch = script.getComponentParts()['branch']
+      buildNumberID = lvVersion+'_build_number'
 
       // Get MAJOR.MINOR.PATCH versions from custom device XML file.
       baseVersion = script.getDeviceVersion(devXmlPath)
