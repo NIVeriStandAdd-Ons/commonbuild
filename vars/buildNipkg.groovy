@@ -11,9 +11,9 @@ def call(payloadDir, baseVersion, buildNumber, componentBranch, stagingPath, lvV
    def controlFileText = readFile "control"
    
    switch(componentBranch) {
-      case 'master': nipkgVersion = baseVersion+"+$buildNumber" break;
-      case 'develop': nipkgVersion = baseVersion+"-alpha+$buildNumber" break;
-      default: nipkgVersion = baseVersion+"-$componentBranch+$buildNumber" break;
+      case 'master': nipkgVersion = baseVersion+"+$buildNumber"; break;
+      case 'develop': nipkgVersion = baseVersion+"-alpha+$buildNumber"; break;
+      default: nipkgVersion = baseVersion+"-$componentBranch+$buildNumber"; break;
    }
 
    // Replace {version} expressions with current VeriStand and .nipkg versions being built.
