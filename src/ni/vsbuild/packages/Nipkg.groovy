@@ -37,9 +37,12 @@ class Nipkg extends AbstractPackage {
       configurationJsonFile = script.readJSON file: 'configuration.json'
       configurationMap = new JsonSlurperClassic().parseText(configurationJsonFile.toString())
       componentConfiguration = configurationMap.repositories.get(componentName)
-      def debugStr = componentConfiguration.get(buildNumberID)
-      script.echo "$debugStr"
       buildNumber = script.getBuildNumber(buildNumberID, componentName, configurationMap)
+      componentConfiguration[buildNumberID] = buildNumber
+
+      def updatedConfigurationJson = JsonOutput.toJson(configurationMap)
+      def debugJson = JsonOutput.prettyPrint(updatedConfigurationJson)
+      script.echo debugJson
 
       def packageInfo = """
          Building package $name from $payloadDir
@@ -51,14 +54,14 @@ class Nipkg extends AbstractPackage {
 
       // Build the nipkg. 
       script.echo packageInfo
-      nipkgInfo = script.buildNipkg(payloadDir, baseVersion, buildNumber, componentBranch, stagingPath, lvVersion)
+      // nipkgInfo = script.buildNipkg(payloadDir, baseVersion, buildNumber, componentBranch, stagingPath, lvVersion)
 
       // Update the configuration map, save it to disk, and push to github.com\{your_org}\commonbuild-configuration. 
-      script.configUpdate(buildNumber, buildNumberID, componentName, configurationMap)
-      releaseBranches = script.getReleaseInfo(componentConfiguration, lvVersion)
-      echo "$releaseBranches"
-      script.configPush(buildNumber, componentName, lvVersion) 
-      script.pushRelease(nipkgInfo, payloadDir, releaseBranches, lvVersion)
+      // script.configUpdate(buildNumber, buildNumberID, componentName, configurationMap)
+      // releaseBranches = script.getReleaseInfo(componentConfiguration, lvVersion)
+      // echo "$releaseBranches"
+      // script.configPush(buildNumber, componentName, lvVersion) 
+      // script.pushRelease(nipkgInfo, payloadDir, releaseBranches, lvVersion)
    }
 }
 
