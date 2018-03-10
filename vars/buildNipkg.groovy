@@ -35,6 +35,6 @@ def call(payloadDir, baseVersion, buildNumber, componentBranch, stagingPath, lvV
    // Build nipkg using NI Package Manager CLI pack command. 
    bat "\"${nipmAppPath}\" pack \"nipkg\\${packageName}\" \"${payloadDir}\"" 
 
-   return packageName
+   return ['name': packageName, 'version': nipkgVersion]
 }
 

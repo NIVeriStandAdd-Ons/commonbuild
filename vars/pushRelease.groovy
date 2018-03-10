@@ -1,12 +1,12 @@
-def call(packageName, baseVersion, buildNumber, payloadDir, lvVersion) {
+def call(nipkgInfo, payloadDir, lvVersion) {
 
    // Add all files in payloadDir to a GitHub release.
-   
+   def nipkgVersion = nipkgInfo['version']
+   def nipkgName = nipkgInfo['name']
    def branch = getComponentParts()['branch']
    def org = getComponentParts()['organization']
    def repo = getComponentParts()['repo']
-   def nipkgVersion = "${baseVersion}.${buildNumber}"
-   def tagString = "${lvVersion}-${nipkgVersion}-$branch"
+   def tagString = "${lvVersion}-${nipkgVersion}"
    def releaseName = "${packageName}_${nipkgVersion}"
    def description = "$releaseName built from branch $branch."
    def nipkgPath = "${payloadDir}\\${releaseName}_windows_x64.nipkg"
