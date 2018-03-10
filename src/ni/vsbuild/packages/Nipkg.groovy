@@ -13,7 +13,7 @@ class Nipkg extends AbstractPackage {
    def componentBranch
    def buildNumberID
    def configurationJsonFile
-   def nipkgName
+   def nipkgInfo
    
    Nipkg(script, packageInfo, payloadDir) {
       super(script, packageInfo, payloadDir)
