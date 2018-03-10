@@ -36,7 +36,7 @@ class Nipkg extends AbstractPackage {
       script.echo "Getting ${buildNumberID} for ${componentName}."
       configurationJsonFile = script.readJSON file: 'configuration.json'
       configurationMap = new JsonSlurperClassic().parseText(configurationJsonFile.toString())
-      componentConfiguration = configurationMap.repositories.get('componentName')
+      componentConfiguration = configurationMap.repositories.get(componentName)
       buildNumber = script.getBuildNumber(buildNumberID, componentName, configurationMap)
 
       def packageInfo = """
