@@ -4,8 +4,9 @@ import sys
 import toml
 from os.path import split, splitext
 
-file = open(sys.argv[1])
-parsed_json = json.load(file)
+file = sys.argv[1]
+fileObj = open(file)
+parsed_json = json.load(fileObj)
 
 base_path, file_name = os.path.split(file)
 toml_file_name = os.path.splitext(file_name)[0] + '.toml'
