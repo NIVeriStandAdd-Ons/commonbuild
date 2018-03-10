@@ -9,8 +9,9 @@ class Nipkg extends AbstractPackage {
    def baseVersion
    def configurationMap
    def buildNumber
-   def componentID
-   def buildID
+   def componentName
+   def componentBranch
+   def buildNumberID
    def configurationJsonFile
    def nipkgName
    
@@ -18,6 +19,9 @@ class Nipkg extends AbstractPackage {
       super(script, packageInfo, payloadDir)
       this.stagingPath = packageInfo.get('install_destination')
       this.devXmlPath = packageInfo.get('dev_xml_path')
+      componentName = script.getComponentParts()['repo']
+      componentBranch = script.getComponentParts()['branch']
+      buildNumberID = lvVersion+'_build_number'
    }
 
    void buildPackage(lvVersion) {
@@ -25,15 +29,11 @@ class Nipkg extends AbstractPackage {
       // Get MAJOR.MINOR.PATCH versions from custom device XML file.
       baseVersion = script.getDeviceVersion(devXmlPath)
 
-      // Lookup strings for the build number within configuration.toml. 
-      componentID = script.getComponentParts()['repo']
-      buildID = lvVersion+'_build_number'
-
       // Read and parse configuration.json file to get next build number. 
-      script.echo "Getting ${buildID} for ${componentID}."
+      script.echo "Getting ${buildNumberID} for ${componentName}."
       configurationJsonFile = script.readJSON file: 'configuration.json'
       configurationMap = new JsonSlurperClassic().parseText(configurationJsonFile.toString())
-      buildNumber = script.getBuildNumber(buildID, componentID, configurationMap)
+      buildNumber = script.getBuildNumber(buildNumberID, componentName, configurationMap)
 
       def packageInfo = """
          Building package $name from $payloadDir
@@ -45,11 +45,11 @@ class Nipkg extends AbstractPackage {
 
       // Build the nipkg. 
       script.echo packageInfo
-      nipkgName = script.buildNipkg(payloadDir, baseVersion, buildNumber, stagingPath, lvVersion)
+      nipkgName = script.buildNipkg(payloadDir, baseVersion, buildNumber, componentBranch, stagingPath, lvVersion)
 
       // Update the configuration map, save it to disk, and push to github.com\{your_org}\commonbuild-configuration. 
-      script.configUpdate(buildNumber, buildID, componentID, configurationMap)
-      script.configPush(buildNumber, componentID, lvVersion) 
+      script.configUpdate(buildNumber, buildNumberID, componentName, configurationMap)
+      script.configPush(buildNumber, componentName, lvVersion) 
       script.pushRelease(nipkgName, baseVersion, buildNumber, payloadDir, lvVersion)
    }
 }

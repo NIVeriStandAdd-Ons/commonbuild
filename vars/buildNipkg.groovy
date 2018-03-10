@@ -1,16 +1,20 @@
-def call(payloadDir, baseVersion, buildNumber, stagingPath, lvVersion) {
+def call(payloadDir, baseVersion, buildNumber, componentBranch, stagingPath, lvVersion) {
    
    def nipmAppPath = "C:\\Program Files\\National Instruments\\NI Package Manager\\nipkg.exe"
+   def nipkgVersion
 
    // Read PROPERTIES from .nipkg control file.
    def controlFields = readProperties file: "control"
    def basePackageName = "${controlFields.get('Package')}"
 
    // Read TEXT from .nipkg control file 
-   def controlFileText = readFile "control" // Read nipkg control file 
-
-   // Using Semantic version scheme: MAJOR.MINOR.PATCH.BUILD
-   def nipkgVersion = "${baseVersion}.${buildNumber}"
+   def controlFileText = readFile "control"
+   
+   switch(componentBranch) {
+      case 'master': nipkgVersion = baseVersion+"+$buildNumber" break;
+      case 'develop': nipkgVersion = baseVersion+"-alpha+$buildNumber" break;
+      default: nipkgVersion = baseVersion+"-$componentBranch+$buildNumber" break;
+   }
 
    // Replace {version} expressions with current VeriStand and .nipkg versions being built.
    def newControlFileText = controlFileText.replaceAll("\\{veristand_version\\}", "${lvVersion}")
