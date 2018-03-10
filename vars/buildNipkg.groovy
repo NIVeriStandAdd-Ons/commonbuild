@@ -12,8 +12,8 @@ def call(payloadDir, baseVersion, buildNumber, componentBranch, stagingPath, lvV
    
    switch(componentBranch) {
       case 'master': nipkgVersion = baseVersion+"+$buildNumber"; break;
-      case 'develop': nipkgVersion = baseVersion+"-alpha+$buildNumber"; break;
-      default: nipkgVersion = baseVersion+"-$componentBranch+$buildNumber"; break;
+      case 'develop': nipkgVersion = baseVersion+"-beta+$buildNumber"; break;
+      default: nipkgVersion = baseVersion+"-alpha.$componentBranch+$buildNumber"; break;
    }
 
    // Replace {version} expressions with current VeriStand and .nipkg versions being built.

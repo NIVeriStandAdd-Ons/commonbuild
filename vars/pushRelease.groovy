@@ -1,4 +1,4 @@
-def call(nipkgInfo, payloadDir, lvVersion) {
+def call(nipkgInfo, payloadDir, releaseBranches, lvVersion) {
 
    // Add all files in payloadDir to a GitHub release.
    def nipkgVersion = nipkgInfo['version']
@@ -11,12 +11,13 @@ def call(nipkgInfo, payloadDir, lvVersion) {
    def description = "$releaseName built from branch $branch."
    def nipkgPath = "${payloadDir}\\${releaseName}_windows_x64.nipkg"
 
-   if(branch == 'master') {
-      bat "github-release release --user $org --repo $repo --target $branch --name $releaseName --tag $tagString --description \"${description}\""
+   if(releaseBranches.containsKey(branch)) {
+      if(branch == 'master') {
+         bat "github-release release --user $org --repo $repo --target $branch --name $releaseName --tag $tagString --description \"${description}\""
+      }
+      if(branch == 'develop') {
+         bat "github-release release --user $org --repo $repo --target $branch --name $releaseName --tag $tagString --description \"${description}\" --pre-release"
+      }
+      bat "github-release upload --user $org --repo $repo --name \"${releaseName}_windows_x64.nipkg\" --tag $tagString --file \"${nipkgPath}\""
    }
-   if(branch == 'develop') {
-      bat "github-release release --user $org --repo $repo --target $branch --name $releaseName --tag $tagString --description \"${description}\" --pre-release"
-   }
-   
-   bat "github-release upload --user $org --repo $repo --name \"${releaseName}_windows_x64.nipkg\" --tag $tagString --file \"${nipkgPath}\""
 }
