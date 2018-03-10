@@ -1,6 +1,7 @@
 package ni.vsbuild.packages
 
 import groovy.json.JsonSlurperClassic
+import groovy.json.JsonOutput
 
 class Nipkg extends AbstractPackage {
 
