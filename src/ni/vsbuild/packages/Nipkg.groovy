@@ -41,7 +41,7 @@ class Nipkg extends AbstractPackage {
       buildNumber = script.getBuildNumber(buildNumberID, componentName, configurationMap)
       componentConfiguration[buildNumberID] = buildNumber
 
-      def updatedConfigurationJson = JsonOutput.prettyPrint.toJson(configurationMap)
+      def updatedConfigurationJson = JsonOutput.prettyPrint(JsonOutput.toJson(configurationMap))
       script.echo updatedConfigurationJson
 
       
