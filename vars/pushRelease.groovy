@@ -7,7 +7,7 @@ def call(nipkgInfo, payloadDir, lvVersion) {
    def org = getComponentParts()['organization']
    def repo = getComponentParts()['repo']
    def tagString = "${lvVersion}-${nipkgVersion}"
-   def releaseName = "${packageName}_${nipkgVersion}"
+   def releaseName = "${nipkgName}_${nipkgVersion}"
    def description = "$releaseName built from branch $branch."
    def nipkgPath = "${payloadDir}\\${releaseName}_windows_x64.nipkg"
 
