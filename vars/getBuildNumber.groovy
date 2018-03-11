@@ -4,7 +4,7 @@ def call(buildNumberID, componentConfiguration, configurationMap) {
 
    // Read last stored build number from configurationMap. If a value exists, increment it. 
    if(componentConfiguration.containsKey(buildNumberID)) {
-      def lastBuild = componentConfig.get(buildNumberID) as Integer
+      def lastBuild = componentConfiguration.get(buildNumberID) as Integer
       buildNumber = lastBuild + 1
       return buildNumber
 
