@@ -46,7 +46,7 @@ class Nipkg extends AbstractPackage {
          componentConfiguration = [buildNumberID:buildNumber]
       }
 
-      configurationMap[componentName] = [buildNumberID:buildNumber]   
+      configurationMap.repositories[componentName] = [buildNumberID:buildNumber]   
       componentConfiguration[buildNumberID] = "$buildNumber"
 
       def debugReleaseKey = componentConfiguration
