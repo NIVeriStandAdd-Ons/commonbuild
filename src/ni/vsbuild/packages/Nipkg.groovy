@@ -38,7 +38,7 @@ class Nipkg extends AbstractPackage {
       configurationJsonFile = script.readJSON file: 'configuration.json'
       configurationMap = new JsonSlurperClassic().parseText(configurationJsonFile.toString())
 
-      if(configurationMap.containsKey(componentName)) {
+      if(configurationMap.repositories.containsKey(componentName)) {
          componentConfiguration = configurationMap.repositories.get(componentName)
          buildNumber = script.getBuildNumber(buildNumberID, componentConfiguration, configurationMap)
          script echo "Next build number: $buildNumber"
