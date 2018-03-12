@@ -41,7 +41,7 @@ class Nipkg extends AbstractPackage {
       if(configurationMap.repositories.containsKey(componentName)) {
          componentConfiguration = configurationMap.repositories.get(componentName)
          buildNumber = script.getBuildNumber(buildNumberID, componentConfiguration, configurationMap)
-         script echo "Next build number: $buildNumber"
+         script.echo "Next build number: $buildNumber"
       } else { 
          componentConfiguration = [buildNumberID:buildNumber]
       }
