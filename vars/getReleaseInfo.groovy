@@ -4,7 +4,7 @@ def call(componentConfig, lvVersion) {
    def releaseBranchInfoKey = "${lvVersion}_release_branches"
    echo "$releaseBranchInfoKey"
 
-   // Read the release branch info from configuration.json. The list of branches determines whether to push releases or not.
+   // Read the release branch info from configuration.json. 
    if(componentConfig.containsKey(releaseBranchInfoKey)) {
       releaseBranches = componentConfig.get(releaseBranchInfoKey)
       echo "Branches configured for release: $releaseBranches"
