@@ -38,13 +38,18 @@ class Nipkg extends AbstractPackage {
       configurationJsonFile = script.readJSON file: 'configuration.json'
       configurationMap = new JsonSlurperClassic().parseText(configurationJsonFile.toString())
 
-      if(!(configurationMap.containsKey(componentName))) {
-         configurationMap[componentName] = [buildNumberID:buildNumber]
+      if(configurationMap.containsKey(componentName)) {
+         componentConfiguration = configurationMap.repositories.get(componentName)
+         buildNumber = script.getBuildNumber(buildNumberID, componentConfiguration, configurationMap)
+      } else { 
+         componentConfiguration = [buildNumberID:buildNumber]
       }
 
-      componentConfiguration = configurationMap.repositories.get(componentName)
-      buildNumber = script.getBuildNumber(buildNumberID, componentConfiguration, configurationMap)
+      configurationMap[componentName] = [buildNumberID:buildNumber]   
       componentConfiguration[buildNumberID] = "$buildNumber"
+
+      def debugReleaseKey = componentConfiguration['2017_release_branches']
+      echo "$debugReleaseKey"
 
       def updatedConfigurationJson = JsonOutput.prettyPrint(JsonOutput.toJson(configurationMap))
       script.echo updatedConfigurationJson
