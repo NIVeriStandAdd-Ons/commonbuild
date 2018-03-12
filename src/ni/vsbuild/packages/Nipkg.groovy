@@ -41,6 +41,7 @@ class Nipkg extends AbstractPackage {
       if(configurationMap.containsKey(componentName)) {
          componentConfiguration = configurationMap.repositories.get(componentName)
          buildNumber = script.getBuildNumber(buildNumberID, componentConfiguration, configurationMap)
+         script echo "Next build number: $buildNumber"
       } else { 
          componentConfiguration = [buildNumberID:buildNumber]
       }
@@ -48,7 +49,7 @@ class Nipkg extends AbstractPackage {
       configurationMap[componentName] = [buildNumberID:buildNumber]   
       componentConfiguration[buildNumberID] = "$buildNumber"
 
-      def debugReleaseKey = componentConfiguration['2017_release_branches']
+      def debugReleaseKey = componentConfiguration
       script.echo "$debugReleaseKey"
 
       def updatedConfigurationJson = JsonOutput.prettyPrint(JsonOutput.toJson(configurationMap))
