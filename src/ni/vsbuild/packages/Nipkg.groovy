@@ -49,7 +49,7 @@ class Nipkg extends AbstractPackage {
       componentConfiguration[buildNumberID] = "$buildNumber"
 
       def debugReleaseKey = componentConfiguration['2017_release_branches']
-      echo "$debugReleaseKey"
+      script.echo "$debugReleaseKey"
 
       def updatedConfigurationJson = JsonOutput.prettyPrint(JsonOutput.toJson(configurationMap))
       script.echo updatedConfigurationJson
