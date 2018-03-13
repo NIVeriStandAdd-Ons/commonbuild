@@ -44,7 +44,7 @@ class Nipkg extends AbstractPackage {
          configurationMap.repositories[componentName.buildNumberID] = buildNumber
       }
 
-      configurationMap.repositories[componentName.buildNumberID] = "$buildNumber]   
+      configurationMap.repositories[componentName.buildNumberID] = "$buildNumber"   
 
       def updatedConfigurationJson = JsonOutput.prettyPrint(JsonOutput.toJson(configurationMap))
       script.echo updatedConfigurationJson
