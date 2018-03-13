@@ -2,6 +2,7 @@ def call(payloadDir, baseVersion, buildNumber, componentBranch, stagingPath, lvV
    
    def nipmAppPath = "C:\\Program Files\\National Instruments\\NI Package Manager\\nipkg.exe"
    def nipkgVersion
+   def paddedBuildNumber = buildNumber.padleft(3,'0')
 
    // Read PROPERTIES from .nipkg control file.
    def controlFields = readProperties file: "control"
@@ -11,9 +12,9 @@ def call(payloadDir, baseVersion, buildNumber, componentBranch, stagingPath, lvV
    def controlFileText = readFile "control"
    
    switch(componentBranch) {
-      case 'master': nipkgVersion = baseVersion+"+$buildNumber"; break;
-      case 'develop': nipkgVersion = baseVersion+"-beta+$buildNumber"; break;
-      default: nipkgVersion = baseVersion+"-alpha.$componentBranch+$buildNumber"; break;
+      case 'master': nipkgVersion = baseVersion+"+$paddedbuildNumber"; break;
+      case 'develop': nipkgVersion = baseVersion+"-beta+$paddedbuildNumber"; break;
+      default: nipkgVersion = baseVersion+"-alpha.$componentBranch+$paddedbuildNumber"; break;
    }
 
    // Replace {version} expressions with current VeriStand and .nipkg versions being built.

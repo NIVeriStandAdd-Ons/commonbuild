@@ -1,16 +1,16 @@
-def call(buildNumberID, componentConfiguration, configurationMap) {
+def call(buildNumberID, componentName, configurationMap) {
 
    def buildNumber = 0
 
    // Read last stored build number from configurationMap. If a value exists, increment it. 
-   if(componentConfiguration.containsKey(buildNumberID)) {
-      def lastBuild = componentConfiguration.get(buildNumberID) as Integer
+   if(configurationMap.repositories.containsKey(componentName.buildNumberID)) {
+      def lastBuild = configurationMap.get(repositories.componentName.buildNumberID) as Integer
       buildNumber = lastBuild + 1
       return buildNumber
 
    //  If the component doesn't exist, add it to the map. 
    } else {
-      componentConfiguration[buildNumberID] = [buildNumberID: buildNumber]
+      configurationMap.repositories[componentName.buildNumberID] = buildNumber
       return buildNumber
    }
 }
