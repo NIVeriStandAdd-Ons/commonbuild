@@ -1,7 +1,7 @@
 def call(componentConfig, lvVersion) {
    
    def releaseBranches = [:]
-   def releaseBranchInfoKey = '${lvVersion}_release_branches'
+   def releaseBranchInfoKey = lvVersion+'_release_branches'
    echo "$releaseBranchInfoKey"
 
    // Read the release branch info from configuration.json. 
