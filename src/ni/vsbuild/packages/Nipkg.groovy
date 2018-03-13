@@ -49,9 +49,6 @@ class Nipkg extends AbstractPackage {
       configurationMap.repositories[componentName] = [buildNumberID:buildNumber]   
       componentConfiguration[buildNumberID] = "$buildNumber"
 
-      def debugReleaseKey = componentConfiguration
-      script.echo "$debugReleaseKey"
-
       def updatedConfigurationJson = JsonOutput.prettyPrint(JsonOutput.toJson(configurationMap))
       script.echo updatedConfigurationJson
 
@@ -71,8 +68,8 @@ class Nipkg extends AbstractPackage {
       script.configUpdate(updatedConfigurationJson)
       releaseBranches = script.getReleaseInfo(componentConfiguration, lvVersion)
       script.echo "$releaseBranches"
-      // script.configPush(buildNumber, componentName, lvVersion) 
-      // script.pushRelease(nipkgInfo, payloadDir, releaseBranches, lvVersion)
+      script.configPush(buildNumber, componentName, lvVersion) 
+      script.pushRelease(nipkgInfo, payloadDir, releaseBranches, lvVersion)
    }
 }
 
