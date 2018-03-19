@@ -1,11 +1,12 @@
-def call(componentConfig, lvVersion) {
+def call(componentName, configurationMap, lvVersion) {
    
    def releaseBranches = [:]
    def releaseBranchInfoKey = lvVersion+'_release_branches'
+   def componentConfiguration = configurationMap.repositories.get(componentName)
 
    // Read the release branch info from configuration.json. 
-   if(componentConfig.containsKey(releaseBranchInfoKey)) {
-      releaseBranches = componentConfig.get(releaseBranchInfoKey)
+   if(componentConfiguration.containsKey(releaseBranchInfoKey)) {
+      releaseBranches = componentConfiguration.get(releaseBranchInfoKey)
       echo "Branches configured for release: $releaseBranches"
       return releaseBranches
    } else {
