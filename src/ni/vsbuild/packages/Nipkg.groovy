@@ -9,13 +9,13 @@ class Nipkg extends AbstractPackage {
    def devXmlPath
    def baseVersion
    def configurationMap
-   def buildNumber
    def componentName
    def componentBranch
    def buildNumberID
    def configurationJsonFile
    def nipkgInfo
    def releaseBranches
+   def buildNumber = 0
    
    Nipkg(script, packageInfo, payloadDir) {
       super(script, packageInfo, payloadDir)
@@ -41,7 +41,7 @@ class Nipkg extends AbstractPackage {
          buildNumber = script.getBuildNumber(buildNumberID, componentName, configurationMap)
          script.echo "Next build number: $buildNumber"
       } else { 
-         configurationMap.repositories[componentName] = ['$buildNumberID': buildNumber] 
+         configurationMap.repositories[componentName] = ["${buildNumberID}": buildNumber] 
       }
 
       def updatedConfigurationJson = JsonOutput.prettyPrint(JsonOutput.toJson(configurationMap))
