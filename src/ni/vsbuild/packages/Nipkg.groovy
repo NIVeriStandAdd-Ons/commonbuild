@@ -62,7 +62,6 @@ class Nipkg extends AbstractPackage {
       // Update the configuration map, save it to disk, and push to github.com\{your_org}\commonbuild-configuration. 
       script.configUpdate(updatedConfigurationJson)
       releaseBranches = script.getReleaseInfo(componentName, configurationMap, lvVersion)
-      script.echo "$releaseBranches"
       script.configPush(buildNumber, componentName, lvVersion) 
       // script.pushRelease(nipkgInfo, payloadDir, releaseBranches, lvVersion)
    }
