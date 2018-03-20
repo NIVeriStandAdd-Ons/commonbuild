@@ -43,7 +43,7 @@ class Nipkg extends AbstractPackage {
          configurationMap.repositories[componentName] = ['build_number': buildNumber] 
       }
 
-      configurationJSON = JsonOutput.toJson(configurationMap)
+      configurationJSON = readJSON text: groovy.json.jsonOutput.toJson(configurationMap)
  
       def packageInfo = """
          Building package $name from $payloadDir
