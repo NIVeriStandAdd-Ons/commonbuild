@@ -62,7 +62,7 @@ class Nipkg extends AbstractPackage {
       script.configUpdate(configurationJSON, lvVersion)
       releaseBranches = script.getReleaseInfo(componentName, configurationMap, lvVersion)
       script.configPush(buildNumber, componentName, lvVersion) 
-      // script.pushRelease(nipkgInfo, payloadDir, releaseBranches, lvVersion)
+      script.pushRelease(nipkgInfo, payloadDir, releaseBranches, lvVersion)
    }
 }
 
