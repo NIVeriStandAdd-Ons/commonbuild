@@ -15,12 +15,13 @@ class Nipkg extends AbstractPackage {
    def configurationJsonFile
    def nipkgInfo
    def releaseBranches
-   def buildNumber = 0
+   def buildNumber
    
    Nipkg(script, packageInfo, payloadDir) {
       super(script, packageInfo, payloadDir)
       this.stagingPath = packageInfo.get('install_destination')
       this.devXmlPath = packageInfo.get('dev_xml_path')
+      this.buildNumber = 0
    }
 
    void buildPackage(lvVersion) {
@@ -43,7 +44,7 @@ class Nipkg extends AbstractPackage {
          configurationMap.repositories[componentName] = ['build_number': buildNumber] 
       }
 
-      configurationJSON = readJSON text: JsonOutput.toJson(configurationMap)
+      configurationJSON = script.readJSON text: JsonOutput.toJson(configurationMap)
  
       def packageInfo = """
          Building package $name from $payloadDir
