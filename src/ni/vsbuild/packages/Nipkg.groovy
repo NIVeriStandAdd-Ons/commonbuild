@@ -11,7 +11,6 @@ class Nipkg extends AbstractPackage {
    def configurationMap
    def componentName
    def componentBranch
-   def buildNumberID
    def configurationJsonFile
    def nipkgInfo
    def releaseBranches
@@ -27,21 +26,20 @@ class Nipkg extends AbstractPackage {
 
       componentName = script.getComponentParts()['repo']
       componentBranch = script.getComponentParts()['branch']
-      buildNumberID = lvVersion+'_build_number'
 
       // Get MAJOR.MINOR.PATCH versions from custom device XML file.
       baseVersion = script.getDeviceVersion(devXmlPath)
 
       // Read and parse configuration.json file to get next build number. 
-      script.echo "Getting ${buildNumberID} for ${componentName}."
+      script.echo "Getting 'build_number' for ${componentName}."
       configurationJsonFile = script.readJSON file: "configuration_${lvVersion}.json"
       configurationMap = new JsonSlurperClassic().parseText(configurationJsonFile.toString())
 
       if(configurationMap.repositories.containsKey(componentName)) {
-         buildNumber = script.getBuildNumber(buildNumberID, componentName, configurationMap)
+         buildNumber = script.getBuildNumber(componentName, configurationMap)
          script.echo "Next build number: $buildNumber"
       } else { 
-         configurationMap.repositories[componentName] = ["${buildNumberID}": buildNumber] 
+         configurationMap.repositories[componentName] = ['build_number': buildNumber] 
       }
 
       def updatedConfigurationJson = JsonOutput.prettyPrint(JsonOutput.toJson(configurationMap))
