@@ -9,6 +9,7 @@ class Nipkg extends AbstractPackage {
    def devXmlPath
    def baseVersion
    def configurationMap
+   def configurationJSON
    def componentName
    def componentBranch
    def configurationJsonFile
@@ -42,6 +43,8 @@ class Nipkg extends AbstractPackage {
          configurationMap.repositories[componentName] = ['build_number': buildNumber] 
       }
 
+      configurationJSON = JsonOutput.toJson(configurationMap)
+ 
       def packageInfo = """
          Building package $name from $payloadDir
          Staging path: $stagingPath
@@ -55,7 +58,7 @@ class Nipkg extends AbstractPackage {
       nipkgInfo = script.buildNipkg(payloadDir, baseVersion, buildNumber, componentBranch, stagingPath, lvVersion)
 
       // Update the configuration map, save it to disk, and push to github.com\{your_org}\commonbuild-configuration. 
-      script.configUpdate(configurationMap, lvVersion)
+      script.configUpdate(configurationJSON, lvVersion)
       releaseBranches = script.getReleaseInfo(componentName, configurationMap, lvVersion)
       script.configPush(buildNumber, componentName, lvVersion) 
       script.pushRelease(nipkgInfo, payloadDir, releaseBranches, lvVersion)
