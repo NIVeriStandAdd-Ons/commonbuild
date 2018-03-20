@@ -14,10 +14,10 @@ def call(nipkgInfo, payloadDir, releaseBranches, lvVersion) {
    if(releaseBranches != null && releaseBranches.contains(branch)) {
       if(branch == 'master') {
          bat "github-release release --user $org --repo $repo --target $branch --name $releaseName --tag $tagString --description \"${description}\""
-      }
-      if(branch == 'develop') {
+      } else {
          bat "github-release release --user $org --repo $repo --target $branch --name $releaseName --tag $tagString --description \"${description}\" --pre-release"
       }
       bat "github-release upload --user $org --repo $repo --name \"${releaseName}_windows_x64.nipkg\" --tag $tagString --file \"${nipkgPath}\""
    }
+
 }
