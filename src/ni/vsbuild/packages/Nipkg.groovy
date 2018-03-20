@@ -34,7 +34,7 @@ class Nipkg extends AbstractPackage {
 
       // Read and parse configuration.json file to get next build number. 
       script.echo "Getting ${buildNumberID} for ${componentName}."
-      configurationJsonFile = script.readJSON file: 'configuration.json'
+      configurationJsonFile = script.readJSON file: 'configuration_${lvVersion}.json'
       configurationMap = new JsonSlurperClassic().parseText(configurationJsonFile.toString())
 
       if(configurationMap.repositories.containsKey(componentName)) {
@@ -60,7 +60,7 @@ class Nipkg extends AbstractPackage {
       nipkgInfo = script.buildNipkg(payloadDir, baseVersion, buildNumber, componentBranch, stagingPath, lvVersion)
 
       // Update the configuration map, save it to disk, and push to github.com\{your_org}\commonbuild-configuration. 
-      script.configUpdate(updatedConfigurationJson)
+      script.configUpdate(updatedConfigurationJson, lvVersion)
       releaseBranches = script.getReleaseInfo(componentName, configurationMap, lvVersion)
       script.configPush(buildNumber, componentName, lvVersion) 
       script.pushRelease(nipkgInfo, payloadDir, releaseBranches, lvVersion)
