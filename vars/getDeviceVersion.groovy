@@ -1,5 +1,6 @@
 def call(devXmlPath, lvVersion) {
-   baseVersion = sh(returnStdout: true, script: "labview-cli --kill --lv-ver $lvVersion \"$WORKSPACE\\commonbuild\\lv\\nipkg\\readCustomDeviceVersionFromXML.vi\" --\"devXmlPath\""
+   bat "labview-cli --kill --lv-ver $lvVersion \"$WORKSPACE\\commonbuild\\lv\\nipkg\\readCustomDeviceVersionFromXML.vi\" -- \"${WORKSPACE}"\ \"devXmlPath\""
+   baseVersion = readFile "deviceVersion"
    echo baseVersion
    return baseVersion
 }
