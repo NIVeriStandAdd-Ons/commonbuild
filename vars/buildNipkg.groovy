@@ -2,8 +2,7 @@ def call(payloadDir, baseVersion, buildNumber, componentBranch, stagingPath, lvV
    
    def nipmAppPath = "C:\\Program Files\\National Instruments\\NI Package Manager\\nipkg.exe"
    def nipkgVersion
-   def buildNumberStr = Integer.toString(buildNumber)
-   def paddedBuildNumber = buildNumberStr.padLeft(3,'0')
+   def paddedBuildNumber = "$buildNumber".padLeft(3,'0')
 
    // Read PROPERTIES from .nipkg control file.
    def controlFields = readProperties file: "control"
