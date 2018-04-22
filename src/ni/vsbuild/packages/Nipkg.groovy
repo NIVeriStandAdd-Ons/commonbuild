@@ -30,7 +30,7 @@ class Nipkg extends AbstractPackage {
       componentBranch = script.getComponentParts()['branch']
 
       // Get MAJOR.MINOR.PATCH versions from custom device XML file.
-      baseVersion = script.getDeviceVersion(devXmlPath)
+      baseVersion = script.getDeviceVersion(devXmlPath, lvVersion)
 
       // Read and parse configuration.json file to get next build number. 
       script.echo "Getting 'build_number' for ${componentName}."
