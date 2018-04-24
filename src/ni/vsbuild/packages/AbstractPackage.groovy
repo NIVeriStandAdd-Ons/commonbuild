@@ -14,12 +14,12 @@ abstract class AbstractPackage implements Buildable {
       this.payloadDir = payloadDir
    }
 
-   void build() {
+   void build(lvVersion) {
       script.echo "Building package $name.$type..."
-      buildPackage()
+      buildPackage(lvVersion)
       script.echo "Package $name.$type built."
    }
 
-   abstract void buildPackage()
+   abstract void buildPackage(lvVersion)
 
 }

@@ -1,37 +1,68 @@
 package ni.vsbuild.packages
 
+import groovy.json.JsonSlurperClassic
+import groovy.json.JsonOutput
+
 class Nipkg extends AbstractPackage {
 
-   def pkgVersion
-   def maintainer
-   def description
-   def homepage
-   def displayName
-   def eulaDependency
-   def dependencies
+   def stagingPath
+   def devXmlPath
+   def baseVersion
+   def configurationMap
+   def configurationJSON
+   def componentName
+   def componentBranch
+   def configurationJsonFile
+   def nipkgInfo
+   def releaseBranches
+   def buildNumber
    
    Nipkg(script, packageInfo, payloadDir) {
       super(script, packageInfo, payloadDir)
-      this.pkgVersion = packageInfo.get('version')
-      this.maintainer = packageInfo.get('maintainer')
-      this.description = packageInfo.get('description')
-      this.homepage = packageInfo.get('homepage')
-      this.displayName = packageInfo.get('display_name')
-      this.eulaDependency = packageInfo.get('eula_dependency')
-      this.dependencies = packageInfo.get('dependencies')
+      this.stagingPath = packageInfo.get('install_destination')
+      this.devXmlPath = packageInfo.get('dev_xml_path')
+      this.buildNumber = 0
    }
 
-   void buildPackage() {
+   void buildPackage(lvVersion) {
+
+      componentName = script.getComponentParts()['repo']
+      componentBranch = script.getComponentParts()['branch']
+
+      // Get MAJOR.MINOR.PATCH versions from custom device XML file.
+      baseVersion = script.getDeviceVersion(devXmlPath, lvVersion)
+
+      // Read and parse configuration.json file to get next build number. 
+      script.echo "Getting 'build_number' for ${componentName}."
+      configurationJsonFile = script.readJSON file: "configuration_${lvVersion}.json"
+      configurationMap = new JsonSlurperClassic().parseText(configurationJsonFile.toString())
+
+      if(configurationMap.repositories.containsKey(componentName)) {
+         buildNumber = script.getBuildNumber(componentName, configurationMap)
+         script.echo "Next build number: $buildNumber"
+      } else { 
+         configurationMap.repositories[componentName] = ['build_number': buildNumber] 
+      }
+
+      configurationJSON = script.readJSON text: JsonOutput.toJson(configurationMap)
+ 
       def packageInfo = """
          Building package $name from $payloadDir
-         Package version: $pkgVersion
-         Description: $description
-         Homepage: $homepage
-         Display name: $displayName
-         Eula dependency: $eulaDependency
-         Dependencies: $dependencies
+         Staging path: $stagingPath
+         LabVIEW/VeriStand version: $lvVersion
+         Custom Device XML Path: $devXmlPath
+         Build number: $buildNumber
          """.stripIndent()
-      
+
+      // Build the nipkg. 
       script.echo packageInfo
+      nipkgInfo = script.buildNipkg(payloadDir, baseVersion, buildNumber, componentBranch, stagingPath, lvVersion)
+
+      // Update the configuration map, save it to disk, and push to github.com\{your_org}\commonbuild-configuration. 
+      script.configUpdate(configurationJSON, lvVersion)
+      releaseBranches = script.getReleaseInfo(componentName, configurationMap, lvVersion)
+      script.configPush(buildNumber, componentName, lvVersion) 
+      script.pushRelease(nipkgInfo, payloadDir, releaseBranches, lvVersion)
    }
 }
+
