@@ -24,6 +24,10 @@ class StepFactory implements Serializable {
          return new LvBuildSpecStep(script, mapStep, lvVersion)
       }
 
+      if(type == 'lv64BuildSpec') {
+         return new Lv64BuildSpecStep(script, mapStep, lvVersion)
+      }
+
       if(type == 'lvBuildSpecAllTargets') {
          return new LvBuildSpecAllTargetsStep(script, mapStep, lvVersion)
       }
@@ -34,6 +38,14 @@ class StepFactory implements Serializable {
 
       if(type == 'lvSetConditionalSymbol') {
          return new LvSetConditionalSymbolStep(script, mapStep, lvVersion)
+      }
+
+      if(type == 'lvUpdateProjectFiles') {
+         return new LvUpdateProjectFiles(script, mapStep, lvVersion)
+      }
+
+      if(type == 'Test') {
+         return new IntegrationTest(script, mapStep, lvVersion)
       }
 
       script.failBuild("Type \'$type\' is invalid for step \'${mapStep.get('name')}\'.")
