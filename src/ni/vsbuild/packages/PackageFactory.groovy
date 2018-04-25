@@ -9,6 +9,10 @@ class PackageFactory implements Serializable {
          return new Nipkg(script, packageInfo, payloadDir)
       }
 
+      if(type == 'vsStepsPackage') {
+         return new VsStepsPackage(script, packageInfo, payloadDir)
+      }
+
       script.failBuild("\'$type\' is an invalid package type.")
    }
 }
