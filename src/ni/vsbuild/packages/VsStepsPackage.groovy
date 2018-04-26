@@ -17,6 +17,7 @@ class VsStepsPackage extends AbstractPackage {
    def componentBranch
    def releaseBranches
    def buildNumber
+   def paddedBuildNumber
 
    VsStepsPackage(script, packageInfo, payloadDir) {
       super(script, packageInfo, payloadDir)
@@ -44,12 +45,13 @@ class VsStepsPackage extends AbstractPackage {
          buildNumber = script.getBuildNumber(componentName, configurationMap)
          script.echo "Next build number: $buildNumber"
       } else { 
-         configurationMap.repositories[componentName] = ['build_number': buildNumber] 
+         configurationMap.repositories[componentName] = ['build_number': 0] 
       }
       
       configurationJson = script.readJSON text: JsonOutput.toJson(configurationMap)
       
-      nipkgVersion = typesVersion+"+$buildNumber".padLeft(3,'0')
+      paddedBuildNumber = "$buildNumber".padLeft(3, '0')
+      nipkgVersion = typesVersion+"+$paddedBuildNumber"
       vsVersion = lvVersion
       script.echo packageInfo
       nipkgInfo = script.vsStepsPackage(nipkgVersion, vsVersion)
