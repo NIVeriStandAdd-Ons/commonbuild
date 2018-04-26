@@ -22,6 +22,8 @@ def call(payloadDir, baseVersion, buildNumber, componentBranch, stagingPath, lvV
    finalControlFileText = newControlFileText.replaceAll("\\{nipkg_version\\}", "${nipkgVersion}")
    def newStagingPath = stagingPath.replaceAll("\\{veristand_version\\}", "${lvVersion}")
    def packageName = basePackageName.replaceAll("\\{veristand_version\\}", "${lvVersion}")
+   def packageFilename = "${packageName}_${nipkgVersion}_windows_x64.nipkg"
+   def packageFilePath = "$payloadDir\\$packageFilename"
 
    echo "Building ${packageName} with control file attributes:"
    echo finalControlFileText
@@ -35,6 +37,8 @@ def call(payloadDir, baseVersion, buildNumber, componentBranch, stagingPath, lvV
 
    // Build nipkg using NI Package Manager CLI pack command. 
    bat "\"${nipmAppPath}\" pack \"nipkg\\${packageName}\" \"${payloadDir}\"" 
+   
+   writeFile file: "build_log", text: "$packageFilePath"
 
    return ['name': packageName, 'version': nipkgVersion]
 }
