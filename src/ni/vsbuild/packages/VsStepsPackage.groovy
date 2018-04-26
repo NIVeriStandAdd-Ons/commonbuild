@@ -49,7 +49,7 @@ class VsStepsPackage extends AbstractPackage {
       
       configurationJson = script.readJSON text: JsonOutput.toJson(configurationMap)
       
-      nipkgVersion = typesVersion+"$buildNumber".padLeft(3,'0')
+      nipkgVersion = typesVersion+"+$buildNumber".padLeft(3,'0')
       vsVersion = lvVersion
       script.echo packageInfo
       nipkgInfo = script.vsStepsPackage(nipkgVersion, vsVersion)
