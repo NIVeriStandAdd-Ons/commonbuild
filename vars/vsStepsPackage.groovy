@@ -15,6 +15,8 @@ def call(nipkgVersion, vsVersion) {
    def documentsStagingSource = "built\\documents"
    def documentsStagingDest = "nipkg\\${nipkgName}\\data\\documents"
    def updatedControlText = controlFileText
+   def packageFileName = "${nipkgName}-${nipkgVersion}_windows_x64.nipkg"
+   def packageFilePath = "built\\$packageFileName"
 
    bat "(robocopy \"${programFilesStagingSource}\" \"${programFilesStagingDest}\" /MIR /NFL /NDL /NJH /NJS /nc /ns /np) ^& exit 0"
    bat "(robocopy \"${documentsStagingSource}\" \"${documentsStagingDest}\" /MIR /NFL /NDL /NJH /NJS /nc /ns /np) ^& exit 0"
@@ -28,6 +30,8 @@ def call(nipkgVersion, vsVersion) {
       writeFile file:'data\\instructions', text: instructionsFileText
       writeFile file:'debian-binary', text: "2.0"
    }
+
+   writeFile file: "build_log", text: "$packageFilePath"
 
    bat "\"${nipmAppPath}\" pack \"$WORKSPACE\\nipkg\\$nipkgName\"  built"          
 

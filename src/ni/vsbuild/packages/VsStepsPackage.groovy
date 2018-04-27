@@ -57,6 +57,7 @@ class VsStepsPackage extends AbstractPackage {
       nipkgInfo = script.vsStepsPackage(nipkgVersion, vsVersion)
 
       script.configUpdate(configurationJson, lvVersion)
+      script.vipmGetInstalled(lvVersion)
       releaseBranches = script.getReleaseInfo(componentName, configurationMap, lvVersion)
       script.configPush(buildNumber, componentName, lvVersion) 
       script.pushRelease(nipkgInfo, payloadDir, releaseBranches, lvVersion)
