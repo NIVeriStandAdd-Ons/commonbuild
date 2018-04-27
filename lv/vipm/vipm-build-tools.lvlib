@@ -4,5 +4,5 @@
 	<Property Name="NI.Lib.SourceVersion" Type="Int">385908736</Property>
 	<Property Name="NI.Lib.Version" Type="Str">1.0.0.0</Property>
 	<Property Name="NI.LV.All.SourceOnly" Type="Bool">true</Property>
-	<Item Name="readCustomDeviceVersionFromXML.vi" Type="VI" URL="../readCustomDeviceVersionFromXML.vi"/>
+	<Item Name="vipmGetInstalled.vi" Type="VI" URL="../vipmGetInstalled.vi"/>
 </Library>
