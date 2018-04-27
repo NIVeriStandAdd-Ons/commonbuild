@@ -4,6 +4,6 @@ def call(seqPath, tsVersion) {
    def sequencePath = "${WORKSPACE}\\${seqPath}"
    def nipkgFilePath = readFile file: "build_log"
 
-   bat "commonbuild\\resources\\installNipkg.bat \"${nipkgFilePath}\""
+   bat "C:\\github-release\\elevate-1.3.0-x86-64\\elevate.exe -k commonbuild\\resources\\installNipkg.bat \"${nipkgFilePath}\""
    bat "\"${seqEditorPath}\" /outputToStdIO /run MainSequence \"${sequencePath}\" /quit"
 }
