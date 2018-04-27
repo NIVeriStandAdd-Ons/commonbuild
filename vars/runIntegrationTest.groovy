@@ -5,6 +5,6 @@ def call(seqPath, tsVersion) {
    def sequencePath = "${WORKSPACE}\\${seqPath}"
    def nipkgFilePath = readFile file: "build_log"
 
-   bat "\"${nipmAppPath}\" -y \"${nipkgFilePath}\""
+   bat "\"${nipmAppPath}\" install -y \"${nipkgFilePath}\""
    bat "\"${seqEditorPath}\" /outputToStdIO /run MainSequence \"${sequencePath}\" /quit"
 }
