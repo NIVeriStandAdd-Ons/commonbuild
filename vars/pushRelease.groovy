@@ -12,6 +12,7 @@ def call(nipkgInfo, payloadDir, releaseBranches, lvVersion) {
    def nipkgPath = "${payloadDir}\\${releaseName}_windows_x64.nipkg"
 
    if(releaseBranches != null && releaseBranches.contains(branch)) {
+      echo "Releasing branch \'${branch}\' at www.github.com\${org}\${repo}."
       if(branch == 'master') {
          bat "github-release release --user $org --repo $repo --target $branch --name $releaseName --tag $tagString --description \"${description}\""
       } else {
@@ -20,5 +21,7 @@ def call(nipkgInfo, payloadDir, releaseBranches, lvVersion) {
       bat "github-release upload --user $org --repo $repo --name \"${releaseName}_windows_x64.nipkg\" --tag $tagString --file version_manifest"
       bat "github-release upload --user $org --repo $repo --name \"${releaseName}_windows_x64.nipkg\" --tag $tagString --file \"${nipkgPath}\""
    }
-
+   else {
+      echo "Branch \'${branch}\' is not configured for release."
+   }
 }
