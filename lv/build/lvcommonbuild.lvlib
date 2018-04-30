@@ -11,6 +11,7 @@
 	<Item Name="lvBuildAll.vi" Type="VI" URL="../lvBuildAll.vi"/>
 	<Item Name="lvBuildSpec.vi" Type="VI" URL="../lvBuildSpec.vi"/>
 	<Item Name="lvBuildSpecAllTargets.vi" Type="VI" URL="../lvBuildSpecAllTargets.vi"/>
+	<Item Name="lvGetInstalledNISoftware.vi" Type="VI" URL="../lvGetInstalledNISoftware.vi"/>
 	<Item Name="lvRunVi.vi" Type="VI" URL="../lvRunVi.vi"/>
 	<Item Name="lvSetConditionalSymbol.vi" Type="VI" URL="../lvSetConditionalSymbol.vi"/>
 	<Item Name="subBuildSingleTarget.vi" Type="VI" URL="../subBuildSingleTarget.vi"/>
