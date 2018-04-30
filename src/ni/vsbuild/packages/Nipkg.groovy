@@ -63,9 +63,6 @@ class Nipkg extends AbstractPackage {
       script.vipmGetInstalled(lvVersion)
       script.lvGetInstalledNISoftware(lvVersion)
       script.nipmGetInstalled()
-      releaseBranches = script.getReleaseInfo(componentName, configurationMap, lvVersion)
-      script.configPush(buildNumber, componentName, lvVersion) 
-      script.pushRelease(nipkgInfo, payloadDir, releaseBranches, lvVersion)
+
    }
 }
-

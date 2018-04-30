@@ -48,6 +48,10 @@ class StepFactory implements Serializable {
          return new IntegrationTest(script, mapStep, lvVersion)
       }
 
+      if(type == 'githubRelease') {
+         return new GitHubRelease(script, mapStep, lvVersion)
+      }
+
       script.failBuild("Type \'$type\' is invalid for step \'${mapStep.get('name')}\'.")
    }
 }

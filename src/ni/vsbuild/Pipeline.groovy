@@ -43,6 +43,10 @@ class Pipeline implements Serializable {
          stages << new Test(script, buildConfiguration, lvVersion)
       }
 
+      def withReleaseStage() {
+         stages << new Release(script, buildConfiguration, lvVersion)
+      }
+
       def buildPipeline() {         
          if(buildConfiguration.codegen || buildConfiguration.projects) {
             withCodegenStage()
@@ -62,6 +66,10 @@ class Pipeline implements Serializable {
 
          if(buildConfiguration.testInfo) {
             withTestStage()
+         }
+
+         if(buildConfiguration.release) {
+            withReleaseStage()
          }
 
          return stages
