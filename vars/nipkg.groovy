@@ -1,10 +1,14 @@
 import groovy.json.JsonSlurperClassic
 import groovy.json.JsonOutput
 
-def call(payloadDir, devXmlPath, baseVersion, buildNumber, componentBranch, stagingPath, lvVersion) {
+def call(payloadDir, devXmlPath, stagingPath, lvVersion) {
    
    def nipmAppPath = "C:\\Program Files\\National Instruments\\NI Package Manager\\nipkg.exe"
    def nipkgVersion
+   def buildNumber
+   componentName = getComponentParts()['repo']
+   componentBranch = getComponentParts()['branch']
+
    def paddedBuildNumber = "$buildNumber".padLeft(3,'0')
 
    // Read PROPERTIES from .nipkg control file.
@@ -20,10 +24,7 @@ def call(payloadDir, devXmlPath, baseVersion, buildNumber, componentBranch, stag
       default: nipkgVersion = baseVersion+"-alpha+$paddedBuildNumber"; break;
    }
 
-   componentName = getComponentParts()['repo']
-   componentBranch = getComponentParts()['branch']
-
-   baseVersion = getDeviceVersion(devXmlPath, lvVersion)
+   def baseVersion = getDeviceVersion(devXmlPath, lvVersion)
 
    echo "Getting 'build_number' for ${componentName}."
    configurationJsonFile = readJSON file: "configuration_${lvVersion}.json"
@@ -59,10 +60,7 @@ def call(payloadDir, devXmlPath, baseVersion, buildNumber, componentBranch, stag
    // Build nipkg using NI Package Manager CLI pack command. 
    bat "\"${nipmAppPath}\" pack \"nipkg\\${packageName}\" \"${payloadDir}\"" 
    
-   writeFile file: "build_log", text: "Package Name: $packageName"
-   writeFile file: "build_log", text: "Package File Name: $packageFilename"
-   writeFile file: "build_log", text: "Package File Path: $packageFilePath"
-   writeFile file: "build_log", text: "Package Version: $nipkgVersion"
+   writeFile file: "build_log", text: "Package Name: ${packageName}\nPackage File Name: ${packageFilename}\nPackage File Path: ${packageFilePath}\nPackage Version: ${nipkgVersion}"
 
    configUpdate(configurationJSON, lvVersion)
    vipmGetInstalled(lvVersion)
