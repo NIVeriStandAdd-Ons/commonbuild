@@ -4,7 +4,7 @@ def call(releaseBranches, lvVersion) {
 
    def repo = getComponentParts()['repo']
    def branch = getComponentParts()['branch']
-   def org = getComponentParts()['org']
+   def org = getComponentParts()['organization']
 
    def buildLog = readProperties file: "build_log"
    def nipkgVersion = buildLog.get('PackageVersion')
