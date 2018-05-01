@@ -9,7 +9,9 @@ def call(releaseBranches, lvVersion) {
    def buildLog = readProperties file: "build_log"
    def nipkgVersion = buildLog.get('PackageVersion')
    def nipkgName = buildLog.get('PackageName')
-   def nipkgPath = buildLog.get('PackageFilePath')
+   def nipkgFileLoc = buildLog.get('PackageFileLoc')
+   def nipkgFileName = buildLog.get('PackageFileName')
+   def nipkgFilePath = "$nipkgFileLoc\\$nipkgFileName"
    
    def tagString = "${lvVersion}-${nipkgVersion}"
    def releaseName = "${nipkgName}_${nipkgVersion}"

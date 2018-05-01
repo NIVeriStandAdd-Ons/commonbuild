@@ -9,19 +9,11 @@ def call(payloadDir, devXmlPath, stagingPath, lvVersion) {
    componentName = getComponentParts()['repo']
    componentBranch = getComponentParts()['branch']
 
-   def paddedBuildNumber = "$buildNumber".padLeft(3,'0')
-
    // Read PROPERTIES from .nipkg control file.
    def controlFields = readProperties file: "control"
    def basePackageName = "${controlFields.get('Package')}"
    def controlFileText = readFile "control"
    def baseVersion = getDeviceVersion(devXmlPath, lvVersion)
-
-   switch(componentBranch) {
-      case 'master': nipkgVersion = baseVersion+"+$paddedBuildNumber"; break;
-      case 'develop': nipkgVersion = baseVersion+"-beta+$paddedBuildNumber"; break;
-      default: nipkgVersion = baseVersion+"-alpha+$paddedBuildNumber"; break;
-   }
 
    echo "Getting 'build_number' for ${componentName}."
    configurationJsonFile = readJSON file: "configuration_${lvVersion}.json"
@@ -33,8 +25,14 @@ def call(payloadDir, devXmlPath, stagingPath, lvVersion) {
    } else { 
          configurationMap.repositories[componentName] = ['build_number': buildNumber] 
    }
-
    configurationJSON = readJSON text: JsonOutput.toJson(configurationMap)
+   def paddedBuildNumber = "$buildNumber".padLeft(3,'0')
+
+   switch(componentBranch) {
+      case 'master': nipkgVersion = baseVersion+"+$paddedBuildNumber"; break;
+      case 'develop': nipkgVersion = baseVersion+"-beta+$paddedBuildNumber"; break;
+      default: nipkgVersion = baseVersion+"-alpha+$paddedBuildNumber"; break;
+   }
 
    // Replace {version} expressions with current VeriStand and .nipkg versions being built.
    def newControlFileText = controlFileText.replaceAll("\\{veristand_version\\}", "${lvVersion}")
@@ -63,5 +61,9 @@ def call(payloadDir, devXmlPath, stagingPath, lvVersion) {
    nipmGetInstalled()
    vipmGetInstalled(lvVersion)
    lvGetInstalledNISoftware(lvVersion)
+
+   echo "Updating build number for ${componentID} (${lvVersion}) to ${buildNumber} in commonbuild-configuration repository."
+   def commitMessage = "Updating ${componentID} for VeriStand ${lvVersion} to build number ${buildNumber}."
+   bat "commonbuild\\resources\\configPush.bat \"$commitMessage\""
 
 }
