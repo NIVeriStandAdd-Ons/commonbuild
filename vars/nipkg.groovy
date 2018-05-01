@@ -1,7 +1,7 @@
 import groovy.json.JsonSlurperClassic
 import groovy.json.JsonOutput
 
-def call(payloadDir, baseVersion, buildNumber, componentBranch, stagingPath, lvVersion) {
+def call(payloadDir, devXmlPath, baseVersion, buildNumber, componentBranch, stagingPath, lvVersion) {
    
    def nipmAppPath = "C:\\Program Files\\National Instruments\\NI Package Manager\\nipkg.exe"
    def nipkgVersion

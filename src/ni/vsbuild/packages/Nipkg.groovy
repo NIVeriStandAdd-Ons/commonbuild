@@ -34,7 +34,7 @@ class Nipkg extends AbstractPackage {
          Build number: $buildNumber
          """.stripIndent()
 
-      script.nipkg(payloadDir, baseVersion, buildNumber, componentBranch, stagingPath, lvVersion)
+      script.nipkg(payloadDir, devXmlPath, baseVersion, buildNumber, componentBranch, stagingPath, lvVersion)
 
    }
 }
