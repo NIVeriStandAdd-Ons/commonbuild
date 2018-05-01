@@ -7,9 +7,9 @@ def call(releaseBranches, lvVersion) {
    def org = getComponentParts()['org']
 
    def buildLog = readProperties file: "build_log"
-   def nipkgVersion = buildLog.get('Package Version')
-   def nipkgName = buildLog.get('Package Name')
-   def nipkgPath = buildLog.get('Package File Path')
+   def nipkgVersion = buildLog.get('PackageVersion')
+   def nipkgName = buildLog.get('PackageName')
+   def nipkgPath = buildLog.get('PackageFilePath')
    
    def tagString = "${lvVersion}-${nipkgVersion}"
    def releaseName = "${nipkgName}_${nipkgVersion}"
@@ -22,7 +22,7 @@ def call(releaseBranches, lvVersion) {
       } else {
          bat "github-release release --user $org --repo $repo --target $branch --name $releaseName --tag $tagString --description \"${description}\" --pre-release"
       }
-      bat "github-release upload --user $org --repo $repo --name \"${releaseName}_windows_x64.nipkg\" --tag $tagString --file version_manifest"
+      bat "github-release upload --user $org --repo $repo --name version_manifest --tag $tagString --file version_manifest"
       bat "github-release upload --user $org --repo $repo --name \"${releaseName}_windows_x64.nipkg\" --tag $tagString --file \"${nipkgPath}\""
    }
    else {
