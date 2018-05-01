@@ -62,8 +62,8 @@ def call(payloadDir, devXmlPath, stagingPath, lvVersion) {
    vipmGetInstalled(lvVersion)
    lvGetInstalledNISoftware(lvVersion)
 
-   echo "Updating build number for ${componentID} (${lvVersion}) to ${buildNumber} in commonbuild-configuration repository."
-   def commitMessage = "Updating ${componentID} for VeriStand ${lvVersion} to build number ${buildNumber}."
+   echo "Updating build number for ${componentName} (${lvVersion}) to ${buildNumber} in commonbuild-configuration repository."
+   def commitMessage = "Updating ${componentName} for VeriStand ${lvVersion} to build number ${buildNumber}."
    bat "commonbuild\\resources\\configPush.bat \"$commitMessage\""
 
 }
