@@ -1,5 +1,5 @@
-def call() {
+def call(releaseBranches) {
 
-   echo "Test release stage."
+   echo "Test release stage: $releaseBranches"
 
 }
