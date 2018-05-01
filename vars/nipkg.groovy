@@ -14,17 +14,14 @@ def call(payloadDir, devXmlPath, stagingPath, lvVersion) {
    // Read PROPERTIES from .nipkg control file.
    def controlFields = readProperties file: "control"
    def basePackageName = "${controlFields.get('Package')}"
-
-   // Read TEXT from .nipkg control file 
    def controlFileText = readFile "control"
-   
+   def baseVersion = getDeviceVersion(devXmlPath, lvVersion)
+
    switch(componentBranch) {
       case 'master': nipkgVersion = baseVersion+"+$paddedBuildNumber"; break;
       case 'develop': nipkgVersion = baseVersion+"-beta+$paddedBuildNumber"; break;
       default: nipkgVersion = baseVersion+"-alpha+$paddedBuildNumber"; break;
    }
-
-   def baseVersion = getDeviceVersion(devXmlPath, lvVersion)
 
    echo "Getting 'build_number' for ${componentName}."
    configurationJsonFile = readJSON file: "configuration_${lvVersion}.json"

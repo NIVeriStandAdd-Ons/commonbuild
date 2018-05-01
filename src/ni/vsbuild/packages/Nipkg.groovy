@@ -27,7 +27,6 @@ class Nipkg extends AbstractPackage {
          Staging path: $stagingPath
          LabVIEW/VeriStand version: $lvVersion
          Custom Device XML Path: $devXmlPath
-         Build number: $buildNumber
          """.stripIndent()
 
       script.nipkg(payloadDir, devXmlPath, stagingPath, lvVersion)
