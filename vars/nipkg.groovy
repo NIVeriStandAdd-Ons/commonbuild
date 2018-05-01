@@ -57,11 +57,11 @@ def call(payloadDir, devXmlPath, stagingPath, lvVersion) {
    // Build nipkg using NI Package Manager CLI pack command. 
    bat "\"${nipmAppPath}\" pack \"nipkg\\${packageName}\" \"${payloadDir}\"" 
    
-   writeFile file: "build_log", text: "Package Name: ${packageName}\nPackage File Name: ${packageFilename}\nPackage File Path: ${packageFilePath}\nPackage Version: ${nipkgVersion}"
+   writeFile file: "build_log", text: "PackageName: ${packageName}\nPackageFileName: ${packageFilename}\nPackageFilePath: ${packageFilePath}\nPackageVersion: ${nipkgVersion}"
 
    configUpdate(configurationJSON, lvVersion)
+   nipmGetInstalled()
    vipmGetInstalled(lvVersion)
    lvGetInstalledNISoftware(lvVersion)
-   nipmGetInstalled()
 
 }
