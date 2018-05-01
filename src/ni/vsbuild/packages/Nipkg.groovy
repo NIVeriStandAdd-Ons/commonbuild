@@ -25,26 +25,6 @@ class Nipkg extends AbstractPackage {
    }
 
    void buildPackage(lvVersion) {
-
-      componentName = script.getComponentParts()['repo']
-      componentBranch = script.getComponentParts()['branch']
-
-      // Get MAJOR.MINOR.PATCH versions from custom device XML file.
-      baseVersion = script.getDeviceVersion(devXmlPath, lvVersion)
-
-      // Read and parse configuration.json file to get next build number. 
-      script.echo "Getting 'build_number' for ${componentName}."
-      configurationJsonFile = script.readJSON file: "configuration_${lvVersion}.json"
-      configurationMap = new JsonSlurperClassic().parseText(configurationJsonFile.toString())
-
-      if(configurationMap.repositories.containsKey(componentName)) {
-         buildNumber = script.getBuildNumber(componentName, configurationMap)
-         script.echo "Next build number: $buildNumber"
-      } else { 
-         configurationMap.repositories[componentName] = ['build_number': buildNumber] 
-      }
-
-      configurationJSON = script.readJSON text: JsonOutput.toJson(configurationMap)
  
       def packageInfo = """
          Building package $name from $payloadDir
@@ -54,15 +34,7 @@ class Nipkg extends AbstractPackage {
          Build number: $buildNumber
          """.stripIndent()
 
-      // Build the nipkg. 
-      script.echo packageInfo
-      nipkgInfo = script.buildNipkg(payloadDir, baseVersion, buildNumber, componentBranch, stagingPath, lvVersion)
-
-      // Update the configuration map, save it to disk, and push to github.com\{your_org}\commonbuild-configuration. 
-      script.configUpdate(configurationJSON, lvVersion)
-      script.vipmGetInstalled(lvVersion)
-      script.lvGetInstalledNISoftware(lvVersion)
-      script.nipmGetInstalled()
+      script.nipkg(payloadDir, baseVersion, buildNumber, componentBranch, stagingPath, lvVersion)
 
    }
 }

@@ -1,3 +1,6 @@
+import groovy.json.JsonSlurperClassic
+import groovy.json.JsonOutput
+
 def call(payloadDir, baseVersion, buildNumber, componentBranch, stagingPath, lvVersion) {
    
    def nipmAppPath = "C:\\Program Files\\National Instruments\\NI Package Manager\\nipkg.exe"
@@ -16,6 +19,24 @@ def call(payloadDir, baseVersion, buildNumber, componentBranch, stagingPath, lvV
       case 'develop': nipkgVersion = baseVersion+"-beta+$paddedBuildNumber"; break;
       default: nipkgVersion = baseVersion+"-alpha+$paddedBuildNumber"; break;
    }
+
+   componentName = getComponentParts()['repo']
+   componentBranch = getComponentParts()['branch']
+
+   baseVersion = getDeviceVersion(devXmlPath, lvVersion)
+
+   echo "Getting 'build_number' for ${componentName}."
+   configurationJsonFile = readJSON file: "configuration_${lvVersion}.json"
+   configurationMap = new JsonSlurperClassic().parseText(configurationJsonFile.toString())
+
+   if(configurationMap.repositories.containsKey(componentName)) {
+      buildNumber = script.getBuildNumber(componentName, configurationMap)
+      script.echo "Next build number: $buildNumber"
+   } else { 
+         configurationMap.repositories[componentName] = ['build_number': buildNumber] 
+   }
+
+   configurationJSON = script.readJSON text: JsonOutput.toJson(configurationMap)
 
    // Replace {version} expressions with current VeriStand and .nipkg versions being built.
    def newControlFileText = controlFileText.replaceAll("\\{veristand_version\\}", "${lvVersion}")
@@ -40,6 +61,9 @@ def call(payloadDir, baseVersion, buildNumber, componentBranch, stagingPath, lvV
    
    writeFile file: "build_log", text: "$packageFilePath"
 
-   return ['name': packageName, 'version': nipkgVersion]
-}
+   configUpdate(configurationJSON, lvVersion)
+   vipmGetInstalled(lvVersion)
+   lvGetInstalledNISoftware(lvVersion)
+   nipmGetInstalled()
 
+}
