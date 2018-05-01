@@ -1,4 +1,4 @@
-def call(currentBranch, releaseBranches) {
+def call() {
 
    echo "Test release stage."
 

@@ -30,13 +30,13 @@ def call(payloadDir, devXmlPath, baseVersion, buildNumber, componentBranch, stag
    configurationMap = new JsonSlurperClassic().parseText(configurationJsonFile.toString())
 
    if(configurationMap.repositories.containsKey(componentName)) {
-      buildNumber = script.getBuildNumber(componentName, configurationMap)
-      script.echo "Next build number: $buildNumber"
+      buildNumber = getBuildNumber(componentName, configurationMap)
+      echo "Next build number: $buildNumber"
    } else { 
          configurationMap.repositories[componentName] = ['build_number': buildNumber] 
    }
 
-   configurationJSON = script.readJSON text: JsonOutput.toJson(configurationMap)
+   configurationJSON = readJSON text: JsonOutput.toJson(configurationMap)
 
    // Replace {version} expressions with current VeriStand and .nipkg versions being built.
    def newControlFileText = controlFileText.replaceAll("\\{veristand_version\\}", "${lvVersion}")
@@ -59,7 +59,10 @@ def call(payloadDir, devXmlPath, baseVersion, buildNumber, componentBranch, stag
    // Build nipkg using NI Package Manager CLI pack command. 
    bat "\"${nipmAppPath}\" pack \"nipkg\\${packageName}\" \"${payloadDir}\"" 
    
-   writeFile file: "build_log", text: "$packageFilePath"
+   writeFile file: "build_log", text: "Package Name: $packageName"
+   writeFile file: "build_log", text: "Package File Name: $packageFilename"
+   writeFile file: "build_log", text: "Package File Path: $packageFilePath"
+   writeFile file: "build_log", text: "Package Version: $nipkgVersion"
 
    configUpdate(configurationJSON, lvVersion)
    vipmGetInstalled(lvVersion)
