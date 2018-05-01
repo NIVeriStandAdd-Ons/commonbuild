@@ -10,7 +10,7 @@ class GitHubRelease extends AbstractStep {
    GitHubRelease(script, mapStep, lvVersion) {
       super(script, mapStep)
       this.releaseBranches = mapStep.get('release_branches')
-      this.currentBranch = getComponentParts()['branch']
+      this.currentBranch = script.getComponentParts()['branch']
    }
 
    void executeStep(BuildConfiguration buildConfiguration) {
