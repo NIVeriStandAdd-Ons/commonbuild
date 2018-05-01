@@ -16,6 +16,6 @@ class IntegrationTest extends AbstractStep {
    }
 
    void executeStep(BuildConfiguration buildConfiguration) {
-      script.runIntegrationTest(seqPath, tsVersion)
+      script.IntegrationTest(seqPath, tsVersion)
    }
 }

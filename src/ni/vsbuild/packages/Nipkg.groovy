@@ -7,12 +7,6 @@ class Nipkg extends AbstractPackage {
 
    def stagingPath
    def devXmlPath
-   def configurationMap
-   def configurationJSON
-   def componentName
-   def configurationJsonFile
-   def nipkgInfo
-   def releaseBranches
    
    Nipkg(script, packageInfo, payloadDir) {
       super(script, packageInfo, payloadDir)
