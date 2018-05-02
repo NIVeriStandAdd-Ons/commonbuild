@@ -25,7 +25,7 @@ def call(releaseBranches, lvVersion) {
          bat "github-release release --user $org --repo $repo --target $branch --name $releaseName --tag $tagString --description \"${description}\" --pre-release"
       }
       bat "github-release upload --user $org --repo $repo --name version_manifest --tag $tagString --file version_manifest"
-      bat "github-release upload --user $org --repo $repo --name \"${releaseName}_windows_x64.nipkg\" --tag $tagString --file \"${nipkgPath}\""
+      bat "github-release upload --user $org --repo $repo --name \"${releaseName}_windows_x64.nipkg\" --tag $tagString --file \"${nipkgFilePath}\""
    }
    else {
       echo "Branch \'${branch}\' is not configured for release."
