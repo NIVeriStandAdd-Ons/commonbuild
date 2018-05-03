@@ -19,6 +19,6 @@ class VsStepsPackage extends AbstractPackage {
          """.stripIndent()
 
       script.echo packageInfo
-      script.vsStepsPackage(typesVersion, tsVersions, lvVersion)
+      script.vsStepsPackage(typesVersion, tsVersions, payloadDir, lvVersion)
    }
 }
