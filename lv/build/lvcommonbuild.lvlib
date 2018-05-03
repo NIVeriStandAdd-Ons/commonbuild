@@ -17,5 +17,6 @@
 	<Item Name="subBuildSingleTarget.vi" Type="VI" URL="../subBuildSingleTarget.vi"/>
 	<Item Name="subFindAllSpecs.vi" Type="VI" URL="../subFindAllSpecs.vi"/>
 	<Item Name="subFindTargetsWithBuildSpec.vi" Type="VI" URL="../subFindTargetsWithBuildSpec.vi"/>
+	<Item Name="subMoveJobFilesToWorkspace.vi" Type="VI" URL="../../subVI/subMoveJobFilesToWorkspace.vi"/>
 	<Item Name="subReplaceSymbolValue.vi" Type="VI" URL="../subReplaceSymbolValue.vi"/>
 </Library>
