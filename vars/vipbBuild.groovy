@@ -1,4 +1,4 @@
-def call(path, lvVersion) {
+def call(vipbPath, outputPath, lvVersion) {
         echo "Build the package at ${path}"
-        bat "labview-cli --kill commonbuild\lv\vipm\vipbBuild.vi -- \"${path}\" \"build_temp\" \"${WORKSPACE}\""  
+        bat "labview-cli --kill commonbuild\lv\vipm\vipbBuild.vi -- \"${vipbPath}\" \"${outputPath}\" \"${WORKSPACE}\""  
 }
