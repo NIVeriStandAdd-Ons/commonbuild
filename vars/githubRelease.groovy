@@ -1,13 +1,13 @@
 import groovy.json.JsonSlurperClassic
 import groovy.json.JsonOutput
 
-def call(releaseBranches, lvVersion) {
-
-   echo "Test release stage: $releaseBranches"
+def call(releaseConfiguration, lvVersion) {
 
    def repo = getComponentParts()['repo']
    def branch = getComponentParts()['branch']
    def org = getComponentParts()['organization']
+   def releaseBranchesKey = "${lvVersion}_release_branches"
+   def releaseBranches = releaseConfiguration.find{ it.key =="$releaseBranchesKey" }?.value
    def globalReleaseBranches
 
    def buildLog = readProperties file: "build_log"
@@ -27,9 +27,9 @@ def call(releaseBranches, lvVersion) {
 
    if(componentConfiguration.containsKey('release_branches')) {
       globalReleaseBranches = componentConfiguration.get('release_branches')
-      echo "Branches configured globally in commonbuild-configuration for release: $globalReleaseBranches"
+      echo "Branches configured in commonbuild-configuration for release: $globalReleaseBranches"
    } else {
-      echo "No branches configured globally in commonbuild-configuration for GitHub releases."
+      echo "No branches configured in commonbuild-configuration for GitHub releases."
    }
 
    if(releaseBranches != null && releaseBranches.contains(branch) || (globalReleaseBranches != null && globalReleaseBranches.contains(branch))) {
@@ -39,7 +39,7 @@ def call(releaseBranches, lvVersion) {
       } else {
          bat "github-release release --user $org --repo $repo --target $branch --name $releaseName --tag $tagString --description \"${description}\" --pre-release"
       }
-      bat "github-release upload --user $org --repo $repo --name \"${nipkgName}_version_manifest\" --tag $tagString --file version_manifest"
+      bat "github-release upload --user $org --repo $repo --name \"${releaseName}_version_manifest\" --tag $tagString --file version_manifest"
       bat "github-release upload --user $org --repo $repo --name \"${releaseName}_windows_x64.nipkg\" --tag $tagString --file \"${nipkgFilePath}\""
    }
    else {

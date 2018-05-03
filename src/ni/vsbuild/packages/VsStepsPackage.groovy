@@ -1,8 +1,5 @@
 package ni.vsbuild.packages
 
-import groovy.json.JsonSlurperClassic
-import groovy.json.JsonOutput
-
 class VsStepsPackage extends AbstractPackage {
 
    def typesVersion
