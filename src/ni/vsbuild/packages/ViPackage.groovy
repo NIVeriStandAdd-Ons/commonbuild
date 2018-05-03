@@ -20,7 +20,7 @@ class ViPackage extends AbstractPackage {
          Output Path: $outputPath
          """.stripIndent()
 
-      script.vipbBuild(vipbPath, outputPath, lvVersion)
+      script.viPackage(vipbPath, outputPath, lvVersion)
 
    }
 }
