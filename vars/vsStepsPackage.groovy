@@ -61,12 +61,12 @@ def call(typesVersion, tsVersions, payloadDir, lvVersion) {
 
    bat "\"${nipmAppPath}\" pack \"$WORKSPACE\\nipkg\\$packageName\"  built"  
 
-   writeFile file: "build_log", text: "PackageName: ${packageName}\nPackageFileName: ${packageFileName}\nPackageFileLoc: ${payloadDir}\nPackageVersion: ${nipkgVersion}"
+   writeFile file: "build_properties", text: "PackageName: ${packageName}\nPackageFileName: ${packageFileName}\nPackageFileLoc: ${payloadDir}\nPackageVersion: ${nipkgVersion}"
         
    configUpdate(configurationJSON, lvVersion)
-   nipmGetInstalled()
    vipmGetInstalled(lvVersion)
    lvGetInstalledNISoftware(lvVersion)
+   nipmGetInstalled()
 
    echo "Updating build number for ${componentName} (${lvVersion}) to ${buildNumber} in commonbuild-configuration repository."
    def commitMessage = "Updating ${componentName} for VeriStand ${lvVersion} to build number ${buildNumber}."
