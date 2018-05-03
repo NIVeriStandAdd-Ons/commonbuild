@@ -10,7 +10,7 @@ def call(releaseConfiguration, lvVersion) {
    def releaseBranches = releaseConfiguration.find{ it.key =="$releaseBranchesKey" }?.value
    def globalReleaseBranches
 
-   def buildLog = readProperties file: "build_log"
+   def buildLog = readProperties file: "build_properties"
    def packageVersion = buildLog.get('PackageVersion')
    def packageName = buildLog.get('PackageName')
    def packageFileLoc = buildLog.get('PackageFileLoc')
@@ -39,7 +39,7 @@ def call(releaseConfiguration, lvVersion) {
       } else {
          bat "github-release release --user $org --repo $repo --target $branch --name $releaseName --tag $tagString --description \"${description}\" --pre-release"
       }
-      bat "github-release upload --user $org --repo $repo --name \"${releaseName}_version_manifest\" --tag $tagString --file version_manifest"
+      bat "github-release upload --user $org --repo $repo --name \"${releaseName}_version_manifest\" --tag $tagString --file build_log"
       bat "github-release upload --user $org --repo $repo --name \"${packageFilePath}\" --tag $tagString --file \"${packageFilePath}\""
    }
    else {
