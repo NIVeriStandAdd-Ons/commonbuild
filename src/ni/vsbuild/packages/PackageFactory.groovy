@@ -13,6 +13,10 @@ class PackageFactory implements Serializable {
          return new VsStepsPackage(script, packageInfo, payloadDir)
       }
 
+      if(type == 'viPackage') {
+         return new ViPackage(script, packageInfo, payloadDir)
+      }
+
       script.failBuild("\'$type\' is an invalid package type.")
    }
 }
