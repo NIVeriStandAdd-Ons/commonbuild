@@ -60,8 +60,9 @@ def call(payloadDir, devXmlPath, stagingPath, lvVersion) {
    }
 
    configUpdate(configurationJSON, lvVersion)
-   nipmGetInstalled()
    vipmGetInstalled(lvVersion)
+   nipmGetInstalled()
+
 
    echo "Updating build number for ${componentName} (${lvVersion}) to ${buildNumber} in commonbuild-configuration repository."
    def commitMessage = "Updating ${componentName} for VeriStand ${lvVersion} to build number ${buildNumber}."
