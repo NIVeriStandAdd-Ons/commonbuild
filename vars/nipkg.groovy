@@ -5,7 +5,7 @@ def call(payloadDir, devXmlPath, stagingPath, lvVersion) {
    
    def nipmAppPath = "C:\\Program Files\\National Instruments\\NI Package Manager\\nipkg.exe"
    def nipkgVersion
-   def buildNumber
+   def buildNumber = 0
    componentName = getComponentParts()['repo']
    componentBranch = getComponentParts()['branch']
 
