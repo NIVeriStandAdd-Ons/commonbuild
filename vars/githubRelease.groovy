@@ -40,7 +40,7 @@ def call(releaseConfiguration, lvVersion) {
          bat "github-release release --user $org --repo $repo --target $branch --name $releaseName --tag $tagString --description \"${description}\" --pre-release"
       }
       bat "github-release upload --user $org --repo $repo --name \"${releaseName}_version_manifest\" --tag $tagString --file build_log"
-      bat "github-release upload --user $org --repo $repo --name \"${packageFilePath}\" --tag $tagString --file \"${packageFilePath}\""
+      bat "github-release upload --user $org --repo $repo --name \"${packageFileName}\" --tag $tagString --file \"${packageFilePath}\""
    }
    else {
       echo "Branch \'${branch}\' is not configured for release."
