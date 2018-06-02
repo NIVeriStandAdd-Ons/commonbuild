@@ -1,6 +1,6 @@
 def call(repo, branch){
    echo "Cloning $repo to workspace."
-   cloneDir = repo.tokenize("/").last()
+   def cloneDir = repo.tokenize("/").last()
    
    bat "mkdir $cloneDir"
    
