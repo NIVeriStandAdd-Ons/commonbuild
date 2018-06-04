@@ -12,6 +12,6 @@ def call(seqPath, tsVersion) {
    formattedTSVersion = tsVersion.substring(2,4)+".0"
 
    bat "C:\\github-release\\elevate-1.3.0-x86-64\\elevate.exe -k commonbuild\\resources\\installNipkg.bat \"${packageFilePath}\""
-   bat "\"${tsVersionSelectorPath}\" /${tsVersion} ${formattedTSVersion} /installing /noprompt"
+   bat "\"${tsVersionSelectorPath}\" /version ${formattedTSVersion} /installing /noprompt"
    bat "\"${seqEditorPath}\" /outputToStdIO /run MainSequence \"${sequencePath}\" /quit"
 }
