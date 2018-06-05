@@ -13,7 +13,7 @@ class IntegrationTest extends AbstractStep {
       super(script, mapStep)
       this.seqPath = mapStep.get('sequence_path')
       this.tsVersion = mapStep.get('teststand_version')
-      this.includeTestStand64 = mapstep.get('include_ts_64')
+      this.includeTestStand64 = mapStep.get('include_ts_64')
       this.lvVersion = lvVersion
    }
 
