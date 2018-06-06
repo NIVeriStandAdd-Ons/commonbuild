@@ -12,12 +12,12 @@ def call(seqPath, tsVersion, includeTestStand64) {
 
    formattedTSVersion = tsVersion.substring(2,4)+".0"
 
-   bat "C:\\github-release\\elevate-1.3.0-x86-64\\elevate.exe -k commonbuild\\resources\\installNipkg.bat \"${packageFilePath}\""
+   nipmInstallPackage(packageFilePath)
    bat "\"${tsVersionSelectorPath}\" /version ${formattedTSVersion} /installing /noprompt"
 
    bat "\"${seqEditorPath}\" /outputToStdIO /run MainSequence \"${sequencePath}\" /quit"
 
-   if (includeTestStand64) {
+   if (includeTestStand64=='true') {
       bat "\"${seqEditor64Path}\" /outputToStdIO /run MainSequence \"${sequencePath}\" /quit"
    }
 }
