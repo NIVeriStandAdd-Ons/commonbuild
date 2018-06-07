@@ -1,10 +1,18 @@
-def call(seqPath, tsVersion, includeTestStand64) {
+def call(seqPath, tsVersion, tsBitness) {
    echo "Running test $seqPath with TestStand $tsVersion"
 
-   def seqEditorPath = "C:\\Program Files (x86)\\National Instruments\\TestStand ${tsVersion}\\Bin\\SeqEdit.exe"
-   def seqEditor64Path = "C:\\Program Files\\National Instruments\\TestStand ${tsVersion}\\Bin\\SeqEdit.exe"
+   def programFiles = "C:\\Program Files"
+
+   if (tsBitness == '32') {
+      programFiles = programFiles.concat(" (x86)")
+   } 
+
+   def seqEditorPath = programFiles+"\\National Instruments\\TestStand ${tsVersion}\\Bin\\SeqEdit.exe"
+
    def tsVersionSelectorPath = "C:\\Program Files (x86)\\National Instruments\\Shared\\TestStand Version Selector\\TSVerSelect.exe"
    def sequencePath = "${WORKSPACE}\\${seqPath}"
+
+   //Read information about the package under test from the build_properties file created upstream in the pipeline.
    def buildLog = readProperties file: "build_properties"
    def packageFileLoc = buildLog.get('PackageFileLoc')
    def packageFileName = buildLog.get('PackageFileName')
@@ -13,11 +21,8 @@ def call(seqPath, tsVersion, includeTestStand64) {
    formattedTSVersion = tsVersion.substring(2,4)+".0"
 
    nipmInstallPackage(packageFilePath)
-   bat "\"${tsVersionSelectorPath}\" /version ${formattedTSVersion} /installing /noprompt"
 
+   bat "\"${tsVersionSelectorPath}\" /version ${formattedTSVersion} /installing /noprompt"
    bat "\"${seqEditorPath}\" /outputToStdIO /run MainSequence \"${sequencePath}\" /quit"
 
-   if (includeTestStand64=='true') {
-      bat "\"${seqEditor64Path}\" /outputToStdIO /run MainSequence \"${sequencePath}\" /quit"
-   }
 }
