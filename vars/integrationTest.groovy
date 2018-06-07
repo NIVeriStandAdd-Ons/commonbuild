@@ -4,7 +4,7 @@ def call(seqPath, tsVersion, tsBitness) {
    def programFiles = "C:\\Program Files"
 
    if (tsBitness == '32') {
-      programFiles = programFiles.concat(" (x86)")
+      programFiles = programFiles.+' (x86)'
    } 
 
    def seqEditorPath = programFiles+"\\National Instruments\\TestStand ${tsVersion}\\Bin\\SeqEdit.exe"
