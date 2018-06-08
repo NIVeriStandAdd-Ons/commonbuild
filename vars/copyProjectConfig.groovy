@@ -2,7 +2,7 @@
 // and versions, then replaces the versions based on the lvVersion
 def call(projectPath, lvVersion){
    echo "Copying configuration file for $projectPath"
-   configFileName = "$projectPath" + ".config"
+   def configFileName = "$projectPath" + ".config"
    
    def currentVersion = lvVersion as int
    def newAssemblyVersion = "${currentVersion}.0.0.0"
