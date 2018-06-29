@@ -43,8 +43,7 @@ def call(typesVersion, tsVersions, payloadDir, lvVersion) {
    def documentsStagingSource = "built\\documents"
    def documentsStagingDest = "nipkg\\${packageName}\\data\\documents"
    def updatedControlText = controlFileText
-   def packageFileName = "${packageName}-${nipkgVersion}_windows_x64.nipkg"
-   def packageFilePath = "built\\$packageFileName"
+   def packageFileName = "${packageName}_${nipkgVersion}_windows_x64.nipkg"
 
    bat "(robocopy \"${programFilesStagingSource}\" \"${programFilesStagingDest}\" /MIR /NFL /NDL /NJH /NJS /nc /ns /np) ^& exit 0"
    bat "(robocopy \"${documentsStagingSource}\" \"${documentsStagingDest}\" /MIR /NFL /NDL /NJH /NJS /nc /ns /np) ^& exit 0"
