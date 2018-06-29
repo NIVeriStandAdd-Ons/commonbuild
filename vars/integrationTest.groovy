@@ -24,5 +24,7 @@ def call(seqPath, tsVersion, tsBitness) {
 
    bat "\"${tsVersionSelectorPath}\" /version ${formattedTSVersion} /installing /noprompt"
    bat "\"${seqEditorPath}\" /outputToStdIO /run MainSequence \"${sequencePath}\" /quit"
+   
+   nipmRemovePackage(packageFilePath)
 
 }
