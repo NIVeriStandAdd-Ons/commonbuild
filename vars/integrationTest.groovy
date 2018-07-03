@@ -27,6 +27,6 @@ def call(seqPath, tsVersion, tsBitness) {
    
    nipmRemovePackage(packageFilePath)
 
-   sleep(60)
+   sleep(30)
 
 }
