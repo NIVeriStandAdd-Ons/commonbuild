@@ -17,3 +17,4 @@ class GitHubRelease extends AbstractStep {
       script.githubRelease(releaseConfiguration, lvVersion)
    }
 }
+

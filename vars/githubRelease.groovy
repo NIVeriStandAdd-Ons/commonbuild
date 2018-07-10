@@ -8,7 +8,6 @@ def call(releaseConfiguration, lvVersion) {
    def org = getComponentParts()['organization']
    def releaseBranchesKey = "${lvVersion}_release_branches"
    def releaseBranches = releaseConfiguration.find{ it.key =="$releaseBranchesKey" }?.value
-   def globalReleaseBranches
 
    def buildLog = readProperties file: "build_properties"
    def packageVersion = buildLog.get('PackageVersion')
@@ -25,14 +24,7 @@ def call(releaseConfiguration, lvVersion) {
    configurationMap = new JsonSlurperClassic().parseText(configurationJsonFile.toString())
    def componentConfiguration = configurationMap.repositories.get(repo)
 
-   if(componentConfiguration.containsKey('release_branches')) {
-      globalReleaseBranches = componentConfiguration.get('release_branches')
-      echo "Branches configured in commonbuild-configuration for release: $globalReleaseBranches"
-   } else {
-      echo "No branches configured in commonbuild-configuration for GitHub releases."
-   }
-
-   if(releaseBranches != null && releaseBranches.contains(branch) || (globalReleaseBranches != null && globalReleaseBranches.contains(branch))) {
+   if(releaseBranches != null && releaseBranches.contains(branch)) {
       echo "Releasing branch \'${branch}\' at www.github.com\${org}\${repo}."
       if(branch == 'master') {
          bat "github-release release --user $org --repo $repo --target $branch --name $releaseName --tag $tagString --description \"${description}\""
