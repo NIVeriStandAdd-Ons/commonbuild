@@ -5,3 +5,4 @@ def call(buildNumber, componentID, lvVersion) {
    def commitMessage = "Updating ${componentID} for VeriStand ${lvVersion} to build number ${buildNumber}."
    bat "commonbuild\\resources\\configPush.bat \"$commitMessage\""
 }
+
