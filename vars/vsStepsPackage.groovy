@@ -5,6 +5,7 @@ def call(typesVersion, tsVersions, payloadDir, lvVersion) {
 
    def baseVersion = typesVersion
    def vsVersion = lvVersion
+   def buildNumber = 0
    if(vsVersion == "2015") {
       vsVersion = "2015sp1"
    }
