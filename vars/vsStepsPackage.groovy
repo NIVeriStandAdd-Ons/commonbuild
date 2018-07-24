@@ -36,8 +36,7 @@ def call(typesVersion, tsVersions, payloadDir, lvVersion) {
       default: nipkgVersion = baseVersion+"-alpha+$paddedBuildNumber"; break;
    }
 
-   def packageName = "veristand-${vsVersion}-steps-for-teststand"
-   def programFilesStagingDirectory = "data\\ProgramFiles_32\\VeriStand Steps for TestStand"
+   def packageName = "ni-veristand-${vsVersion}-steps-for-teststand"
    def replacementExpressionMap = ['veristand_version': vsVersion, 'nipkg_version': nipkgVersion] 
    def programFilesStagingSource = "built\\programFiles_32"
    def programFilesStagingDest = "nipkg\\${packageName}\\data\\programFiles_32"
