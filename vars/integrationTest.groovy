@@ -21,6 +21,7 @@ def call(seqPath, tsVersion, tsBitness) {
    formattedTSVersion = tsVersion.substring(2,4)+".0"
 
    nipmInstallPackage(packageFilePath)
+   sleep(30)
 
    bat "\"${tsVersionSelectorPath}\" /version ${formattedTSVersion} /installing /noprompt"
    bat "\"${seqEditorPath}\" /outputToStdIO /run MainSequence \"${sequencePath}\" /quit"
