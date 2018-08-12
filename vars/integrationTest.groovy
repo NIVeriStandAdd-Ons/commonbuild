@@ -13,9 +13,9 @@ def call(seqPath, tsVersion, tsBitness) {
    def sequencePath = "${WORKSPACE}\\${seqPath}"
 
    //Read information about the package under test from the build_properties file created upstream in the pipeline.
-   def buildLog = readProperties file: "build_properties"
-   def packageFileLoc = buildLog.get('PackageFileLoc')
-   def packageFileName = buildLog.get('PackageFileName')
+   def buildProperties = readProperties file: "build_properties"
+   def packageFileLoc = buildProperties.get('Package File Loc')
+   def packageFileName = buildProperties.get('Package File Name')
    def packageFilePath = "$packageFileLoc\\$packageFileName"
 
    formattedTSVersion = tsVersion.substring(2,4)+".0"

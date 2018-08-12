@@ -23,7 +23,7 @@ def call(payloadDir, devXmlPath, stagingPath, lvVersion) {
       buildNumber = getBuildNumber(componentName, configurationMap)
       echo "Next build number: $buildNumber"
    } else { 
-         configurationMap.repositories[componentName] = ['build_number': buildNumber] 
+         configurationMap.repositories[componentName] = ['build_number': 0] 
    }
    configurationJSON = readJSON text: JsonOutput.toJson(configurationMap)
    def paddedBuildNumber = "$buildNumber".padLeft(3,'0')
@@ -55,8 +55,9 @@ def call(payloadDir, devXmlPath, stagingPath, lvVersion) {
    // Build nipkg using NI Package Manager CLI pack command. 
    bat "\"${nipmAppPath}\" pack \"nipkg\\${packageName}\" \"${payloadDir}\"" 
    
+   // Write build properties to properties file and build log.
    ['build_properties','build_log'].each { logfile ->
-      writeFile file: "$logfile", text: "PackageName: ${packageName}\nPackageFileName: ${packageFilename}\nPackageFileLoc: ${payloadDir}\nPackageVersion: ${nipkgVersion}"
+      writeFile file: "$logfile", text: "Package Name: ${packageName}\nPackage File Name: ${packageFilename}\nPackage File Loc: ${payloadDir}\nPackage Version: ${nipkgVersion}\nPackage Build Number: $buildNumber\n"
    }
 
    configUpdate(configurationJSON, lvVersion)
