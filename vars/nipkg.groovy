@@ -26,7 +26,7 @@ def call(payloadDir, devXmlPath, stagingPath, lvVersion) {
          configurationMap.repositories[componentName] = ['build_number': 0] 
    }
 
-   script.currentBuild.number = buildNumber
+   currentBuild.displayName = buildNumber
    configurationJSON = readJSON text: JsonOutput.toJson(configurationMap)
    def paddedBuildNumber = "$buildNumber".padLeft(3,'0')
 
@@ -59,7 +59,7 @@ def call(payloadDir, devXmlPath, stagingPath, lvVersion) {
    
    // Write build properties to properties file and build log.
    ['build_properties','build_log'].each { logfile ->
-      writeFile file: "$logfile", text: "Package Name: ${packageName}\nPackage File Name: ${packageFilename}\nPackage File Loc: ${payloadDir}\nPackage Version: ${nipkgVersion}\nPackage Build Number: $buildNumber\n"
+      writeFile file: "$logfile", text: "PackageName: ${packageName}\nPackageFileName: ${packageFilename}\nPackageFileLoc: ${payloadDir}\nPackageVersion: ${nipkgVersion}\nPackageBuildNumber: $buildNumber\n"
    }
 
    configUpdate(configurationJSON, lvVersion)

@@ -28,7 +28,7 @@ def call(typesVersion, tsVersions, payloadDir, lvVersion) {
          configurationMap.repositories[componentName] = ['build_number': buildNumber] 
    }
 
-   script.currentBuild.number = buildNumber
+   script.currentBuild.displayName = buildNumber
    configurationJSON = readJSON text: JsonOutput.toJson(configurationMap)
    def paddedBuildNumber = "$buildNumber".padLeft(3,'0')
 
@@ -62,7 +62,7 @@ def call(typesVersion, tsVersions, payloadDir, lvVersion) {
 
    bat "\"${nipmAppPath}\" pack \"$WORKSPACE\\nipkg\\$packageName\"  built"  
 
-   writeFile file: "build_properties", text: "Package Name: ${packageName}\nPackage File Name: ${packageFileName}\nPackage File Loc: ${payloadDir}\nPackage Version: ${nipkgVersion}\nBuild Number: ${buildNumber}\n"
+   writeFile file: "build_properties", text: "PackageName: ${packageName}\nPackageFileName: ${packageFileName}\nPackageFileLoc: ${payloadDir}\nPackageVersion: ${nipkgVersion}\nBuildNumber: ${buildNumber}\n"
         
    configUpdate(configurationJSON, lvVersion)
    vipmGetInstalled(lvVersion)
