@@ -28,9 +28,6 @@ def call(typesVersion, tsVersions, payloadDir, lvVersion) {
          configurationMap.repositories[componentName] = ['build_number': buildNumber] 
    }
 
-   script {
-      currentBuild.displayName = buildNumber
-   }
    configurationJSON = readJSON text: JsonOutput.toJson(configurationMap)
    def paddedBuildNumber = "$buildNumber".padLeft(3,'0')
 
