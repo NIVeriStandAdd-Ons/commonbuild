@@ -15,16 +15,9 @@ class Archive extends AbstractStage {
 
       script.echo "Archiving build to $archiveLocation"
       def buildOutputDir = configuration.archive.get('build_output_dir')
-      def currentBuildNumber = script.currentBuild.number
 
       if(script.fileExists(BuildConfiguration.STAGING_DIR)) {
          buildOutputDir = BuildConfiguration.STAGING_DIR
-      }
-
-      // If configured for GitHub build number tracking then get build number from  configuration file instead of Jenkins.
-      if(configuration.release.steps.type=='githubRelease') {
-         def buildProperties = readProperties file: "build_properties"
-         currentBuildNumber = buildProperties.get('Package Build Number')
       }
 
       script.bat "(robocopy \"$buildOutputDir\" \"$archiveLocation\\$lvVersion\" /s) ^& IF %ERRORLEVEL% LSS 8 SET ERRORLEVEL=0"
@@ -36,7 +29,7 @@ class Archive extends AbstractStage {
    private void setArchiveLocation() {
       archiveLocation = configuration.archive.get('archive_location') +
                 "\\export\\${script.env.BRANCH_NAME}\\" +
-                "Build ${currentBuildNumber}"
+                "Build ${script.currentBuild.number}"
    }
 
    // Set an env var that points to the archive so dependents can find it
