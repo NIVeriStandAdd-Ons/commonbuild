@@ -23,7 +23,7 @@ class Nipkg extends AbstractPackage {
          Custom Device XML Path: $devXmlPath
          """.stripIndent()
 
-      script.nipkg(payloadDir, devXmlPath, stagingPath, lvVersion)
+      script.currentBuild.displayName = "#" + script.nipkg(payloadDir, devXmlPath, stagingPath, lvVersion)
 
    }
 }

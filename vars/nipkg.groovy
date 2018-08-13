@@ -26,9 +26,6 @@ def call(payloadDir, devXmlPath, stagingPath, lvVersion) {
          configurationMap.repositories[componentName] = ['build_number': 0] 
    }
 
-   script {
-      currentBuild.displayName = buildNumber
-   }
    configurationJSON = readJSON text: JsonOutput.toJson(configurationMap)
    def paddedBuildNumber = "$buildNumber".padLeft(3,'0')
 
@@ -72,5 +69,7 @@ def call(payloadDir, devXmlPath, stagingPath, lvVersion) {
    echo "Updating build number for ${componentName} (${lvVersion}) to ${buildNumber} in commonbuild-configuration repository."
    def commitMessage = "Updating ${componentName} for VeriStand ${lvVersion} to build number ${buildNumber}."
    bat "commonbuild\\resources\\configPush.bat \"$commitMessage\""
+
+   return buildNumber
 
 }
