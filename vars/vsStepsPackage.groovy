@@ -1,7 +1,7 @@
 import groovy.json.JsonSlurperClassic
 import groovy.json.JsonOutput
 
-def call(typesVersion, tsVersions, payloadDir, lvVersion) {
+def call(typesVersion, stagingPathMap, packageDestination, lvVersion) {
 
    def baseVersion = typesVersion
    def vsVersion = lvVersion
@@ -33,8 +33,9 @@ def call(typesVersion, tsVersions, payloadDir, lvVersion) {
    def documentsStagingDest = "nipkg\\${packageName}\\data\\documents"
    def packageFileName = "${packageName}_${nipkgVersion}_windows_x64.nipkg"
 
-   bat "(robocopy \"${programFilesStagingSource}\" \"${programFilesStagingDest}\" /MIR /NFL /NDL /NJH /NJS /nc /ns /np) ^& exit 0"
-   bat "(robocopy \"${documentsStagingSource}\" \"${documentsStagingDest}\" /MIR /NFL /NDL /NJH /NJS /nc /ns /np) ^& exit 0"
+   stagingPathMap.each {sourcePath, destPath ->
+      bat "(robocopy \"${sourcePath})\" \"${destPath}\" /MIR /NFL /NDL /NJH /NJS /nc /ns /np) ^& exit 0"
+   }
 
    def replacementExpressionMap = ['veristand_version': vsVersion, 'nipkg_version': nipkgVersion]
    def controlFileText = readFile "control"
@@ -52,7 +53,7 @@ def call(typesVersion, tsVersions, payloadDir, lvVersion) {
 
    bat "\"${nipmAppPath}\" pack \"$WORKSPACE\\nipkg\\$packageName\"  built"
 
-   writeFile file: "build_properties", text: "PackageName: ${packageName}\nPackageFileName: ${packageFileName}\nPackageFileLoc: ${payloadDir}\nPackageVersion: ${nipkgVersion}\nBuildNumber: ${buildNumber}\n"
+   writeFile file: "build_properties", text: "PackageName: ${packageName}\nPackageFileName: ${packageFileName}\nPackageFileLoc: ${packageDestination}\nPackageVersion: ${nipkgVersion}\nBuildNumber: ${buildNumber}\n"
 
    vipmGetInstalled(lvVersion)
    nipmGetInstalled()
