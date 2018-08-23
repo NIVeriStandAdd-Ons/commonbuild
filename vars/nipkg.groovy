@@ -17,13 +17,11 @@ def call(payloadDir, version, stagingPath, lvVersion) {
       def instructionsFileText = readFile "instructions"
    }
 
-   echo "Getting 'build_number' for ${componentName}."
    configurationJsonFile = readJSON file: "configuration_${lvVersion}.json"
    configurationMap = new JsonSlurperClassic().parseText(configurationJsonFile.toString())
 
    if(configurationMap.repositories.containsKey(componentName)) {
       buildNumber = getBuildNumber(componentName, configurationMap)
-      echo "Next build number: $buildNumber"
    } else {
          configurationMap.repositories[componentName] = ['build_number': 0]
    }
@@ -36,7 +34,6 @@ def call(payloadDir, version, stagingPath, lvVersion) {
       case 'develop': flag = "-beta"; break;
       default: flag = "-alpha"; break;
    }
-
    nipkgVersion = version+flag+"+paddedBuildNumber"
 
    // Replace {version} expressions with current VeriStand and .nipkg versions being built.
@@ -46,9 +43,6 @@ def call(payloadDir, version, stagingPath, lvVersion) {
    def packageName = basePackageName.replaceAll("\\{veristand_version\\}", "${lvVersion}")
    def packageFilename = "${packageName}_${nipkgVersion}_windows_x64.nipkg"
    def packageFilePath = "$payloadDir\\$packageFilename"
-
-   echo "Building ${packageName} with control file attributes:"
-   echo finalControlFileText
 
    // Copy package payload to nipkg staging directory.
    bat "(robocopy \"${payloadDir}\" \"nipkg\\${packageName}\\data\\${newStagingPath}\" /MIR /NFL /NDL /NJH /NJS /nc /ns /np) ^& exit 0"
