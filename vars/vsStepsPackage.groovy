@@ -14,8 +14,6 @@ def call(typesVersion, tsVersions, payloadDir, lvVersion) {
    componentBranch = getComponentParts()['branch']
 
    def nipmAppPath = "C:\\Program Files\\National Instruments\\NI Package Manager\\nipkg.exe"
-   def controlFileText = readFile "control"
-   def instructionsFileText = readFile "instructions"
    buildNumber = getBuildNumber(componentName, lvVersion)
    def paddedBuildNumber = "$buildNumber".padLeft(3,'0')
 
@@ -29,23 +27,25 @@ def call(typesVersion, tsVersions, payloadDir, lvVersion) {
 
    def basePackageName = "${controlFields.get('Package')}"
    def packageName = basePackageName.replaceAll("\\{veristand_version\\}", "${lvVersion}")
-   def replacementExpressionMap = ['veristand_version': vsVersion, 'nipkg_version': nipkgVersion]
    def programFilesStagingSource = "built\\programFiles_32"
    def programFilesStagingDest = "nipkg\\${packageName}\\data\\programFiles_32"
    def documentsStagingSource = "built\\documents"
    def documentsStagingDest = "nipkg\\${packageName}\\data\\documents"
-   def updatedControlText = controlFileText
    def packageFileName = "${packageName}_${nipkgVersion}_windows_x64.nipkg"
 
    bat "(robocopy \"${programFilesStagingSource}\" \"${programFilesStagingDest}\" /MIR /NFL /NDL /NJH /NJS /nc /ns /np) ^& exit 0"
    bat "(robocopy \"${documentsStagingSource}\" \"${documentsStagingDest}\" /MIR /NFL /NDL /NJH /NJS /nc /ns /np) ^& exit 0"
 
+   def replacementExpressionMap = ['veristand_version': vsVersion, 'nipkg_version': nipkgVersion]
+   def controlFileText = readFile "control"
+   def instructionsFileText = readFile "instructions"
    replacementExpressionMap.each { replacementExpression, replacementValue ->
-      updatedControlText = updatedControlText.replaceAll("\\{${replacementExpression}\\}", replacementValue)
+      controlFileText = controlFileText.replaceAll("\\{${replacementExpression}\\}", replacementValue)
+      instructionsFileText = instructionsFileText.replaceAll("\\{${replacementExpression}\\}", replacementValue)
    }
 
    dir("nipkg\\${packageName}"){
-      writeFile file:'control\\control', text: updatedControlText
+      writeFile file:'control\\control', text: controlFileText
       writeFile file:'data\\instructions', text: instructionsFileText
       writeFile file:'debian-binary', text: "2.0"
    }
