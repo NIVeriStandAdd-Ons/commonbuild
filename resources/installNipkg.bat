@@ -1,6 +1,6 @@
 @echo off
 
-python installNipkg.py %1
+python commonbuild\\resources\\installNipkg.py %1
 
 @echo on
 

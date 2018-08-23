@@ -2,7 +2,7 @@ import groovy.json.JsonSlurperClassic
 import groovy.json.JsonOutput
 
 def call(payloadDir, version, stagingPath, lvVersion) {
-   
+
    def nipmAppPath = "C:\\Program Files\\National Instruments\\NI Package Manager\\nipkg.exe"
    def nipkgVersion
    def buildNumber = 0
@@ -24,18 +24,20 @@ def call(payloadDir, version, stagingPath, lvVersion) {
    if(configurationMap.repositories.containsKey(componentName)) {
       buildNumber = getBuildNumber(componentName, configurationMap)
       echo "Next build number: $buildNumber"
-   } else { 
-         configurationMap.repositories[componentName] = ['build_number': 0] 
+   } else {
+         configurationMap.repositories[componentName] = ['build_number': 0]
    }
 
    configurationJSON = readJSON text: JsonOutput.toJson(configurationMap)
    def paddedBuildNumber = "$buildNumber".padLeft(3,'0')
 
    switch(componentBranch) {
-      case 'master': nipkgVersion = version+"+$paddedBuildNumber"; break;
-      case 'develop': nipkgVersion = version+"-beta+$paddedBuildNumber"; break;
-      default: nipkgVersion = version+"-alpha+$paddedBuildNumber"; break;
+      case 'master': flag = ""; break;
+      case 'develop': flag = "-beta"; break;
+      default: flag = "-alpha"; break;
    }
+
+   nipkgVersion = version+flag+"+paddedBuildNumber"
 
    // Replace {version} expressions with current VeriStand and .nipkg versions being built.
    def newControlFileText = controlFileText.replaceAll("\\{veristand_version\\}", "${lvVersion}")
@@ -48,19 +50,19 @@ def call(payloadDir, version, stagingPath, lvVersion) {
    echo "Building ${packageName} with control file attributes:"
    echo finalControlFileText
 
-   // Copy package payload to nipkg staging directory. 
+   // Copy package payload to nipkg staging directory.
    bat "(robocopy \"${payloadDir}\" \"nipkg\\${packageName}\\data\\${newStagingPath}\" /MIR /NFL /NDL /NJH /NJS /nc /ns /np) ^& exit 0"
 
    // Create .nipkg source files.
-   writeFile file: "nipkg\\${packageName}\\debian-binary", text: "2.0"      
+   writeFile file: "nipkg\\${packageName}\\debian-binary", text: "2.0"
    writeFile file: "nipkg\\${packageName}\\control\\control", text: finalControlFileText
    if(fileExists: instructions) {
       writeFile file: "nipkg\\${packageName}\\instructions\\instructions", text: instructionsFileText
 	}
 
-   // Build nipkg using NI Package Manager CLI pack command. 
-   bat "\"${nipmAppPath}\" pack \"nipkg\\${packageName}\" \"${payloadDir}\"" 
-   
+   // Build nipkg using NI Package Manager CLI pack command.
+   bat "\"${nipmAppPath}\" pack \"nipkg\\${packageName}\" \"${payloadDir}\""
+
    // Write build properties to properties file and build log.
    ['build_properties','build_log'].each { logfile ->
       writeFile file: "$logfile", text: "PackageName: ${packageName}\nPackageFileName: ${packageFilename}\nPackageFileLoc: ${payloadDir}\nPackageVersion: ${nipkgVersion}\nPackageBuildNumber: $buildNumber\n"
