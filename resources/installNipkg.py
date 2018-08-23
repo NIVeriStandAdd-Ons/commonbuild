@@ -9,6 +9,12 @@ nipkgRelPath = currentDir + "\\" + nipkgPath
 
 print("Installing .nipkg file:\n", nipkgPath)
 print(f'\'{nipkgRelPath}\'')
-result = subprocess.run([nipmAppPath, "install", "-y", nipkgRelPath], stderr=subprocess.STDOUT, shell=True, check=True)
-print(result)
 
+try:
+	subprocess.run([nipmAppPath, "install", "-y", nipkgRelPath], stderr=subprocess.STDOUT, shell=True, check=True)
+	
+except subprocess.CalledProcessError as err:
+	print(err.args)
+	sys.exit(err.args[0])
+	
+	

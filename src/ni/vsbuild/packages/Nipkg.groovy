@@ -5,27 +5,27 @@ import groovy.json.JsonOutput
 
 class Nipkg extends AbstractPackage {
 
-   def stagingPath
+   def devInstallLoc
    def devXmlPath
    def version
-   
+
    Nipkg(script, packageInfo, payloadDir) {
       super(script, packageInfo, payloadDir)
-      this.stagingPath = packageInfo.get('install_destination')
+      this.devInstallLoc = packageInfo.get('install_destination')
       this.devXmlPath = packageInfo.get('dev_xml_path')
    }
 
    void buildPackage(lvVersion) {
- 
+
       def packageInfo = """
-         Building package $name from $payloadDir
-         Staging path: $stagingPath
+         Building package from $payloadDir
+         Staging path: $devInstallLoc
          LabVIEW/VeriStand version: $lvVersion
          Custom Device XML Path: $devXmlPath
          """.stripIndent()
 
       version = script.getDeviceVersion(devXmlPath, lvVersion)
-      script.currentBuild.displayName = "#" + script.nipkg(payloadDir, version, stagingPath, lvVersion)
+      def stagingPathMap = [install_destination: '$devInstallLoc' ]
+      script.currentBuild.displayName = "#" + script.nipkg(packageDestination, version, stagingPathMap, lvVersion)
    }
 }
-
