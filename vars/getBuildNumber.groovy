@@ -5,7 +5,7 @@ def call(componentName, lvVersion) {
 
    def buildNumber = 0
    def configurationJsonFile = readJSON file: "configuration_${lvVersion}.json"
-   def configurationMap = new JsonSlurperClassic().parseText(configurationJsonFile.toStriong())
+   def configurationMap = new JsonSlurperClassic().parseText(configurationJsonFile.toString())
    def componentConfiguration = configurationMap.repositories[componentName]
 
    if(configurationMap.repositories.containsKey(componentName)) {

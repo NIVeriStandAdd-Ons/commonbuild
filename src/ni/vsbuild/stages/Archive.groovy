@@ -20,7 +20,7 @@ class Archive extends AbstractStage {
          buildOutputDir = BuildConfiguration.STAGING_DIR
       }
 
-      script.bat "(robocopy \"$buildOutputDir\" \"$archiveLocation\\$lvVersion\" /s) ^& IF %ERRORLEVEL% LSS 8 SET ERRORLEVEL=0"
+      script.bat "(robocopy \"$buildOutputDir\" \"$archiveLocation\\$lvVersion\" /s /MIR /NFL /NDL /NJH /NJS /nc /ns /np) ^& IF %ERRORLEVEL% LSS 8 SET ERRORLEVEL=0"
 
       setArchiveVar()
    }
