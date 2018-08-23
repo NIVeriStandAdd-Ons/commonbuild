@@ -19,14 +19,17 @@ def call(typesVersion, tsVersions, payloadDir, lvVersion) {
    buildNumber = getBuildNumber(componentName, lvVersion)
    def paddedBuildNumber = "$buildNumber".padLeft(3,'0')
 
+   def controlFields = readProperties file: "control"
+
    switch(componentBranch) {
       case 'master': nipkgVersion = baseVersion+"+$paddedBuildNumber"; break;
       case 'develop': nipkgVersion = baseVersion+"-beta+$paddedBuildNumber"; break;
       default: nipkgVersion = baseVersion+"-alpha+$paddedBuildNumber"; break;
    }
 
-   def packageName = "ni-veristand-${vsVersion}-steps-for-teststand"
-   def replacementExpressionMap = ['veristand_version': vsVersion, 'nipkg_version': nipkgVersion] 
+   def basePackageName = "${controlFields.get('Package')}"
+   def packageName = basePackageName.replaceAll("\\{veristand_version\\}", "${lvVersion}")
+   def replacementExpressionMap = ['veristand_version': vsVersion, 'nipkg_version': nipkgVersion]
    def programFilesStagingSource = "built\\programFiles_32"
    def programFilesStagingDest = "nipkg\\${packageName}\\data\\programFiles_32"
    def documentsStagingSource = "built\\documents"
