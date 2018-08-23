@@ -16,19 +16,7 @@ def call(typesVersion, tsVersions, payloadDir, lvVersion) {
    def nipmAppPath = "C:\\Program Files\\National Instruments\\NI Package Manager\\nipkg.exe"
    def controlFileText = readFile "control"
    def instructionsFileText = readFile "instructions"
-   
-   echo "Getting 'build_number' for ${componentName}."
-   configurationJsonFile = readJSON file: "configuration_${lvVersion}.json"
-   configurationMap = new JsonSlurperClassic().parseText(configurationJsonFile.toString())
-
-   if(configurationMap.repositories.containsKey(componentName)) {
-      buildNumber = getBuildNumber(componentName, configurationMap)
-      echo "Next build number: $buildNumber"
-   } else { 
-         configurationMap.repositories[componentName] = ['build_number': buildNumber] 
-   }
-
-   configurationJSON = readJSON text: JsonOutput.toJson(configurationMap)
+   buildNumber = getBuildNumber(componentName, lvVersion)
    def paddedBuildNumber = "$buildNumber".padLeft(3,'0')
 
    switch(componentBranch) {
@@ -59,14 +47,12 @@ def call(typesVersion, tsVersions, payloadDir, lvVersion) {
       writeFile file:'debian-binary', text: "2.0"
    }
 
-   bat "\"${nipmAppPath}\" pack \"$WORKSPACE\\nipkg\\$packageName\"  built"  
+   bat "\"${nipmAppPath}\" pack \"$WORKSPACE\\nipkg\\$packageName\"  built"
 
    writeFile file: "build_properties", text: "PackageName: ${packageName}\nPackageFileName: ${packageFileName}\nPackageFileLoc: ${payloadDir}\nPackageVersion: ${nipkgVersion}\nBuildNumber: ${buildNumber}\n"
-        
-   configUpdate(configurationJSON, lvVersion)
+
    vipmGetInstalled(lvVersion)
    nipmGetInstalled()
-
 
    echo "Updating build number for ${componentName} (${lvVersion}) to ${buildNumber} in commonbuild-configuration repository."
    def commitMessage = "Updating ${componentName} for VeriStand ${lvVersion} to build number ${buildNumber}."
