@@ -7,6 +7,7 @@ class Nipkg extends AbstractPackage {
 
    def stagingPath
    def devXmlPath
+   def version
    
    Nipkg(script, packageInfo, payloadDir) {
       super(script, packageInfo, payloadDir)
@@ -23,7 +24,8 @@ class Nipkg extends AbstractPackage {
          Custom Device XML Path: $devXmlPath
          """.stripIndent()
 
-      script.currentBuild.displayName = "#" + script.nipkg(payloadDir, devXmlPath, stagingPath, lvVersion)
-
+      version = script.getDeviceVersion(devXmlPath, lvVersion)
+      script.currentBuild.displayName = "#" + script.nipkg(payloadDir, version, stagingPath, lvVersion)
    }
 }
+

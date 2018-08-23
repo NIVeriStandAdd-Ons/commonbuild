@@ -1,7 +1,7 @@
 import groovy.json.JsonSlurperClassic
 import groovy.json.JsonOutput
 
-def call(payloadDir, devXmlPath, stagingPath, lvVersion) {
+def call(payloadDir, version, stagingPath, lvVersion) {
    
    def nipmAppPath = "C:\\Program Files\\National Instruments\\NI Package Manager\\nipkg.exe"
    def nipkgVersion
@@ -13,7 +13,6 @@ def call(payloadDir, devXmlPath, stagingPath, lvVersion) {
    def controlFields = readProperties file: "control"
    def basePackageName = "${controlFields.get('Package')}"
    def controlFileText = readFile "control"
-   def baseVersion = getDeviceVersion(devXmlPath, lvVersion)
 
    echo "Getting 'build_number' for ${componentName}."
    configurationJsonFile = readJSON file: "configuration_${lvVersion}.json"
@@ -30,9 +29,9 @@ def call(payloadDir, devXmlPath, stagingPath, lvVersion) {
    def paddedBuildNumber = "$buildNumber".padLeft(3,'0')
 
    switch(componentBranch) {
-      case 'master': nipkgVersion = baseVersion+"+$paddedBuildNumber"; break;
-      case 'develop': nipkgVersion = baseVersion+"-beta+$paddedBuildNumber"; break;
-      default: nipkgVersion = baseVersion+"-alpha+$paddedBuildNumber"; break;
+      case 'master': nipkgVersion = version+"+$paddedBuildNumber"; break;
+      case 'develop': nipkgVersion = version+"-beta+$paddedBuildNumber"; break;
+      default: nipkgVersion = version+"-alpha+$paddedBuildNumber"; break;
    }
 
    // Replace {version} expressions with current VeriStand and .nipkg versions being built.
