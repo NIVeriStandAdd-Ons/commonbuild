@@ -13,6 +13,9 @@ def call(payloadDir, version, stagingPath, lvVersion) {
    def controlFields = readProperties file: "control"
    def basePackageName = "${controlFields.get('Package')}"
    def controlFileText = readFile "control"
+   if(fileExists: instructions) {
+      def instructionsFileText = readFile "instructions"
+   }
 
    echo "Getting 'build_number' for ${componentName}."
    configurationJsonFile = readJSON file: "configuration_${lvVersion}.json"
@@ -51,6 +54,9 @@ def call(payloadDir, version, stagingPath, lvVersion) {
    // Create .nipkg source files.
    writeFile file: "nipkg\\${packageName}\\debian-binary", text: "2.0"      
    writeFile file: "nipkg\\${packageName}\\control\\control", text: finalControlFileText
+   if(fileExists: instructions) {
+      writeFile file: "nipkg\\${packageName}\\instructions\\instructions", text: instructionsFileText
+	}
 
    // Build nipkg using NI Package Manager CLI pack command. 
    bat "\"${nipmAppPath}\" pack \"nipkg\\${packageName}\" \"${payloadDir}\"" 
