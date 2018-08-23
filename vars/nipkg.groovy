@@ -17,16 +17,7 @@ def call(payloadDir, version, stagingPath, lvVersion) {
       def instructionsFileText = readFile "instructions"
    }
 
-   configurationJsonFile = readJSON file: "configuration_${lvVersion}.json"
-   configurationMap = new JsonSlurperClassic().parseText(configurationJsonFile.toString())
-
-   if(configurationMap.repositories.containsKey(componentName)) {
-      buildNumber = getBuildNumber(componentName, configurationMap)
-   } else {
-         configurationMap.repositories[componentName] = ['build_number': 0]
-   }
-
-   configurationJSON = readJSON text: JsonOutput.toJson(configurationMap)
+   buildNumber = getBuildNumber(componentName, lvVersion)
    def paddedBuildNumber = "$buildNumber".padLeft(3,'0')
 
    switch(componentBranch) {
@@ -61,11 +52,8 @@ def call(payloadDir, version, stagingPath, lvVersion) {
    ['build_properties','build_log'].each { logfile ->
       writeFile file: "$logfile", text: "PackageName: ${packageName}\nPackageFileName: ${packageFilename}\nPackageFileLoc: ${payloadDir}\nPackageVersion: ${nipkgVersion}\nPackageBuildNumber: $buildNumber\n"
    }
-
-   configUpdate(configurationJSON, lvVersion)
    vipmGetInstalled(lvVersion)
    nipmGetInstalled()
-
 
    echo "Updating build number for ${componentName} (${lvVersion}) to ${buildNumber} in commonbuild-configuration repository."
    def commitMessage = "Updating ${componentName} for VeriStand ${lvVersion} to build number ${buildNumber}."
