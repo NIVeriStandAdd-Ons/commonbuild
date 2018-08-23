@@ -12,9 +12,9 @@ print(f'\'{nipkgRelPath}\'')
 
 try:
 	subprocess.run([nipmAppPath, "install", "-y", nipkgRelPath], stderr=subprocess.STDOUT, shell=True, check=True)
-	
+
 except subprocess.CalledProcessError as err:
 	print(err.args)
 	sys.exit(err.args[0])
-	
+
 	
