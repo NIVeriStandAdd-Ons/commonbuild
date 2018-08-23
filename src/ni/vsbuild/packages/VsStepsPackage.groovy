@@ -18,7 +18,7 @@ class VsStepsPackage extends AbstractPackage {
          """.stripIndent()
 
       script.echo packageInfo
-      stagingPathMap = ['built\\programFiles_32':'programFiles_32', 'built\\documents': 'documents']
+      def stagingPathMap = ['built\\programFiles_32':'programFiles_32', 'built\\documents': 'documents']
       script.currentBuild.displayName = "$lvVersion\\#" + script.vsStepsPackage(typesVersion, stagingPathMap, packageDestination, lvVersion)
    }
 }

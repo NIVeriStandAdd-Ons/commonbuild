@@ -37,7 +37,7 @@ def call(typesVersion, stagingPathMap, packageDestination, lvVersion) {
       bat "(robocopy \"${sourcePath})\" \"${destPath}\" /MIR /NFL /NDL /NJH /NJS /nc /ns /np) ^& exit 0"
    }
 
-   def replacementExpressionMap = ['veristand_version': vsVersion, 'nipkg_version': nipkgVersion]
+   def replacementExpressionMap = ['labview_version': lvVersion, 'veristand_version': vsVersion, 'nipkg_version': nipkgVersion]
    def controlFileText = readFile "control"
    def instructionsFileText = readFile "instructions"
    replacementExpressionMap.each { replacementExpression, replacementValue ->
