@@ -10,8 +10,12 @@ def call(componentName, lvVersion) {
    if(configurationMap.repositories.containsKey(componentName)) {
      def componentConfiguration = configurationMap.repositories[componentName]
      if(componentConfiguration.containsKey('build_number')) {
-         componentConfiguration['build_number'] = 1 + componentConfiguration['build_number'] as Integer
-     } else {configurationMap.repositories[componentName] = ['build_number': buildNumber]}
+       buildNumber = 1 + componentConfiguration['build_number'] as Integer
+       componentConfiguration['build_number'] = buildNumber
+       echo "Next build number for ${componentName}: ${buildNumber}"
+     } else {
+       echo "Did not find build configuration for ${componentName}. Starting at Build # 0."
+       configurationMap.repositories[componentName] = ['build_number': buildNumber]}
    }
 
    def configurationJSON = readJSON text: JsonOutput.toJson(configurationMap)
