@@ -25,7 +25,7 @@ def call(packageDestination, version, stagingPathMap, lvVersion) {
       case 'develop': flag = "-beta"; break;
       default: flag = "-alpha"; break;
    }
-   nipkgVersion = version+flag+"+paddedBuildNumber"
+   nipkgVersion = version+flag+"+${paddedBuildNumber}"
 
    // Replace {version} expressions with current VeriStand and .nipkg versions being built.
    def newControlFileText = controlFileText.replaceAll("\\{veristand_version\\}", "${lvVersion}")
