@@ -3,7 +3,8 @@ import groovy.json.JsonOutput
 
 def call(packageDestination, version, stagingPathMap, lvVersion) {
 
-   def nipmAppPath = "C:\\Program Files\\National Instruments\\NI Package Manager\\nipkg.exe"
+   cloneCommonbuildConfiguration()
+
    def nipkgVersion
    def buildNumber = 0
    componentName = getComponentParts()['repo']
@@ -50,12 +51,14 @@ def call(packageDestination, version, stagingPathMap, lvVersion) {
 	}
 
    // Build nipkg using NI Package Manager CLI pack command.
+   def nipmAppPath = "C:\\Program Files\\National Instruments\\NI Package Manager\\nipkg.exe"
    bat "\"${nipmAppPath}\" pack \"nipkg\\${packageName}\" \"${packageDestination}\""
 
    // Write build properties to properties file and build log.
    ['build_properties','build_log'].each { logfile ->
       writeFile file: "$logfile", text: "PackageName: ${packageName}\nPackageFileName: ${packageFilename}\nPackageFileLoc: ${packageDestination}\nPackageVersion: ${nipkgVersion}\nPackageBuildNumber: $buildNumber\n"
    }
+
    vipmGetInstalled(lvVersion)
    nipmGetInstalled()
    configPush(buildNumber, componentName, lvVersion)
