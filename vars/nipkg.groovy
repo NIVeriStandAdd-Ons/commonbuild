@@ -38,7 +38,7 @@ def call(packageDestination, version, stagingPathMap, lvVersion) {
    stagingPathMap.each { sourceDir, destDir ->
       sourceDir = sourceDir.replaceAll("\\{veristand_version\\}", "${lvVersion}")
       destDir = destDir.replaceAll("\\{veristand_version\\}", "${lvVersion}")
-      bat "(robocopy \"${destDir}\" \"nipkg\\${packageName}\\data\\${sourceDir}\" /MIR /NFL /NDL /NJH /NJS /nc /ns /np) ^& exit 0"
+      bat "(robocopy \"${sourceDir}\" \"nipkg\\${packageName}\\data\\${destDir}\" /MIR /NFL /NDL /NJH /NJS /nc /ns /np) ^& exit 0"
    }
 
 

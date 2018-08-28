@@ -27,7 +27,7 @@ class Nipkg extends AbstractPackage {
          """.stripIndent()
 
       version = script.getDeviceVersion(devXmlPath, lvVersion)
-      def stagingPathMap = [install_destination: '$devInstallLoc' ]
+      def stagingPathMap = ["${packageDestination}" : devInstallLoc]
       script.currentBuild.displayName = "#" + script.nipkg(packageDestination, version, stagingPathMap, lvVersion)
    }
 }
