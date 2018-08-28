@@ -22,13 +22,12 @@ def call(packageDestination, version, stagingPathMap, lvVersion) {
    // Read PROPERTIES from .nipkg control file.
    def controlFields = readProperties file: "control"
    def basePackageName = "${controlFields.get('Package')}"
-   def controlFileText = readFile "control"
    if(fileExists('instructions')) {
       def instructionsFileText = readFile "instructions"
    }
 
    // Replace {version} expressions with current VeriStand and .nipkg versions being built.
-   def replacementExpressionMap = ['labview_version': lvVersion, 'veristand_version': vsVersion, 'nipkg_version': nipkgVersion]
+   def replacementExpressionMap = ['labview_version': lvVersion, 'veristand_version': lvVersion, 'nipkg_version': nipkgVersion]
    def controlFileText = readFile "control"
    if(fileExists('instructions')) {
       def instructionsFileText = readFile "instructions"
