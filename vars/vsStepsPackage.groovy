@@ -1,9 +1,10 @@
 import groovy.json.JsonSlurperClassic
 import groovy.json.JsonOutput
 
-def call(typesVersion, stagingPathMap, packageDestination, lvVersion) {
+def call(packageDestination, version, stagingPathMap, lvVersion) {
 
-   def baseVersion = typesVersion
+  cloneCommonbuildConfiguration()
+
    def vsVersion = lvVersion
    def buildNumber = 0
    if(vsVersion == "2015") {
@@ -13,16 +14,15 @@ def call(typesVersion, stagingPathMap, packageDestination, lvVersion) {
    componentName = getComponentParts()['repo']
    componentBranch = getComponentParts()['branch']
 
-   def nipmAppPath = "C:\\Program Files\\National Instruments\\NI Package Manager\\nipkg.exe"
    buildNumber = getBuildNumber(componentName, lvVersion)
    def paddedBuildNumber = "$buildNumber".padLeft(3,'0')
 
    def controlFields = readProperties file: "control"
 
    switch(componentBranch) {
-      case 'master': nipkgVersion = baseVersion+"+$paddedBuildNumber"; break;
-      case 'develop': nipkgVersion = baseVersion+"-beta+$paddedBuildNumber"; break;
-      default: nipkgVersion = baseVersion+"-alpha+$paddedBuildNumber"; break;
+      case 'master': nipkgVersion = version+"+$paddedBuildNumber"; break;
+      case 'develop': nipkgVersion = version+"-beta+$paddedBuildNumber"; break;
+      default: nipkgVersion = version+"-alpha+$paddedBuildNumber"; break;
    }
 
    def basePackageName = "${controlFields.get('Package')}"
@@ -51,6 +51,7 @@ def call(typesVersion, stagingPathMap, packageDestination, lvVersion) {
       writeFile file:'debian-binary', text: "2.0"
    }
 
+   def nipmAppPath = "C:\\Program Files\\National Instruments\\NI Package Manager\\nipkg.exe"
    bat "\"${nipmAppPath}\" pack \"$WORKSPACE\\nipkg\\$packageName\"  built"
 
    writeFile file: "build_properties", text: "PackageName: ${packageName}\nPackageFileName: ${packageFileName}\nPackageFileLoc: ${packageDestination}\nPackageVersion: ${nipkgVersion}\nBuildNumber: ${buildNumber}\n"

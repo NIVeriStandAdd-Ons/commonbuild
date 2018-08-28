@@ -3,20 +3,11 @@ import groovy.json.JsonOutput
 
 def call(packageDestination, version, stagingPathMap, lvVersion) {
 
-   cloneCommonbuildConfiguration()
+   cloneCommonbuildConfiguration(lvVersion)
 
-   def nipkgVersion
    def buildNumber = 0
    componentName = getComponentParts()['repo']
    componentBranch = getComponentParts()['branch']
-
-   // Read PROPERTIES from .nipkg control file.
-   def controlFields = readProperties file: "control"
-   def basePackageName = "${controlFields.get('Package')}"
-   def controlFileText = readFile "control"
-   if(fileExists('instructions')) {
-      def instructionsFileText = readFile "instructions"
-   }
 
    buildNumber = getBuildNumber(componentName, lvVersion)
    def paddedBuildNumber = "$buildNumber".padLeft(3,'0')
@@ -26,11 +17,30 @@ def call(packageDestination, version, stagingPathMap, lvVersion) {
       case 'develop': flag = "-beta"; break;
       default: flag = "-alpha"; break;
    }
-   nipkgVersion = version+flag+"+${paddedBuildNumber}"
+   def nipkgVersion = version+flag+"+${paddedBuildNumber}"
+
+   // Read PROPERTIES from .nipkg control file.
+   def controlFields = readProperties file: "control"
+   def basePackageName = "${controlFields.get('Package')}"
+   def controlFileText = readFile "control"
+   if(fileExists('instructions')) {
+      def instructionsFileText = readFile "instructions"
+   }
 
    // Replace {version} expressions with current VeriStand and .nipkg versions being built.
-   def newControlFileText = controlFileText.replaceAll("\\{veristand_version\\}", "${lvVersion}")
-   finalControlFileText = newControlFileText.replaceAll("\\{nipkg_version\\}", "${nipkgVersion}")
+   def replacementExpressionMap = ['labview_version': lvVersion, 'veristand_version': vsVersion, 'nipkg_version': nipkgVersion]
+   def controlFileText = readFile "control"
+   if(fileExists('instructions')) {
+      def instructionsFileText = readFile "instructions"
+    }
+
+   replacementExpressionMap.each { replacementExpression, replacementValue ->
+      controlFileText = controlFileText.replaceAll("\\{${replacementExpression}\\}", replacementValue)
+      if(fileExists('instructions')) {
+         instructionsFileText = instructionsFileText.replaceAll("\\{${replacementExpression}\\}", replacementValue)
+      }
+   }
+
    def packageName = basePackageName.replaceAll("\\{veristand_version\\}", "${lvVersion}")
    def packageFilename = "${packageName}_${nipkgVersion}_windows_x64.nipkg"
    def packageFilePath = "${packageDestination}\\${packageFilename}"
@@ -42,10 +52,9 @@ def call(packageDestination, version, stagingPathMap, lvVersion) {
       bat "(robocopy \"${sourceDir}\" \"nipkg\\${packageName}\\data\\${destDir}\" /MIR /NFL /NDL /NJH /NJS /nc /ns /np) ^& exit 0"
    }
 
-
    // Create .nipkg source files.
    writeFile file: "nipkg\\${packageName}\\debian-binary", text: "2.0"
-   writeFile file: "nipkg\\${packageName}\\control\\control", text: finalControlFileText
+   writeFile file: "nipkg\\${packageName}\\control\\control", text: controlFileText
    if(fileExists('instructions')) {
       writeFile file: "nipkg\\${packageName}\\instructions\\instructions", text: instructionsFileText
 	}
