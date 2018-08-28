@@ -6,15 +6,14 @@ def call(componentName, lvVersion) {
    def buildNumber = 0
    def configurationJsonFile = readJSON file: "configuration_${lvVersion}.json"
    def configurationMap = new JsonSlurperClassic().parseText(configurationJsonFile.toString())
-   def componentConfiguration = configurationMap.repositories[componentName]
 
    if(configurationMap.repositories.containsKey(componentName)) {
+     def componentConfiguration = configurationMap.repositories[componentName]
      if(componentConfiguration.containsKey('build_number')) {
-        buildNumber = 1 + componentConfiguration['build_number'] as Integer
-     }
+         componentConfiguration['build_number'] = 1 + componentConfiguration['build_number'] as Integer
+     } else {configurationMap.repositories[componentName] = ['build_number': buildNumber]}
    }
-   // Update build number in configurationMap and return current build number.
-   componentConfiguration['build_number'] = buildNumber
+
    def configurationJSON = readJSON text: JsonOutput.toJson(configurationMap)
    def configurationJsonFileName = "configuration_${lvVersion}.json"
 
@@ -23,5 +22,4 @@ def call(componentName, lvVersion) {
    bat "commonbuild\\resources\\configUpdate.bat $configurationJsonFileName"
 
    return buildNumber
-
 }

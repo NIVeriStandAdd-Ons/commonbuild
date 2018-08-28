@@ -13,7 +13,7 @@ def call(packageDestination, version, stagingPathMap, lvVersion) {
    def controlFields = readProperties file: "control"
    def basePackageName = "${controlFields.get('Package')}"
    def controlFileText = readFile "control"
-   if(fileExists: instructions) {
+   if(fileExists('instructions')) {
       def instructionsFileText = readFile "instructions"
    }
 
@@ -30,18 +30,22 @@ def call(packageDestination, version, stagingPathMap, lvVersion) {
    // Replace {version} expressions with current VeriStand and .nipkg versions being built.
    def newControlFileText = controlFileText.replaceAll("\\{veristand_version\\}", "${lvVersion}")
    finalControlFileText = newControlFileText.replaceAll("\\{nipkg_version\\}", "${nipkgVersion}")
-   def newStagingPath = stagingPath.replaceAll("\\{veristand_version\\}", "${lvVersion}")
    def packageName = basePackageName.replaceAll("\\{veristand_version\\}", "${lvVersion}")
    def packageFilename = "${packageName}_${nipkgVersion}_windows_x64.nipkg"
-   def packageFilePath = "$packageDestination\\$packageFilename"
+   def packageFilePath = "${packageDestination}\\${packageFilename}"
 
-   // Copy package payload to nipkg staging directory.
-   bat "(robocopy \"${packageDestination}\" \"nipkg\\${packageName}\\data\\${newStagingPath}\" /MIR /NFL /NDL /NJH /NJS /nc /ns /np) ^& exit 0"
+   // Copy package source files to package to nipkg staging directories after evaluating expressions.
+   stagingPathMap.each { sourceDir, destDir ->
+      sourceDir = sourceDir.replaceAll("\\{veristand_version\\}", "${lvVersion}")
+      destDir = destDir.replaceAll("\\{veristand_version\\}", "${lvVersion}")
+      bat "(robocopy \"${destDir}\" \"nipkg\\${packageName}\\data\\${sourceDir}\" /MIR /NFL /NDL /NJH /NJS /nc /ns /np) ^& exit 0"
+   }
+
 
    // Create .nipkg source files.
    writeFile file: "nipkg\\${packageName}\\debian-binary", text: "2.0"
    writeFile file: "nipkg\\${packageName}\\control\\control", text: finalControlFileText
-   if(fileExists: instructions) {
+   if(fileExists('instructions')) {
       writeFile file: "nipkg\\${packageName}\\instructions\\instructions", text: instructionsFileText
 	}
 
@@ -60,5 +64,4 @@ def call(packageDestination, version, stagingPathMap, lvVersion) {
    bat "commonbuild\\resources\\configPush.bat \"$commitMessage\""
 
    return buildNumber
-
 }

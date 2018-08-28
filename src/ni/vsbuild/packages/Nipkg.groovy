@@ -6,6 +6,7 @@ import groovy.json.JsonOutput
 class Nipkg extends AbstractPackage {
 
    def devInstallLoc
+   def packageDestination
    def devXmlPath
    def version
 
@@ -13,6 +14,7 @@ class Nipkg extends AbstractPackage {
       super(script, packageInfo, payloadDir)
       this.devInstallLoc = packageInfo.get('install_destination')
       this.devXmlPath = packageInfo.get('dev_xml_path')
+      this.packageDestination = payloadDir
    }
 
    void buildPackage(lvVersion) {
