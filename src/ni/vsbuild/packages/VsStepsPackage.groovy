@@ -19,6 +19,6 @@ class VsStepsPackage extends AbstractPackage {
 
       script.echo packageInfo
       def stagingPathMap = ['built\\programFiles_32':'programFiles_32', 'built\\documents': 'documents']
-      script.currentBuild.displayName = "$lvVersion\\#" + script.vsStepsPackage(packageDestination, version, stagingPathMap, lvVersion)
+      script.currentBuild.displayName = "$lvVersion\\#" + script.nipkg(packageDestination, version, stagingPathMap, lvVersion)
    }
 }

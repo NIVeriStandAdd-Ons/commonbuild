@@ -5,11 +5,10 @@ def call(packageDestination, version, stagingPathMap, lvVersion) {
 
    cloneCommonbuildConfiguration(lvVersion)
 
-   def buildNumber = 0
    componentName = getComponentParts()['repo']
    componentBranch = getComponentParts()['branch']
 
-   buildNumber = getBuildNumber(componentName, lvVersion)
+   def buildNumber = getBuildNumber(componentName, lvVersion)
    def paddedBuildNumber = "$buildNumber".padLeft(3,'0')
 
    switch(componentBranch) {
@@ -18,13 +17,6 @@ def call(packageDestination, version, stagingPathMap, lvVersion) {
       default: flag = "-alpha"; break;
    }
    def nipkgVersion = version+flag+"+${paddedBuildNumber}"
-
-   // Read PROPERTIES from .nipkg control file.
-   def controlFields = readProperties file: "control"
-   def basePackageName = "${controlFields.get('Package')}"
-   if(fileExists('instructions')) {
-      def instructionsFileText = readFile "instructions"
-   }
 
    // Replace {version} expressions with current VeriStand and .nipkg versions being built.
    def replacementExpressionMap = ['labview_version': lvVersion, 'veristand_version': lvVersion, 'nipkg_version': nipkgVersion]
@@ -40,6 +32,9 @@ def call(packageDestination, version, stagingPathMap, lvVersion) {
       }
    }
 
+   // Read PROPERTIES from .nipkg control file.
+   def controlFields = readProperties file: "control"
+   def basePackageName = "${controlFields.get('Package')}"
    def packageName = basePackageName.replaceAll("\\{veristand_version\\}", "${lvVersion}")
    def packageFilename = "${packageName}_${nipkgVersion}_windows_x64.nipkg"
    def packageFilePath = "${packageDestination}\\${packageFilename}"

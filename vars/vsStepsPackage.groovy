@@ -20,18 +20,16 @@ def call(packageDestination, version, stagingPathMap, lvVersion) {
    def controlFields = readProperties file: "control"
 
    switch(componentBranch) {
-      case 'master': nipkgVersion = version+"+$paddedBuildNumber"; break;
-      case 'develop': nipkgVersion = version+"-beta+$paddedBuildNumber"; break;
-      default: nipkgVersion = version+"-alpha+$paddedBuildNumber"; break;
+      case 'master': flag = ""; break;
+      case 'develop': flag = "-beta"; break;
+      default: flag = "-alpha"; break;
    }
+   nipkgVersion = version+flag+"+${paddedBuildNumber}"
 
    def basePackageName = "${controlFields.get('Package')}"
    def packageName = basePackageName.replaceAll("\\{veristand_version\\}", "${lvVersion}")
-   def programFilesStagingSource = "built\\programFiles_32"
-   def programFilesStagingDest = "nipkg\\${packageName}\\data\\programFiles_32"
-   def documentsStagingSource = "built\\documents"
-   def documentsStagingDest = "nipkg\\${packageName}\\data\\documents"
    def packageFileName = "${packageName}_${nipkgVersion}_windows_x64.nipkg"
+   def packageFilePath = "${packageDestination}\\${packageFilename}"
 
    stagingPathMap.each {sourcePath, destPath ->
       bat "(robocopy \"${sourcePath})\" \"${destPath}\" /MIR /NFL /NDL /NJH /NJS /nc /ns /np) ^& exit 0"
