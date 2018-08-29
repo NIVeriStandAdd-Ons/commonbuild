@@ -14,7 +14,7 @@ class VsStepsPackage extends AbstractPackage {
    void buildPackage(lvVersion) {
       def packageInfo = """
          Building package $name from $payloadDir
-         Step Types Version: $typesVersion
+         Step Types Version: $version
          """.stripIndent()
 
       script.echo packageInfo

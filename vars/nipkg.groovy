@@ -21,9 +21,7 @@ def call(packageDestination, version, stagingPathMap, lvVersion) {
    // Replace {version} expressions with current VeriStand and .nipkg versions being built.
    def replacementExpressionMap = ['labview_version': lvVersion, 'veristand_version': lvVersion, 'nipkg_version': nipkgVersion]
    def controlFileText = readFile "control"
-   if(fileExists('instructions')) {
-      def instructionsFileText = readFile "instructions"
-    }
+   def instructionsFileText = readFile "instructions"
 
    replacementExpressionMap.each { replacementExpression, replacementValue ->
       controlFileText = controlFileText.replaceAll("\\{${replacementExpression}\\}", replacementValue)
