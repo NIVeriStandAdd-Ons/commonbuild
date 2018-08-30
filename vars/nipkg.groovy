@@ -48,7 +48,7 @@ def call(packageDestination, version, stagingPathMap, lvVersion) {
    writeFile file: "nipkg\\${packageName}\\debian-binary", text: "2.0"
    writeFile file: "nipkg\\${packageName}\\control\\control", text: controlFileText
    if(fileExists('instructions')) {
-      writeFile file: "nipkg\\${packageName}\\instructions\\instructions", text: instructionsFileText
+      writeFile file: "nipkg\\${packageName}\\data\\instructions", text: instructionsFileText
 	}
 
    // Build nipkg using NI Package Manager CLI pack command.
