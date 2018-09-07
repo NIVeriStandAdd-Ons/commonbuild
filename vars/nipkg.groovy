@@ -9,6 +9,7 @@ def call(packageDestination, version, stagingPathMap, lvVersion) {
 
    componentName = getComponentParts()['repo']
    componentBranch = getComponentParts()['branch']
+   componentOrg = getComponentParts()['org']
 
    // Read the current build number from configuration file.
    // If successful getBuildNumber() increments the build number and saves it back to TOML file.
@@ -68,7 +69,7 @@ def call(packageDestination, version, stagingPathMap, lvVersion) {
    // build_properties: used by downstream build steps.
    // build_log: distributed with .nipkg to document build configuration
    ['build_properties','build_log'].each { logfile ->
-      writeFile file: "$logfile", text: "PackageName: ${packageName}\nPackageFileName: ${packageFilename}\nPackageFileLoc: ${packageDestination}\nPackageVersion: ${nipkgVersion}\nPackageBuildNumber: $buildNumber\n"
+      writeFile file: "$logfile", text: "PackageName: ${packageName}\nGitHub Organization: ${componentOrg}\nBranch: ${componentBranch}\nPackageFileName: ${packageFilename}\nPackageFileLoc: ${packageDestination}\nPackageVersion: ${nipkgVersion}\nPackageBuildNumber: $buildNumber\n"
    }
 
    // Invoke VI Package Manager API and NI Package Manager CLI to log installed packages to build_log.

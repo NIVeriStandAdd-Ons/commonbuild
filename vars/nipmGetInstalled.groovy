@@ -11,5 +11,4 @@ def call(){
    //Add NIPM output to build log.
    def buildLog = readFile 'build_log'
    writeFile file: 'build_log', text: buildLog+"\r\n"+installedNipkgList
-
 }

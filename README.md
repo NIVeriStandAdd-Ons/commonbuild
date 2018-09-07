@@ -53,3 +53,5 @@ project = '{cd}'
 ```
 
 Stages are ordered by the pipeline. Steps within the codegen and build stages are executed in the top to bottom order specified in `build.toml`. For a complete description of the available TOML configuration options, see the [build.toml specification](https://github.com/ni-veristand-cds/commonbuild/wiki/TOML-for-ni-veristand-cds).
+
+For information about configuring additional stages for packaging and releasing please see [Creating an NI Package](https://github.com/NIVeriStandAdd-Ons/commonbuild/wiki/Creating-an-NI-Package) and [Releasing NI Packages on GitHub](https://github.com/NIVeriStandAdd-Ons/commonbuild/wiki/Releasing-NI-Packages-on-GitHub).

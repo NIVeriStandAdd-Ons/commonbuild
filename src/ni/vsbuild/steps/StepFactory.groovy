@@ -40,8 +40,8 @@ class StepFactory implements Serializable {
          return new LvSetConditionalSymbolStep(script, mapStep, lvVersion)
       }
 
-      if(type == 'lvUpdateProjectFiles') {
-         return new LvUpdateProjectFiles(script, mapStep, lvVersion)
+      if(type == 'vsStepsUpdateProjectFiles') {
+         return new VsStepsUpdateProjectFiles(script, mapStep, lvVersion)
       }
 
       if(type == 'Test') {
