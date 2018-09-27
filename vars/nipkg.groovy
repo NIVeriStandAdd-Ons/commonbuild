@@ -9,7 +9,7 @@ def call(packageDestination, version, stagingPathMap, lvVersion) {
 
    componentName = getComponentParts()['repo']
    componentBranch = getComponentParts()['branch']
-   componentOrg = getComponentParts()['org']
+   componentOrg = getComponentParts()['organization']
 
    // Read the current build number from configuration file.
    // If successful getBuildNumber() increments the build number and saves it back to TOML file.

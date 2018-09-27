@@ -9,25 +9,31 @@ class Nipkg extends AbstractPackage {
    def packageDestination
    def devXmlPath
    def version
+   def nipkgStagingPathMap
 
    Nipkg(script, packageInfo, payloadDir) {
       super(script, packageInfo, payloadDir)
       this.devInstallLoc = packageInfo.get('install_destination')
       this.devXmlPath = packageInfo.get('dev_xml_path')
       this.packageDestination = payloadDir
+      this.nipkgStagingPathMap = packageInfo.get('nipkg_staging_paths')
    }
 
    void buildPackage(lvVersion) {
 
+      version = script.getDeviceVersion(devXmlPath, lvVersion)
+      if(devInstallLoc?.trim()) {
+         nipkgStagingPathMap = ["${packageDestination}" : devInstallLoc]
+      }
+      
       def packageInfo = """
-         Building package from $payloadDir
-         Staging path: $devInstallLoc
+         Staging paths: $nipkgStagingPathMap
+         .nipkg version: $version
          LabVIEW/VeriStand version: $lvVersion
          Custom Device XML Path: $devXmlPath
          """.stripIndent()
-
-      version = script.getDeviceVersion(devXmlPath, lvVersion)
-      def stagingPathMap = ["${packageDestination}" : devInstallLoc]
-      script.currentBuild.displayName = "$lvVersion #" + script.nipkg(packageDestination, version, stagingPathMap, lvVersion)
+      
+      script.echo packageInfo
+      script.currentBuild.displayName = "$lvVersion #" + script.nipkg(packageDestination, version, nipkgStagingPathMap, lvVersion)
    }
 }
