@@ -5,11 +5,11 @@ def call(projectPath, lvVersion){
    configFileName = "$projectPath" + ".config"
    
    def defaultVersion = ["$lvVersion": "${lvVersion}.0.0.0"]
-   def assemblyVersions = readProperties defaults: defaultVersion, file: "niveristand-custom-device-build-tools/resources/assemblyVersions.properties"
+   def assemblyVersions = readProperties defaults: defaultVersion, file: "commonbuild/resources/assemblyVersions.properties"
 
    def newAssemblyVersion = assemblyVersions."$lvVersion"
 
-   def fileContent = readFile "niveristand-custom-device-build-tools/resources/LabVIEW.exe.config"
+   def fileContent = readFile "commonbuild/resources/LabVIEW.exe.config"
 
    //https://regex101.com/r/tBNE56/2
    fileContent = fileContent.replaceAll("(newVersion=\")[^\"]+","\$1$newAssemblyVersion")
