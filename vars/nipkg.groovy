@@ -22,7 +22,7 @@ def call(packageDestination, version, stagingPathMap, lvVersion) {
       case 'develop': flag = "-beta"; break;
       default: flag = "-alpha"; break;
    }
-   def nipkgVersion = version+flag+"+${paddedBuildNumber}"
+   def nipkgVersion = version+".${paddedBuildNumber}"+flag
 
    // Used to replace {version} expressions with current VeriStand, LabVIEW and .nipkg versions being built.
    def replacementExpressionMap = ['labview_version': lvVersion, 'veristand_version': lvVersion, 'nipkg_version': nipkgVersion]
