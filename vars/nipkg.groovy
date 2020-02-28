@@ -44,7 +44,8 @@ def call(packageDestination, version, stagingPathMap, lvVersion) {
    // Read properties from .nipkg control file. These are used to create the package name.
    def controlFields = readProperties file: "control"
    def packageName = "${controlFields.get('Package')}".replaceAll("\\{veristand_version\\}", "${lvVersion}")
-   def packageFilename = "${packageName}_${nipkgVersion}_windows_x64.nipkg"
+   def architecture = controlFields.get('Architecture')	
+   def packageFilename = "${packageName}_${nipkgVersion}_${architecture}.nipkg"
    def packageFilePath = "${packageDestination}\\${packageFilename}"
 
    // Copy package payload source files to .nipkg staging directories.
