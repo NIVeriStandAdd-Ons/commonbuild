@@ -2,17 +2,16 @@
 // and versions, then replaces the versions based on the lvVersion
 def call(projectPath, lvVersion){
    echo "Copying configuration file for $projectPath"
-   configFileName = "$projectPath" + ".config"
+   def configFileName = "$projectPath" + ".config"
    
-   def currentVersion = lvVersion as int
-   def newAssemblyVersion = "${currentVersion}.0.0.0"
-   
-   def previousVersion = currentVersion - 1
-   def oldAssemblyVersion = "0.0.0.0-${previousVersion}.9.9.9"
+   def defaultVersion = ["$lvVersion": "${lvVersion}.0.0.0"]
+   def assemblyVersions = readProperties defaults: defaultVersion, file: "commonbuild/resources/assemblyVersions.properties"
+
+   def newAssemblyVersion = assemblyVersions."$lvVersion"
    
    def fileContent = readFile "commonbuild/resources/LabVIEW.exe.config"
-   fileContent = fileContent.replaceAll("(oldVersion=\")[^\"]+","\$1$oldAssemblyVersion")
-      .replaceAll("(newVersion=\")[^\"]+","\$1$newAssemblyVersion")
+   
+   fileContent = fileContent.replaceAll("(newVersion=\")[^\"]+","\$1$newAssemblyVersion")
    
    writeFile file: configFileName, text: fileContent
 }
